@@ -1,4 +1,4 @@
-# An Opinionated Vue and Supabase Boilerplate
+# An Opinionated Vue and Supabase Boilerplate (test)
 
 ## Status
 
