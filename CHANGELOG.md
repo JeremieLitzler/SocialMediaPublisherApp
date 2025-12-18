@@ -1,3 +1,9 @@
+## 1.0.0 (2025-12-18)
+
+### Features
+
+* initialize project ([#1](https://github.com/JeremieLitzler/SocialMediaPublisherApp/issues/1)) ([ff9ad0b](https://github.com/JeremieLitzler/SocialMediaPublisherApp/commit/ff9ad0b19c011869d169dc382810ca55f610761b))
+
 ## [2.3.0](https://github.com/JeremieLitzler/VueSupabaseBoilerplate/compare/v2.2.0...v2.3.0) (2025-04-08)
 
 ### Features
