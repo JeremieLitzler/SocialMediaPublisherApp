@@ -19,11 +19,13 @@
   - Select article body from `<section class="article-content">`
   - Extract introduction (all `<p>` tags before first `<h2>`)
   - Extract featured image from selector `.article-image a img`
-  - Extract category from `<header class="article-category">` → `<a>` elements
-  - Extract tags from `<section class="article-tags">` → `<a>` elements
+  - Extract category from `<header class="article-category">` → all `<a>` elements
+  - Extract tags from `<section class="article-tags">` → all `<a>` elements
   - Extract title (from selector `.article-title a`)
-  - Extract description (from selector `article-subtitle`)
-  - Extract featured image credits from last `p` in `<section class="article-content">`. Text always start with "Photo by" in English or "Photo de" in French.
+  - Extract description (from selector `.article-subtitle`)
+  - Extract featured image credits from last `<p>` in `<section class="article-content">`.
+    If the text starts with "Photo by" (EN) or "Photo de" (FR), store as image credit.
+    Otherwise, treat as null (no caption).
 
 ### FR-3: UTM Tag Generation
 
