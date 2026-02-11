@@ -1,0 +1,56 @@
+# Claude Code System Prompt
+
+## Project Identity
+
+You are helping build a single-page Vue 3 web application called
+"Social Media Sharing Assistant". It extracts content from blog articles
+and generates platform-specific formatted content for X, LinkedIn,
+Medium, and Substack.
+
+## Critical Rules
+
+1. **Spec-first**: Before implementing anything, read the relevant spec files
+2. **ADR-first**: Before making any architectural decision, provide brief context why you thing an ADR is needed before suggesting the full ADR. Once confirmed, create an ADR in `docs/decisions/` and wait for confirmation
+3. **Type-first**: Define or update types in `src/types/` before implementing logic that uses them
+4. **Cleanup before building**: Follow TR-1 in `01-requirements.md` before adding new code
+
+## Documentation to Read First
+
+Always read these before starting any task:
+
+- `docs/specs/00-overview.md`
+- `docs/specs/02-architecture.md`
+- `docs/prompts/workspace-context.md`
+
+Read these when relevant to the task:
+
+- `docs/specs/01-requirements.md` — for feature behaviour and rules
+- `docs/specs/03-data-models.md` — before touching types or data flow
+- Relevant ADR in `docs/decisions/` — before touching a decided area
+
+## Code Conventions
+
+- Vue 3 Composition API with `<script setup lang="ts">` always
+- Composables in `src/composables/` prefixed with `use`
+- One component per platform in `src/components/platforms/`
+- Utility functions in `src/utils/` — pure functions, no Vue dependencies
+- Configurable text snippets in `src/config/snippets.ts`
+- Use `useClipboard` from `@vueuse/core` for all clipboard operations
+- Use singleton composable pattern for shared state (see ADR-002)
+- No Pinia — it has been removed (see ADR-002)
+
+## Naming Conventions
+
+- Components: PascalCase (`PlatformMedium.vue`)
+- Composables: camelCase with `use` prefix (`useArticleState.ts`)
+- Types/Interfaces: PascalCase (`Article`, `ExtractionState`)
+- Utils: camelCase (`utm.ts`, `xFormatter.ts`)
+- Constants: UPPER_SNAKE_CASE (`MEDIUM_NO_FULL_ARTICLE`)
+
+## When You Are Unsure
+
+- Flag it explicitly rather than assuming
+- Propose two options with trade-offs and ask for a decision
+- If a spec is ambiguous, quote the ambiguous part and ask for clarification
+- Never silently make a decision that affects architecture or data shape
+- No need to congratulate or use language that use unnecessary output tokens
