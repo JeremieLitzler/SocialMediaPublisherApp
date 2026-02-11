@@ -44,8 +44,7 @@ interface Article {
   category: string
   tags: string[]
   followMeSnippet: string
-  imageCreditSnippet: string
-}
+  imageCreditSnippet: string | null
 ```
 
 ### ExtractionState
@@ -126,6 +125,6 @@ interface Snippets {
   from the last two children of `<section class="article-content">`
 - `blog` language detection is based on URL domain:
   - English blog: `iamjeremie.me`
-  - French blog: `jeremie.litzler.fr` (update with actual domain)
+  - French blog: `jeremielitzler.fr`
 - Image alt text source to be confirmed during implementation
   (og:image has no alt — may need to extract from first `<img>` in article body)
