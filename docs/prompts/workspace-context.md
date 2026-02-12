@@ -7,6 +7,7 @@
 ## Completed
 
 - [x] TR-1: Codebase cleanup (remove unused boilerplate dependencies)
+- [x] Task-002: Implement `src/types/article.ts`
 
 ## In Progress
 
@@ -14,7 +15,6 @@
 
 ## Up Next
 
-- [ ] Implement `src/types/article.ts`
 - [ ] Implement `src/composables/useArticleState.ts`
 - [ ] Implement `src/utils/htmlExtractor.ts`
 - [ ] Implement `src/utils/utm.ts`
