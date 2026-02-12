@@ -11,15 +11,11 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
-    AppError: typeof import('./src/components/AppError.vue')['default']
-    AppErrorDev: typeof import('./src/components/AppErrorDev.vue')['default']
-    AppErrorProd: typeof import('./src/components/AppErrorProd.vue')['default']
     AppFormField: typeof import('./src/components/AppFormField.vue')['default']
     AppHeading: typeof import('./src/components/AppHeading.vue')['default']
     AppLink: typeof import('./src/components/AppLink.vue')['default']
     AppLoader: typeof import('./src/components/AppLoader.vue')['default']
     AppToolTip: typeof import('./src/components/AppToolTip.vue')['default']
-    AuthLayout: typeof import('./src/components/layout/AuthLayout.vue')['default']
     Avatar: typeof import('./src/components/ui/avatar/Avatar.vue')['default']
     AvatarFallback: typeof import('./src/components/ui/avatar/AvatarFallback.vue')['default']
     AvatarImage: typeof import('./src/components/ui/avatar/AvatarImage.vue')['default']
@@ -35,7 +31,6 @@ declare module 'vue' {
     CircleCheckBig: typeof import('./src/components/ui/icon/CircleCheckBig.vue')['default']
     CircleDashed: typeof import('./src/components/ui/icon/CircleDashed.vue')['default']
     CircleDotDashed: typeof import('./src/components/ui/icon/CircleDotDashed.vue')['default']
-    DataTable: typeof import('./src/components/ui/data-table/DataTable.vue')['default']
     Files: typeof import('./src/components/ui/icon/Files.vue')['default']
     GuestLayout: typeof import('./src/components/layout/GuestLayout.vue')['default']
     Home: typeof import('./src/components/ui/icon/Home.vue')['default']
