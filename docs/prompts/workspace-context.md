@@ -10,6 +10,7 @@
 - [x] Task-002: Implement `src/types/article.ts`
 - [x] Task-003: Implement `src/composables/useArticleState.ts`
 - [x] Task-004: Setup Vitest and write tests for `useArticleState.ts`
+- [x] Task-005: Add test step to CI workflow
 
 ## In Progress
 
