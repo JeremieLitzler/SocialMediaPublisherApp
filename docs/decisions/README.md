@@ -16,6 +16,7 @@ Status values: `Proposed` | `Accepted` | `Deprecated` | `Superseded by ADR-XXX`
 | [ADR-002](./adr-002-state-management.md) | Singleton Composable for Shared State | Accepted | 2026-02-11 |
 | [ADR-003](./adr-003-ui-layer.md)         | Tailwind CSS v4 + shadcn-vue for UI   | Accepted | 2026-02-11 |
 | [ADR-004](./adr-004-semantic-release.md) | Semantic Release for Versioning       | Accepted | 2026-02-11 |
+| [ADR-005](./adr-005-testing-strategy.md) | Testing Strategy with Vitest          | Accepted | 2026-02-12 |
 
 ## How to Add a New ADR
 
