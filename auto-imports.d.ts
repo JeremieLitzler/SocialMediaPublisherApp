@@ -84,6 +84,7 @@ declare global {
   const toValue: typeof import('vue').toValue
   const triggerRef: typeof import('vue').triggerRef
   const unref: typeof import('vue').unref
+  const useArticleState: typeof import('./src/composables/useArticleState').useArticleState
   const useAttrs: typeof import('vue').useAttrs
   const useCssModule: typeof import('vue').useCssModule
   const useCssVars: typeof import('vue').useCssVars
@@ -130,4 +131,7 @@ declare global {
   // @ts-ignore
   export type { SideBarLinkAction } from './src/types/SideBarLinkAction'
   import('./src/types/SideBarLinkAction')
+  // @ts-ignore
+  export type { ArticleURL, Blog, Platform, Article, ExtractionStatus, ExtractionState, XContent, LinkedInContent, MediumContent, SubstackContent, UTMParams } from './src/types/article'
+  import('./src/types/article')
 }
