@@ -27,13 +27,7 @@
 
 ## Recent ADRs
 
-| ADR     | Title                                 | Date       |
-| ------- | ------------------------------------- | ---------- |
-| ADR-001 | Vue 3 as Frontend Framework           | 2026-02-11 |
-| ADR-002 | Singleton Composable for Shared State | 2026-02-11 |
-| ADR-003 | Tailwind CSS v4 + shadcn-vue for UI   | 2026-02-11 |
-| ADR-004 | Semantic Release for Versioning       | 2026-02-11 |
-| ADR-005 | Testing Strategy with Vitest          | 2026-02-12 |
+See [ADR Index](../decisions/README.md)
 
 ## Known Spec Gaps
 
