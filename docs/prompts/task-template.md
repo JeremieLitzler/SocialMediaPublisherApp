@@ -39,6 +39,7 @@ Read before starting:
 - [ ] Update `docs/prompts/workspace-context.md` (move task to Completed)
 - [ ] Create ADR if any architectural decision was made
 - [ ] Update relevant spec file if implementation revealed a gap or change
+- [ ] Make the application builds using `source .bashrc && nb`. Fix issues, if any are returned in the build output.
 ```
 
 ## Example: TR-1 Codebase Cleanup
