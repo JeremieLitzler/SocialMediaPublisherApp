@@ -72,10 +72,7 @@ Platform components (read from useArticleState)
 
 ## Key Design Decisions
 
-- See [ADR-001](../decisions/adr-001-vue3-framework.md) — Vue 3 framework
-- See [ADR-002](../decisions/adr-002-state-management.md) — Singleton composable for state
-- See [ADR-003](../decisions/adr-003-ui-layer.md) — Tailwind + shadcn-vue
-- See [ADR-004](../decisions/adr-004-semantic-release.md) — Semantic release
+See [ADR Index](../decisions/README.md)
 
 ## Article Extraction Rules
 
