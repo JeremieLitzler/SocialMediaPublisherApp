@@ -16,6 +16,7 @@
 
 ## Up Next
 
+- [ ] Setup Vitest and write tests for `useArticleState.ts`
 - [ ] Implement `src/utils/htmlExtractor.ts`
 - [ ] Implement `src/utils/utm.ts`
 - [ ] Implement URL input + extraction UI
@@ -32,6 +33,7 @@
 | ADR-002 | Singleton Composable for Shared State | 2026-02-11 |
 | ADR-003 | Tailwind CSS v4 + shadcn-vue for UI   | 2026-02-11 |
 | ADR-004 | Semantic Release for Versioning       | 2026-02-11 |
+| ADR-005 | Testing Strategy with Vitest          | 2026-02-12 |
 
 ## Known Spec Gaps
 
