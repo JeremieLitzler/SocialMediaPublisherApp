@@ -1,7 +1,10 @@
-<template></template>
+<template>
+  <div>
+    <h1>Social Media Sharing Assistant</h1>
+  </div>
+</template>
 
 <script setup lang="ts">
-usePageStore().pageData.title = 'Home'
 </script>
 
 <style scoped></style>

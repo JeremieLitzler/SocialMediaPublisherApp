@@ -2,15 +2,15 @@
 
 ## Current Phase
 
-🚧 Setup — codebase cleanup (TR-1) not yet started
+✅ Setup — codebase cleanup (TR-1) completed
 
 ## Completed
 
-- [ ] nothing yet
+- [x] TR-1: Codebase cleanup (remove unused boilerplate dependencies)
 
 ## In Progress
 
-- [ ] TR-1: Codebase cleanup (remove unused boilerplate dependencies)
+- [ ] nothing currently
 
 ## Up Next
 
