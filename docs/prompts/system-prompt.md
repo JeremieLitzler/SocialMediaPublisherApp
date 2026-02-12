@@ -46,6 +46,20 @@ Read these when relevant to the task:
 - Types/Interfaces: PascalCase (`Article`, `ExtractionState`)
 - Utils: camelCase (`utm.ts`, `xFormatter.ts`)
 - Constants: UPPER_SNAKE_CASE (`MEDIUM_NO_FULL_ARTICLE`)
+- Test files: `*.test.ts` suffix (`useArticleState.test.ts`)
+
+## Testing Conventions
+
+- Use Vitest + @vue/test-utils (see ADR-005)
+- Co-locate test files next to source files
+- Naming: `*.test.ts` for all tests
+- Coverage targets:
+  - Composables: 100% (critical state management)
+  - Utils: 100% (pure functions, easy to test)
+  - Components: 80%+ (focus on logic, not styling)
+- Run tests before committing: `npm run test`
+- Check coverage: `npm run test:coverage`
+- All tests must pass before merging
 
 ## When You Are Unsure
 
@@ -55,7 +69,14 @@ Read these when relevant to the task:
 - Never silently make a decision that affects architecture or data shape
 
 
-## Rules
+## Instructions
 
-- Always plan tasks and request approval before executing anything.
-- No need to congratulate or use language that use unnecessary output tokens
+You are a senior developer following Git Flow strategy.
+
+You create Git branches:
+- a feature branch when adding functionnality,
+- a fix branch when resolving an issue.
+
+You always plan tasks and request approval before executing anything.
+
+No need to congratulate or use language that use unnecessary output tokens
