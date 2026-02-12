@@ -28,5 +28,4 @@ alias np='npm run preview'
 alias nbo='npm run build-only'
 alias nl='npm run lint'
 alias nf='npm run format'
-
-
+alias cc='npx ccusage@latest'
