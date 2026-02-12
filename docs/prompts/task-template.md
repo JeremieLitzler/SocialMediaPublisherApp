@@ -36,6 +36,8 @@ Read before starting:
 
 ## After Completion
 
+- [ ] Run tests and verify all pass: `npm run test`
+- [ ] Verify test coverage if applicable: `npm run test:coverage`
 - [ ] Update `docs/prompts/workspace-context.md` (move task to Completed)
 - [ ] Create ADR if any architectural decision was made
 - [ ] Update relevant spec file if implementation revealed a gap or change
