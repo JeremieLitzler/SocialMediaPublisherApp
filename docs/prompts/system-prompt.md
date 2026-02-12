@@ -10,7 +10,7 @@ Medium, and Substack.
 ## Critical Rules
 
 1. **Spec-first**: Before implementing anything, read the relevant spec files
-2. **ADR-first**: Before making any architectural decision, provide brief context why you thing an ADR is needed before suggesting the full ADR. Once confirmed, create an ADR in `docs/decisions/` and wait for confirmation
+2. **ADR-first**: Before making any architectural decision, provide brief context why you thing an ADR is needed before suggesting the full ADR. Once confirmed, create an ADR in `docs/decisions/` and wait for confirmation. **Always update the ADR index** in `docs/decisions/README.md` when creating a new ADR.
 3. **Type-first**: Define or update types in `src/types/` before implementing logic that uses them
 4. **Cleanup before building**: Follow TR-1 in `01-requirements.md` before adding new code
 
