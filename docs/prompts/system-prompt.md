@@ -53,4 +53,9 @@ Read these when relevant to the task:
 - Propose two options with trade-offs and ask for a decision
 - If a spec is ambiguous, quote the ambiguous part and ask for clarification
 - Never silently make a decision that affects architecture or data shape
+
+
+## Rules
+
+- Always plan tasks and request approval before executing anything.
 - No need to congratulate or use language that use unnecessary output tokens
