@@ -11,7 +11,6 @@
 <link rel="canonical" href="https://jeremielitzLer.fr/post/2025-12/bonnes-pratique-devops-un-exemple-avec-azure-devops/" itemprop="url" />
 
 
-<link rel="stylesheet" href="/scss/style.min.9027be8b7574674b7d3e668a8622511e11d535965eeb9de40dcb7989e1aa2b45.css"><meta property='og:title' content="Bonnes pratiques DevOps : un exemple d'optimisation avec Azure DevOps">
 <meta property='og:description' content="Un guide étape par étape des bonnes pratiques DevOps pour l'automatisation des déclencheurs de pipeline et des workflows avec un exemple.">
 <meta property='og:url' content='https://jeremielitzLer.fr/post/2025-12/bonnes-pratique-devops-un-exemple-avec-azure-devops/'>
 <meta property='og:site_name' content='Jérémie Litzler'>
@@ -24,7 +23,6 @@
 
 
 
-<link rel="stylesheet" href="https://jeremielitzLer.fr/css/custom-style.css" />
 
 
 <meta name="author" content="Jérémie Litzler" />
@@ -33,28 +31,6 @@
     <body class="
     article-page
     ">
-    <script>
-        (function() {
-            const colorSchemeKey = 'StackColorScheme';
-            if(!localStorage.getItem(colorSchemeKey)){
-                localStorage.setItem(colorSchemeKey, "auto");
-            }
-        })();
-    </script><script>
-    (function() {
-        const colorSchemeKey = 'StackColorScheme';
-        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
-        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
-
-        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
-            
-
-            document.documentElement.dataset.scheme = 'dark';
-        } else {
-            document.documentElement.dataset.scheme = 'light';
-        }
-    })();
-</script>
 <div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
     <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Afficher le menu">
         <span class="hamburger-box">
@@ -96,8 +72,7 @@
                         href='https://www.google.com/search?q=linkedin&#43;jeremie&#43;litzler'
                         target="_blank"
                         title="LinkedIn"
-                        rel="me"
-                    >
+                        rel="me">
                         
                         
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-linkedin" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 4m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z" /><path d="M8 11l0 5" /><path d="M8 8l0 .01" /><path d="M12 16l0 -5" /><path d="M16 16v-3a2 2 0 0 0 -4 0" /></svg>
@@ -110,8 +85,7 @@
                         href='https://github.com/JeremieLitzler'
                         target="_blank"
                         title="GitHub"
-                        rel="me"
-                    >
+                        rel="me">
                         
                         
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -130,8 +104,7 @@
                         href='https://twitter.com/LitzlerJeremie'
                         target="_blank"
                         title="X"
-                        rel="me"
-                    >
+                        rel="me">
                         
                         
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-x" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 4l11.733 16h4.267l-11.733 -16z" /><path d="M4 20l6.768 -6.768m2.46 -2.46l6.772 -6.772" /></svg>
@@ -144,8 +117,7 @@
                         href='https://iamjeremie.me'
                         target="_blank"
                         title="English website"
-                        rel="me"
-                    >
+                        rel="me">
                         
                         
                             <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-language"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 5h7" /><path d="M9 3v2c0 4.418 -2.239 8 -5 8" /><path d="M5 9c0 2.144 2.952 3.908 6.7 4" /><path d="M12 20l4 -9l4 9" /><path d="M19.1 18h-6.2" /></svg>
@@ -157,8 +129,8 @@
         
         
         
-        <li >
-            <a href='/' >
+        <li>
+            <a href='/'>
                 
                 
                 
@@ -177,8 +149,8 @@
         </li>
         
         
-        <li >
-            <a href='/page/a-propos/' >
+        <li>
+            <a href='/page/a-propos/'>
                 
                 
                 
@@ -196,8 +168,8 @@
         </li>
         
         
-        <li >
-            <a href='/page/soutenez-moi/' >
+        <li>
+            <a href='/page/soutenez-moi/'>
                 
                 
                 
@@ -214,8 +186,8 @@
         </li>
         
         
-        <li >
-            <a href='/page/contactez-moi/' >
+        <li>
+            <a href='/page/contactez-moi/'>
                 
                 
                 
@@ -232,8 +204,8 @@
         </li>
         
         
-        <li >
-            <a href='/page/search/' >
+        <li>
+            <a href='/page/search/'>
                 
                 
                 
@@ -251,8 +223,8 @@
         </li>
         
         
-        <li >
-            <a href='/page/archives/' >
+        <li>
+            <a href='/page/archives/'>
                 
                 
                 
@@ -669,7 +641,7 @@
 <li>Sélectionnez le fichier dans la branche « develop ».</li>
 <li>Enregistrez pour terminer.</li>
 </ul>
-<div class="jli-notice jli-notice-note"  id="" >
+<div class="jli-notice jli-notice-note"  id="">
     <p class="jli-notice-title"></p><p>J’écris cet article un an après les faits, et même si j’ai pris beaucoup de notes, j’ai un doute sur le point ci-dessus.</p></div>
 <p>Ensuite, pour le tester, vous devez pousser une nouvelle branche vers le référentiel avec une modification dans <code>requirements.txt</code> (un espace supplémentaire ou un commentaire suffira). Cela devrait déclencher le nouveau pipeline.</p>
 <p>Une fois la compilation terminée, vous devriez voir un nouveau référentiel <code>myapp-ci</code> dans le <em>Azure Container Registry (ACR)</em> avec une image taguée <code>branch-[nom de votre branche]</code>.</p>
@@ -700,7 +672,7 @@
 <pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="w">  </span><span class="c"># ARM = Azure Resource Manager type of service connection</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">armAppRegistration</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># Azure DevOps identifier, not a Azure Resource identifier</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;[app registration Id]&#39;</span><span class="w"> 
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;[app registration Id]&#39;</span><span class="w">
 </span></span></span></code></pre></td></tr></table>
 </div>
 </div><p>Cela est nécessaire dans la première étape du pipeline de mise à jour <em>PR Validation</em>. En effet, une étape supplémentaire est nécessaire pour lire le registre d’image via l’interface CLI Azure.</p>
@@ -770,7 +742,7 @@
 </span></span></span><span class="line"><span class="cl"><span class="sd">                echo $TAG_NAME
 </span></span></span><span class="line"><span class="cl"><span class="sd">                REGISTRY_NAME=&#34;$(containerRegistry)&#34;
 </span></span></span><span class="line"><span class="cl"><span class="sd">                REPOSITORY_NAME=&#34;$(imageRepository)&#34;
-</span></span></span><span class="line"><span class="cl"><span class="sd">                
+</span></span></span><span class="line"><span class="cl"><span class="sd">
 </span></span></span><span class="line"><span class="cl"><span class="sd">                if az acr repository show-tags --name $REGISTRY_NAME --repository $REPOSITORY_NAME --output tsv | grep -q &#34;^$TAG_NAME$&#34;; then
 </span></span></span><span class="line"><span class="cl"><span class="sd">                  echo &#34;Tag $TAG_NAME exists in repository $REPOSITORY_NAME&#34;
 </span></span></span><span class="line"><span class="cl"><span class="sd">                  echo &#34;##vso[task.setvariable variable=imageTag;isOutput=true]$TAG_NAME&#34;
@@ -821,7 +793,7 @@
 </h2><p>Désormais, votre processus de requêtes de tirage gère à la fois les développements qui modifient les dépendances ou la CI, et ceux qui ne le font pas.</p>
 <p>Grâce à cela, vous n’avez plus à vous soucier d’exécuter des tests unitaires sur une image Docker obsolète ni à penser à préparer l’image avant cela.</p>
 <p>En prime, vous ne créez de nouvelles images Docker à jour que lorsque <em>cela est nécessaire</em>. La prochaine étape logique serait de <a href="/post/2025-03/retention-personnalisee-d-images-docker-sur-azure/">mettre à jour le compte d’automatisation</a> qui nettoie le référentiel des images obsolètes. En êtes-vous capable ? J’en suis sûr !</p>
-<div class="jli-notice jli-notice-tip"  id="Suivez-moi !" >
+<div class="jli-notice jli-notice-tip"  id="Suivez-moi !">
     <p class="jli-notice-title">Suivez-moi !</p><p>Merci d’avoir lu cet article. Assurez-vous de <a href="https://x.com/LitzlerJeremie">me suivre sur X</a>, de <a href="https://iamjeremie.substack.com/">vous abonner à ma publication Substack</a> et d’ajouter mon blog à vos favoris pour ne pas manquer les prochains articles.</p></div>
 
 </section>
@@ -1082,21 +1054,7 @@
 
     </div>
 
-</div><script 
-                src="/js/photoswipe.4.1.3.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
-                defer
-                >
-            </script><script 
-                src="/js/photoswipe-ui-default.4.1.3.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
-                defer
-                >
-            </script><link 
-                rel="stylesheet" 
-                href="/css/photoswipe-default-skin.4.1.3.min.css"crossorigin="anonymous"
             ><link 
-                rel="stylesheet" 
-                href="/css/photoswipe.4.1.3.min.css"crossorigin="anonymous"
-            >
     
 
 
@@ -1104,15 +1062,6 @@
 
             </main>
         </div>
-        <script 
-                src="/js/vibrant.3.1.6.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
                 
-                >
-            </script><script type="text/javascript" src="/ts/main.c922af694cc257bf1ecc41c0dd7b0430f9114ec280ccf67cd2c6ad55f5316c4e.js" defer></script>
-
-
-
-
-    <script data-collect-dnt="true" async defer src="https://scripts.simpleanalyticscdn.com/latest.js"></script>
 <noscript><img aria-hidden="true" src="https://queue.simpleanalyticscdn.com/hello.gif" alt="One pixel gif image is used to collect page views. Visit https://docs.simpleanalytics.com/without-javascript for more details." referrerpolicy="no-referrer-when-downgrade" /></noscript></body>
 </html>
