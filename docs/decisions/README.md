@@ -10,13 +10,14 @@ Status values: `Proposed` | `Accepted` | `Deprecated` | `Superseded by ADR-XXX`
 
 ## Index
 
-| ADR                                      | Title                                 | Status   | Date       |
-| ---------------------------------------- | ------------------------------------- | -------- | ---------- |
-| [ADR-001](./adr-001-vue3-framework.md)   | Vue 3 as Frontend Framework           | Accepted | 2026-02-11 |
-| [ADR-002](./adr-002-state-management.md) | Singleton Composable for Shared State | Accepted | 2026-02-11 |
-| [ADR-003](./adr-003-ui-layer.md)         | Tailwind CSS v4 + shadcn-vue for UI   | Accepted | 2026-02-11 |
-| [ADR-004](./adr-004-semantic-release.md) | Semantic Release for Versioning       | Accepted | 2026-02-11 |
-| [ADR-005](./adr-005-testing-strategy.md) | Testing Strategy with Vitest          | Accepted | 2026-02-12 |
+| ADR                                                                | Title                                        | Status   | Date       |
+| ------------------------------------------------------------------ | -------------------------------------------- | -------- | ---------- |
+| [ADR-001](./adr-001-vue3-framework.md)                             | Vue 3 as Frontend Framework                  | Accepted | 2026-02-11 |
+| [ADR-002](./adr-002-state-management.md)                           | Singleton Composable for Shared State        | Accepted | 2026-02-11 |
+| [ADR-003](./adr-003-ui-layer.md)                                   | Tailwind CSS v4 + shadcn-vue for UI          | Accepted | 2026-02-11 |
+| [ADR-004](./adr-004-semantic-release.md)                           | Semantic Release for Versioning              | Accepted | 2026-02-11 |
+| [ADR-005](./adr-005-testing-strategy.md)                           | Testing Strategy with Vitest                 | Accepted | 2026-02-12 |
+| [ADR-006](./ADR-006-netlify-functions-for-cors-proxy.md)           | Netlify Functions for CORS-Free HTML Fetching | Proposed | 2026-02-13 |
 
 ## How to Add a New ADR
 
