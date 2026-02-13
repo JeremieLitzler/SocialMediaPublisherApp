@@ -11,6 +11,7 @@
 - [x] Task-003: Implement `src/composables/useArticleState.ts`
 - [x] Task-004: Setup Vitest and write tests for `useArticleState.ts`
 - [x] Task-005: Add test step to CI workflow
+- [x] Task-006: Implement `src/utils/htmlExtractor.ts`
 
 ## In Progress
 
@@ -18,7 +19,6 @@
 
 ## Up Next
 
-- [ ] Implement `src/utils/htmlExtractor.ts`
 - [ ] Implement `src/utils/utm.ts`
 - [ ] Implement URL input + extraction UI
 
