@@ -11,7 +11,6 @@
 <link rel="canonical" href="https://iamjeremie.me/post/2025-12/devops-best-practices-a-example-with-azure-devops/" itemprop="url" />
 
 
-<link rel="stylesheet" href="/scss/style.min.9027be8b7574674b7d3e668a8622511e11d535965eeb9de40dcb7989e1aa2b45.css"><meta property='og:title' content="DevOps Best Practices: An Optimization Example With Azure DevOps">
 <meta property='og:description' content="A step-by-step guide to the best practices of DevOps of automating pipeline triggers and workflows with an example.">
 <meta property='og:url' content='https://iamjeremie.me/post/2025-12/devops-best-practices-a-example-with-azure-devops/'>
 <meta property='og:site_name' content='Blog of Jérémie Litzler'>
@@ -24,7 +23,6 @@
 
 
 
-<link rel="stylesheet" href="https://iamjeremie.me/css/custom-style.css" />
 
 
 <meta name="author" content="Jérémie Litzler" />
@@ -33,28 +31,6 @@
     <body class="
     article-page
     ">
-    <script>
-        (function() {
-            const colorSchemeKey = 'StackColorScheme';
-            if(!localStorage.getItem(colorSchemeKey)){
-                localStorage.setItem(colorSchemeKey, "auto");
-            }
-        })();
-    </script><script>
-    (function() {
-        const colorSchemeKey = 'StackColorScheme';
-        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
-        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
-
-        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
-            
-
-            document.documentElement.dataset.scheme = 'dark';
-        } else {
-            document.documentElement.dataset.scheme = 'light';
-        }
-    })();
-</script>
 <div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
     <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
         <span class="hamburger-box">
@@ -97,7 +73,6 @@
                         target="_blank"
                         title="LinkedIn"
                         rel="me"
-                    >
                         
                         
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-linkedin" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 4m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z" /><path d="M8 11l0 5" /><path d="M8 8l0 .01" /><path d="M12 16l0 -5" /><path d="M16 16v-3a2 2 0 0 0 -4 0" /></svg>
@@ -110,8 +85,7 @@
                         href='https://github.com/JeremieLitzler'
                         target="_blank"
                         title="GitHub"
-                        rel="me"
-                    >
+                        rel="me">
                         
                         
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -130,8 +104,7 @@
                         href='https://twitter.com/LitzlerJeremie'
                         target="_blank"
                         title="X"
-                        rel="me"
-                    >
+                        rel="me">
                         
                         
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-x" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 4l11.733 16h4.267l-11.733 -16z" /><path d="M4 20l6.768 -6.768m2.46 -2.46l6.772 -6.772" /></svg>
@@ -144,8 +117,7 @@
                         href='https://jeremielitzler.fr'
                         target="_blank"
                         title="Site français"
-                        rel="me"
-                    >
+                        rel="me">
                         
                         
                             <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-language"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 5h7" /><path d="M9 3v2c0 4.418 -2.239 8 -5 8" /><path d="M5 9c0 2.144 2.952 3.908 6.7 4" /><path d="M12 20l4 -9l4 9" /><path d="M19.1 18h-6.2" /></svg>
@@ -157,8 +129,8 @@
         
         
         
-        <li >
-            <a href='/' >
+        <li>
+            <a href='/'>
                 
                 
                 
@@ -177,8 +149,8 @@
         </li>
         
         
-        <li >
-            <a href='/page/about/' >
+        <li>
+            <a href='/page/about/'>
                 
                 
                 
@@ -196,8 +168,8 @@
         </li>
         
         
-        <li >
-            <a href='/page/sponsor-me/' >
+        <li>
+            <a href='/page/sponsor-me/'>
                 
                 
                 
@@ -214,8 +186,8 @@
         </li>
         
         
-        <li >
-            <a href='/page/search/' >
+        <li>
+            <a href='/page/search/'>
                 
                 
                 
@@ -233,8 +205,8 @@
         </li>
         
         
-        <li >
-            <a href='/page/contact-me/' >
+        <li>
+            <a href='/page/contact-me/'>
                 
                 
                 
@@ -251,8 +223,8 @@
         </li>
         
         
-        <li >
-            <a href='/page/archives/' >
+        <li>
+            <a href='/page/archives/'>
                 
                 
                 
@@ -673,7 +645,7 @@
 <li>Select the file from <code>develop</code> branch</li>
 <li>Save to finish.</li>
 </ul>
-<div class="jli-notice jli-notice-note"  id="" >
+<div class="jli-notice jli-notice-note"  id="">
     <p class="jli-notice-title"></p><p>I am writing this article a year after the events, and even though I took a lot of notes, I have doubts about the above point.</p></div>
 <p>Then, to test it, you need to push a new branch to the repository with a change to <code>requirements.txt</code> (an extra space or comment will suffice). This should trigger the new pipeline.</p>
 <p>Once the build ran successfully, you should see a new repository <code>myapp-ci</code> in the <em>Azure Container Registry (ACR)</em> with an image tagged <code>branch-[your branch name]</code>.</p>
@@ -704,7 +676,7 @@
 <pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="w">  </span><span class="c"># ARM = Azure Resource Manager type of service connection</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">armAppRegistration</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># Azure DevOps identifier, not a Azure Resource identifier</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;[app registration Id]&#39;</span><span class="w"> 
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;[app registration Id]&#39;</span><span class="w">
 </span></span></span></code></pre></td></tr></table>
 </div>
 </div><p>This is required in the first stage of the update <em>PR Validation</em> pipeline. This is due to the fact that there is extra step to read the ACR registry through the Azure CLI.</p>
@@ -774,7 +746,7 @@
 </span></span></span><span class="line"><span class="cl"><span class="sd">                echo $TAG_NAME
 </span></span></span><span class="line"><span class="cl"><span class="sd">                REGISTRY_NAME=&#34;$(containerRegistry)&#34;
 </span></span></span><span class="line"><span class="cl"><span class="sd">                REPOSITORY_NAME=&#34;$(imageRepository)&#34;
-</span></span></span><span class="line"><span class="cl"><span class="sd">                
+</span></span></span><span class="line"><span class="cl"><span class="sd">
 </span></span></span><span class="line"><span class="cl"><span class="sd">                if az acr repository show-tags --name $REGISTRY_NAME --repository $REPOSITORY_NAME --output tsv | grep -q &#34;^$TAG_NAME$&#34;; then
 </span></span></span><span class="line"><span class="cl"><span class="sd">                  echo &#34;Tag $TAG_NAME exists in repository $REPOSITORY_NAME&#34;
 </span></span></span><span class="line"><span class="cl"><span class="sd">                  echo &#34;##vso[task.setvariable variable=imageTag;isOutput=true]$TAG_NAME&#34;
@@ -825,7 +797,7 @@
 </h2><p>Now, your pull request workflow handles both developments that change the dependencies or CI or none.</p>
 <p>With that, you don’t need to worry about ever having to run unit tests against an outdated Docker image nor think about having the image ready before that.</p>
 <p>As a bonus, you only create new up-to-date Docker images when <em>it’s needed</em>. A logical next step would be to <a href="/post/2024-10/build-your-own-acr-retention-policy/">update the automation account</a> that cleans up the repository of obsolete images. Can you do it? I believe you can.</p>
-<div class="jli-notice jli-notice-tip"  id="Follow me" >
+<div class="jli-notice jli-notice-tip"  id="Follow me">
     <p class="jli-notice-title">Follow me</p><p>Thanks for reading this article. Make sure to <a href="https://x.com/LitzlerJeremie">follow me on X</a>, <a href="https://iamjeremie.substack.com/">subscribe to my Substack publication</a> and bookmark my blog to read more in the future.</p></div>
 
 </section>
@@ -1086,21 +1058,7 @@
 
     </div>
 
-</div><script 
-                src="/js/photoswipe.4.1.3.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
-                defer
-                >
-            </script><script 
-                src="/js/photoswipe-ui-default.4.1.3.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
-                defer
-                >
-            </script><link 
-                rel="stylesheet" 
-                href="/css/photoswipe-default-skin.4.1.3.min.css"crossorigin="anonymous"
             ><link 
-                rel="stylesheet" 
-                href="/css/photoswipe.4.1.3.min.css"crossorigin="anonymous"
-            >
     
 
 
@@ -1108,15 +1066,6 @@
 
             </main>
         </div>
-        <script 
-                src="/js/vibrant.3.1.6.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
                 
-                >
-            </script><script type="text/javascript" src="/ts/main.c922af694cc257bf1ecc41c0dd7b0430f9114ec280ccf67cd2c6ad55f5316c4e.js" defer></script>
-
-
-
-
-    <script data-collect-dnt="true" async defer src="https://scripts.simpleanalyticscdn.com/latest.js"></script>
 <noscript><img aria-hidden="true" src="https://queue.simpleanalyticscdn.com/hello.gif" alt="One pixel gif image is used to collect page views. Visit https://docs.simpleanalytics.com/without-javascript for more details." referrerpolicy="no-referrer-when-downgrade" /></noscript></body>
 </html>
