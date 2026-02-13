@@ -11,7 +11,6 @@
 <link rel="canonical" href="https://jeremielitzLer.fr/post/2026-01/gerer-ses-dependencies-avec-github-actions/" itemprop="url" />
 
 
-<link rel="stylesheet" href="/scss/style.min.9027be8b7574674b7d3e668a8622511e11d535965eeb9de40dcb7989e1aa2b45.css"><meta property='og:title' content="Comment gérer les dépendances JavaScript avec GitHub Actions">
 <meta property='og:description' content="La mise à jour des dépendances peut s'avérer difficile et fastidieuse sur un projet JavaScript. GitHub Actions peuvent vous aider à l'automatiser.">
 <meta property='og:url' content='https://jeremielitzLer.fr/post/2026-01/gerer-ses-dependencies-avec-github-actions/'>
 <meta property='og:site_name' content='Jérémie Litzler'>
@@ -24,7 +23,6 @@
 
 
 
-<link rel="stylesheet" href="https://jeremielitzLer.fr/css/custom-style.css" />
 
 
 <meta name="author" content="Jérémie Litzler" />
@@ -33,28 +31,6 @@
     <body class="
     article-page
     ">
-    <script>
-        (function() {
-            const colorSchemeKey = 'StackColorScheme';
-            if(!localStorage.getItem(colorSchemeKey)){
-                localStorage.setItem(colorSchemeKey, "auto");
-            }
-        })();
-    </script><script>
-    (function() {
-        const colorSchemeKey = 'StackColorScheme';
-        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
-        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
-
-        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
-            
-
-            document.documentElement.dataset.scheme = 'dark';
-        } else {
-            document.documentElement.dataset.scheme = 'light';
-        }
-    })();
-</script>
 <div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
     <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Afficher le menu">
         <span class="hamburger-box">
@@ -96,8 +72,7 @@
                         href='https://www.google.com/search?q=linkedin&#43;jeremie&#43;litzler'
                         target="_blank"
                         title="LinkedIn"
-                        rel="me"
-                    >
+                        rel="me">
                         
                         
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-linkedin" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 4m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z" /><path d="M8 11l0 5" /><path d="M8 8l0 .01" /><path d="M12 16l0 -5" /><path d="M16 16v-3a2 2 0 0 0 -4 0" /></svg>
@@ -110,8 +85,7 @@
                         href='https://github.com/JeremieLitzler'
                         target="_blank"
                         title="GitHub"
-                        rel="me"
-                    >
+                        rel="me">
                         
                         
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -130,8 +104,7 @@
                         href='https://twitter.com/LitzlerJeremie'
                         target="_blank"
                         title="X"
-                        rel="me"
-                    >
+                        rel="me">
                         
                         
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-x" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 4l11.733 16h4.267l-11.733 -16z" /><path d="M4 20l6.768 -6.768m2.46 -2.46l6.772 -6.772" /></svg>
@@ -144,8 +117,7 @@
                         href='https://iamjeremie.me'
                         target="_blank"
                         title="English website"
-                        rel="me"
-                    >
+                        rel="me">
                         
                         
                             <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-language"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 5h7" /><path d="M9 3v2c0 4.418 -2.239 8 -5 8" /><path d="M5 9c0 2.144 2.952 3.908 6.7 4" /><path d="M12 20l4 -9l4 9" /><path d="M19.1 18h-6.2" /></svg>
@@ -157,8 +129,8 @@
         
         
         
-        <li >
-            <a href='/' >
+        <li>
+            <a href='/'>
                 
                 
                 
@@ -177,8 +149,8 @@
         </li>
         
         
-        <li >
-            <a href='/page/a-propos/' >
+        <li>
+            <a href='/page/a-propos/'>
                 
                 
                 
@@ -196,8 +168,8 @@
         </li>
         
         
-        <li >
-            <a href='/page/soutenez-moi/' >
+        <li>
+            <a href='/page/soutenez-moi/'>
                 
                 
                 
@@ -214,8 +186,8 @@
         </li>
         
         
-        <li >
-            <a href='/page/contactez-moi/' >
+        <li>
+            <a href='/page/contactez-moi/'>
                 
                 
                 
@@ -232,8 +204,8 @@
         </li>
         
         
-        <li >
-            <a href='/page/search/' >
+        <li>
+            <a href='/page/search/'>
                 
                 
                 
@@ -251,8 +223,8 @@
         </li>
         
         
-        <li >
-            <a href='/page/archives/' >
+        <li>
+            <a href='/page/archives/'>
                 
                 
                 
@@ -510,7 +482,7 @@
 <p>Par conséquent, il exécutera également le CI pour vérifier que le projet compile toujours avec la nouvelle version du package mis à jour.</p>
 <h2 id="vous-souhaitez-en-savoir-plus">Vous souhaitez en savoir plus ?
 </h2><p>Consultez <a href="https://docs.github.com/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file">la documentation pour toutes les options de configuration</a>. Vous y trouverez peut-être ce que vous recherchez pour vos besoins spécifiques.</p>
-<div class="jli-notice jli-notice-tip"  id="Suivez-moi !" >
+<div class="jli-notice jli-notice-tip"  id="Suivez-moi !">
     <p class="jli-notice-title">Suivez-moi !</p><p>Merci d’avoir lu cet article. Assurez-vous de <a href="https://x.com/LitzlerJeremie">me suivre sur X</a>, de <a href="https://iamjeremie.substack.com/">vous abonner à ma publication Substack</a> et d’ajouter mon blog à vos favoris pour ne pas manquer les prochains articles.</p></div>
 <p>Photo de <a href="https://www.pexels.com/photo/gray-scale-photo-of-gears-159298/">Pixabay</a>.</p>
 
@@ -776,21 +748,7 @@
 
     </div>
 
-</div><script 
-                src="/js/photoswipe.4.1.3.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
-                defer
-                >
-            </script><script 
-                src="/js/photoswipe-ui-default.4.1.3.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
-                defer
-                >
-            </script><link 
-                rel="stylesheet" 
-                href="/css/photoswipe-default-skin.4.1.3.min.css"crossorigin="anonymous"
             ><link 
-                rel="stylesheet" 
-                href="/css/photoswipe.4.1.3.min.css"crossorigin="anonymous"
-            >
     
 
 
@@ -798,15 +756,6 @@
 
             </main>
         </div>
-        <script 
-                src="/js/vibrant.3.1.6.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
                 
-                >
-            </script><script type="text/javascript" src="/ts/main.c922af694cc257bf1ecc41c0dd7b0430f9114ec280ccf67cd2c6ad55f5316c4e.js" defer></script>
-
-
-
-
-    <script data-collect-dnt="true" async defer src="https://scripts.simpleanalyticscdn.com/latest.js"></script>
 <noscript><img aria-hidden="true" src="https://queue.simpleanalyticscdn.com/hello.gif" alt="One pixel gif image is used to collect page views. Visit https://docs.simpleanalytics.com/without-javascript for more details." referrerpolicy="no-referrer-when-downgrade" /></noscript></body>
 </html>

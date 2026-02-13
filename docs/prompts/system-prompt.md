@@ -61,6 +61,20 @@ Read these when relevant to the task:
 - Check coverage: `npm run test:coverage`
 - All tests must pass before merging
 
+### HTML Fixtures
+- When downloading HTML files for test fixtures, **always clean them up**:
+  - Remove all `<link rel="stylesheet">` tags (CSS files)
+  - Remove all `<script>` tags and their content (JavaScript)
+  - Keep metadata tags like `<link rel="canonical">` and `<link rel="shortcut icon">`
+- Use this command to clean fixtures:
+  ```bash
+  cd tests/fixtures && for file in *.html; do
+    sed -i '/<link rel="stylesheet"/d' "$file"
+    sed -i '/<script/d; /<\/script>/d' "$file"
+  done
+  ```
+- This prevents happy-dom from attempting to fetch external resources during tests, which causes ECONNREFUSED errors in CI/CD
+
 ## When You Are Unsure
 
 - Flag it explicitly rather than assuming
