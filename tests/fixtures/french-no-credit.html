@@ -1,0 +1,1118 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+    <head><meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" /><meta
+  name="description"
+  content="Un guide étape par étape des bonnes pratiques DevOps pour l'automatisation des déclencheurs de pipeline et des workflows avec un exemple." />
+<title>Bonnes pratiques DevOps : un exemple d&#39;optimisation avec Azure DevOps</title>
+
+
+
+<link rel="canonical" href="https://jeremielitzLer.fr/post/2025-12/bonnes-pratique-devops-un-exemple-avec-azure-devops/" itemprop="url" />
+
+
+<link rel="stylesheet" href="/scss/style.min.9027be8b7574674b7d3e668a8622511e11d535965eeb9de40dcb7989e1aa2b45.css"><meta property='og:title' content="Bonnes pratiques DevOps : un exemple d'optimisation avec Azure DevOps">
+<meta property='og:description' content="Un guide étape par étape des bonnes pratiques DevOps pour l'automatisation des déclencheurs de pipeline et des workflows avec un exemple.">
+<meta property='og:url' content='https://jeremielitzLer.fr/post/2025-12/bonnes-pratique-devops-un-exemple-avec-azure-devops/'>
+<meta property='og:site_name' content='Jérémie Litzler'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='Azure DevOps' /><meta property='article:published_time' content='2025-12-26T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2025-12-26T00:00:00&#43;00:00'/><meta property='og:image' content='https://jeremielitzLer.fr/post/2025-12/bonnes-pratique-devops-un-exemple-avec-azure-devops/2025-12-22-devops-best-practices-a-example-with-azure-devops.svg' />
+<meta name="twitter:title" content="Bonnes pratiques DevOps : un exemple d'optimisation avec Azure DevOps">
+<meta name="twitter:description" content="Un guide étape par étape des bonnes pratiques DevOps pour l'automatisation des déclencheurs de pipeline et des workflows avec un exemple."><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://jeremielitzLer.fr/post/2025-12/bonnes-pratique-devops-un-exemple-avec-azure-devops/2025-12-22-devops-best-practices-a-example-with-azure-devops.svg' />
+  <link rel="shortcut icon" href="/favicon.ico" />
+
+
+
+
+<link rel="stylesheet" href="https://jeremielitzLer.fr/css/custom-style.css" />
+
+
+<meta name="author" content="Jérémie Litzler" />
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Afficher le menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/profilepic-400w_hu_63da95539758f437.jpg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+		    
+            
+            <p class="site-name"><a href="/">Jérémie Litzler</a></p>
+            <p class="site-description">Je partage ici mes notes et experiences qui, je suis sûr, seront utiles pour au moins une personne. Bonne lecture !</p>
+            
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://www.google.com/search?q=linkedin&#43;jeremie&#43;litzler'
+                        target="_blank"
+                        title="LinkedIn"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-linkedin" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 4m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z" /><path d="M8 11l0 5" /><path d="M8 8l0 .01" /><path d="M12 16l0 -5" /><path d="M16 16v-3a2 2 0 0 0 -4 0" /></svg>
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://github.com/JeremieLitzler'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com/LitzlerJeremie'
+                        target="_blank"
+                        title="X"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-x" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 4l11.733 16h4.267l-11.733 -16z" /><path d="M4 20l6.768 -6.768m2.46 -2.46l6.772 -6.772" /></svg>
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://iamjeremie.me'
+                        target="_blank"
+                        title="English website"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-language"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 5h7" /><path d="M9 3v2c0 4.418 -2.239 8 -5 8" /><path d="M5 9c0 2.144 2.952 3.908 6.7 4" /><path d="M12 20l4 -9l4 9" /><path d="M19.1 18h-6.2" /></svg>
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Accueil</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/a-propos/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>Qui suis-je ?</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/soutenez-moi/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-heart-handshake" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="#707070" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+    <path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" />
+    <path d="M12 6l-3.293 3.293a1 1 0 0 0 0 1.414l.543 .543c.69 .69 1.81 .69 2.5 0l1 -1a3.182 3.182 0 0 1 4.5 0l2.25 2.25" />
+    <path d="M12.5 15.5l2 2" />
+    <path d="M15 13l2 2" />
+</svg>
+                
+                <span>Soutenez mon travail</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/contactez-moi/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-message-chatbot" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="#707070" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+    <path d="M4 21v-13a3 3 0 0 1 3 -3h10a3 3 0 0 1 3 3v6a3 3 0 0 1 -3 3h-9l-4 4" />
+    <path d="M9.5 9h.01" />
+    <path d="M14.5 9h.01" />
+    <path d="M9.5 13a3.5 3.5 0 0 0 5 0" />
+</svg>
+                
+                <span>Contactez-moi</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Rechercher</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archive d&#39;articles</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>Mode sombre</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">Table des matières</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#la-cause">La cause</a></li>
+    <li><a href="#mais-quelles-bonnes-pratiques-">Mais quelles bonnes pratiques ?</a></li>
+    <li><a href="#création-du-pipeline--build-image-for-ci-purposes--créer-une-image-à-des-fins-dintégration-continue">Création du pipeline « Build Image For CI Purposes » (Créer une image à des fins d&rsquo;intégration continue)</a>
+      <ol>
+        <li><a href="#le-fichier-dockerfile">Le fichier <code>Dockerfile</code></a></li>
+        <li><a href="#créer-le-nouveau-pipeline">Créer le nouveau pipeline</a></li>
+      </ol>
+    </li>
+    <li><a href="#tester-le-nouveau-pipeline">Tester le nouveau pipeline</a></li>
+    <li><a href="#mettre-à-jour-le-pipeline-pr-validation">Mettre à jour le pipeline <em>PR Validation</em></a>
+      <ol>
+        <li><a href="#nouvelles-variables">Nouvelles variables</a></li>
+        <li><a href="#nouvelle-étape">Nouvelle étape</a></li>
+      </ol>
+    </li>
+    <li><a href="#tester-le-pipeline-mis-à-jour">Tester le pipeline mis à jour</a></li>
+    <li><a href="#conclusion">Conclusion</a></li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="has-image main-article">
+    <header class="article-header">
+        <div class="article-image">
+            <a href="/post/2025-12/bonnes-pratique-devops-un-exemple-avec-azure-devops/">
+                
+                    <img src="/post/2025-12/bonnes-pratique-devops-un-exemple-avec-azure-devops/2025-12-22-devops-best-practices-a-example-with-azure-devops.svg" 
+						loading="lazy" 
+						alt="Bonnes pratiques DevOps : un exemple d&#39;optimisation avec Azure DevOps" 
+						title="Bonnes pratiques DevOps : un exemple d&#39;optimisation avec Azure DevOps" />
+                
+            </a>
+        </div>
+    
+	
+    
+      
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            
+            
+            
+            <a href="/categories/d%C3%A9veloppement-logiciel/" style="background-color: #9d2a2a; color: #fff;">
+                Développement logiciel
+            </a>
+        
+    </header>
+    
+
+  <div class="article-title-wrapper">
+  
+    <h1 class="article-title">
+      <a href="/post/2025-12/bonnes-pratique-devops-un-exemple-avec-azure-devops/">Bonnes pratiques DevOps : un exemple d&#39;optimisation avec Azure DevOps</a>
+    </h1>
+    
+    <h2 class="article-subtitle">Un guide étape par étape des bonnes pratiques DevOps pour l&#39;automatisation des déclencheurs de pipeline et des workflows avec un exemple.</h2>
+     
+  </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published" datetime='2025-12-26T00:00:00Z'>26/12/2025</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    10 minutes de lecture
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <p>En février dernier, j’ai rencontré un problème. J’ai remarqué que le temps d’exécution de mon pipeline <em>Pull Request (PR) Validation</em> avait considérablement augmenté, atteignant près de dix minutes.</p>
+<p>De plus, il m’est arrivé que la création de l’image Docker ne tienne pas compte des dernières dépendances et, par conséquent, les tests associés au nouveau code échouaient.</p>
+<p>J’ai remarqué que l’étape <em>Installer les dépendances</em> était la coupable.</p>
+<p>Voyons comment j’ai résolu le problème avec l’aide d’un collègue expert en DevOps.</p>
+<h2 id="la-cause">La cause
+</h2><p>Je n’ai pas trouvé la cause profonde dans mon pipeline <em>Pull Request (PR) Validation</em>, mais plutôt là où je construisais l’image Docker.</p>
+<p>L’étape en cause dans le deuxième pipeline consistait au script suivant :</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">script</span><span class="p">:</span><span class="w"> </span><span class="p">|</span><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="sd">      python -m pip install --upgrade pip
+</span></span></span><span class="line"><span class="cl"><span class="sd">      pip install -r requirements.txt</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">displayName</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;Install dependencies&#39;</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>On n’exécutait pas cette étape sur le pipeline <em>Pull Request (PR) Validation</em>, mais qu’une fois que j’avais fusionné le code dans <code>develop</code>, lorsque le pipeline créant la nouvelle image Docker s’exécutait.</p>
+<p>Un autre problème existait dans la version python de mon pipeline <em>Pull Request (PR) Validation</em> :</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">task</span><span class="p">:</span><span class="w"> </span><span class="l">UsePythonVersion@0</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">inputs</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">versionSpec</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;&gt;=3.11&#39;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">addToPath</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>Ainsi, si nous disposions de Python <code>3.13</code>, la compilation pouvait s&rsquo;exécuter sur une version différente de Python au fil du temps, toujours égale ou supérieure à <code>3.11</code>.</p>
+<p>Dans le pipeline <em>Build Image For Deployment</em>, nous avons strictement utilisé Python 3.11 afin d&rsquo;éviter tout problème d&rsquo;incompatibilité entre mon code et les dépendances.</p>
+<p>Cela m&rsquo;amène aux bonnes pratiques DevOps.</p>
+<h2 id="mais-quelles-bonnes-pratiques-">Mais quelles bonnes pratiques ?
+</h2><p>Pour garantir un comportement cohérent sur les environnements de développement (votre PC, le mien, un VDI, etc.), les environnements de validation (par exemple, la machine virtuelle sur laquelle Azure DevOps exécute son agent pour exécuter les tests unitaires, qui est le cas d&rsquo;utilisation présent dans cet article) ou dans les environnements de déploiement (par exemple, QA, production), nous avons besoin d&rsquo;une base de référence cohérente.</p>
+<p>Tout d&rsquo;abord, dans les étapes problématiques ci-dessus, le pipeline <em>PR Validation</em> et le pipeline <em>Build Image For Deployment</em> pouvaient utiliser une version différente de Python, ce qui causait des maux de tête en cas de problème, en particulier lors des tests.</p>
+<p>De plus, chaque fois que j&rsquo;ajoutais et utilisais dans le code un nouveau package, le pipeline <em>PR Validation</em> échouait car le nouveau code faisait référence au nouveau package et générait une erreur d&rsquo;exécution. En fait, l&rsquo;image Docker utilisée dans ce pipeline ne contenait pas encore le nouveau package.</p>
+<p>Normalisons donc les images Docker.</p>
+<h2 id="création-du-pipeline--build-image-for-ci-purposes--créer-une-image-à-des-fins-dintégration-continue">Création du pipeline « Build Image For CI Purposes » (Créer une image à des fins d&rsquo;intégration continue)
+</h2><p>L&rsquo;objectif était d&rsquo;exécuter le pipeline sur des déclencheurs qui tiendraient compte des modifications de fichiers indiquant que nous avions besoin d&rsquo;une nouvelle image Docker.</p>
+<h3 id="le-fichier-dockerfile">Le fichier <code>Dockerfile</code>
+</h3><p>Tout d&rsquo;abord, nous avions besoin d&rsquo;un fichier <code>Dockerfile</code> distinct du fichier <code>Dockerfile</code> utilisé pour créer l&rsquo;image de l&rsquo;application. Ceci afin d&rsquo;éviter de perturber le pipeline existant. Cependant, nous avons conservé presque tout le contenu.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="c"># Ce fichier Docker est utilisé pour optimiser le processus d&#39;intégration continue (CI).</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="c"># Il utilise la base que nous utilisons dans le pipeline « Créer une image pour le déploiement ».</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="c"># Cela rend Python cohérent.</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="l">FROM python:3.11-slim</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="c"># Installez d&#39;abord les données relatives au fuseau horaire.</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="l">RUN apt-get update &amp;&amp; apt-get install -y tzdata &amp;&amp; rm -rf /var/lib/apt/lists/*</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="c"># Ensuite, définissez le fuseau horaire.</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="l">ENV TZ=Europe/Zurich</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="l">RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime &amp;&amp; echo $TZ &gt; /etc/timezone</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="c"># Définir le répertoire de travail dès le début afin que les chemins restants puissent être relatifs</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="l">WORKDIR /project-container</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="c"># Ajout du fichier d&#39;exigences au répertoire actuel, par exemple /app.</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="c"># Seulement ce fichier dans un premier temps afin de mettre en cache l&#39;étape d&#39;installation pip lorsque le code change.</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="l">COPY requirements.txt .</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="c"># Installer les dépendances</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="l">RUN pip install -r requirements.txt</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>Si vous avez lu <a href="/post/2024-08/deployer-une-api-rest-python-sur-microsoft-azure/">mon article initial sur le déploiement d&rsquo;une application Python</a>, vous remarquerez que j&rsquo;ai simplement supprimé tout le code spécifique à l&rsquo;application que nous déployons.</p>
+<h3 id="créer-le-nouveau-pipeline">Créer le nouveau pipeline
+</h3><p>Nous ajoutons ensuite la nouvelle définition du pipeline dans le dossier <code>.azure-pipelines</code>. Je vais vous expliquer étape par étape les ajouts que j’ai apportés au code YAML. Je suis parti de la section <em>Build Image For Deployment</em> (créer une image pour le déploiement). Pour le reste, veuillez vous reporter à mon article cité ci-dessus.</p>
+<p>L’objectif était de créer une image non seulement pour l’assurance qualité ou la production, mais aussi lorsque nous avions des changements de dépendances dans l’application afin de pouvoir exécuter de nouveaux tests unitaires avec les dernières dépendances.</p>
+<p>Voici les détails.</p>
+<p>Tout d’abord, nous ne déclenchons le pipeline que si le fichier <code>requirements.txt</code>, <code>/docker/Dockerfile.ci</code> ou <code>/.azure-pipelines/ap-build-ci-container.yml</code> est modifié. En fait, l’image ne change que lorsque j’ajoute une dépendance ou que je modifie le pipeline ou le fichier <code>Dockerfile</code>.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">Build_Image_For_CI_Purposes</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="nt">trigger</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">paths</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">include</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="c"># Voici les chemins absolus vers les fichiers</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="c"># à la racine du projet</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="s1">&#39;requirements.txt&#39;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="s1">&#39;/docker/Dockerfile.ci&#39;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="s1">&#39;/.azure-pipelines/ap-build-ci-container.yml&#39;</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>Ensuite, mettons à jour la variable <code>imageRepository</code> avec un nom distinct des images pour le déploiement. C’est là que nous stockerons les images utilisées à des fins d’intégration continue <strong>uniquement</strong>.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="l">variables</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">imageRepository</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;myapp-ci&#39;</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>Ensuite, nous devons spécifier qu’on utilise le nouveau fichier <code>Dockerfile</code>.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">variables</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">dockerfilePath</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;$(Build.SourcesDirectory)/docker/Dockerfile.ci&#39;</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>J’ai supprimé la variable <code>semantic-version</code>, car nous n’en avons pas besoin dans l’image Docker que nous configurons.</p>
+<p>C’est dans l’étape <em>Build and push</em> que nous trouvons les changements les plus importants.</p>
+<p>Tout d’abord, nous supprimons la version sémantique, qui n’est pas nécessaire ici, mais nous la conservons pour l’autre pipeline qui se charge de créer l’image que nous déployons en QA ou en production.</p>
+<p>Par conséquent, la tâche <em>Set version and image tags</em> est renommée <em>Set image tags</em> et le code exécuté devient :</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="w">            </span><span class="nt">displayName</span><span class="p">:</span><span class="w"> </span><span class="l">Set image tags</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">inputs</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">              </span><span class="nt">targetType</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;inline&#39;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">              </span><span class="nt">script</span><span class="p">:</span><span class="w"> </span><span class="p">|</span><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="sd">                if [ &#34;$(Build.SourceBranch)&#34; = &#34;refs/heads/develop&#34; ]; then
+</span></span></span><span class="line"><span class="cl"><span class="sd">                  # Update build number for develop branch
+</span></span></span><span class="line"><span class="cl"><span class="sd">                  echo &#34;##vso[task.setvariable variable=build;isOutput=true]$(Build.BuildId)&#34;
+</span></span></span><span class="line"><span class="cl"><span class="sd">                  echo &#34;##vso[task.setvariable variable=imageTags]ready-qa&#34;
+</span></span></span><span class="line"><span class="cl"><span class="sd">                  echo &#34;imageTag is &lt;ready-qa&gt;&#34;
+</span></span></span><span class="line"><span class="cl"><span class="sd">                elif [ &#34;$(Build.SourceBranch)&#34; = &#34;refs/heads/main&#34; ]; then
+</span></span></span><span class="line"><span class="cl"><span class="sd">                  echo &#34;##vso[task.setvariable variable=imageTags]$(Build.BuildId),latest&#34;
+</span></span></span><span class="line"><span class="cl"><span class="sd">                  echo &#34;imageTag is &lt;latest&gt;&#34;
+</span></span></span><span class="line"><span class="cl"><span class="sd">                else
+</span></span></span><span class="line"><span class="cl"><span class="sd">                  echo &#34;Build.SourceBranchName = &lt;$(Build.SourceBranchName)&gt;&#34;
+</span></span></span><span class="line"><span class="cl"><span class="sd">                  echo &#34;Build.SourceBranch = &lt;$(Build.SourceBranch)&gt;&#34;
+</span></span></span><span class="line"><span class="cl"><span class="sd">                  # IMPORTANT:
+</span></span></span><span class="line"><span class="cl"><span class="sd">                  # If branch naming convention changes, make sure to update ap-validate-pr-with-custom-image.yml too
+</span></span></span><span class="line"><span class="cl"><span class="sd">                  echo &#34;##vso[task.setvariable variable=imageTags]branch-$(echo &#34;$(Build.SourceBranch)&#34; | tr &#39;/#&#39; &#39;-&#39;)&#34;
+</span></span></span><span class="line"><span class="cl"><span class="sd">                  echo &#34;imageTag is &lt;branch-$(Build.SourceBranch)&gt;&#34; 
+</span></span></span><span class="line"><span class="cl"><span class="sd">                fi</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">setImageTagsStep</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>En gros,</p>
+<ul>
+<li>Si <code>$(Build.SourceBranch)</code> est <code>develop</code>, alors la balise d’image est <code>ready-qa</code>.</li>
+<li>Si <code>$(Build.SourceBranch)</code> est <code>main</code>, alors la balise d’image est <code>latest</code>.</li>
+<li>Sinon, nous sommes sur une branche de développement et la balise d’image est donc <code>branch-[nom de la branche]</code>.</li>
+</ul>
+<p>Rappel : le pipeline s’exécute <strong>UNIQUEMENT</strong> si le déclencheur trouve une modification sur les fichiers listés dans le déclencheur. Une nouvelle fonctionnalité, qui ne déclenche pas le pipeline lorsque vous poussez la branche associée vers le référentiel distant, ne déclenchera pas de mise à jour de l’image lorsque vous fusionnerez la fonctionnalité vers <code>develop</code> ou <code>main</code>.</p>
+<p>La dernière modification apparaît dans la tâche de génération, où nous supprimons les arguments passés à la commande de génération contenant la valeur de version sémantique.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="w">              </span><span class="nt">arguments</span><span class="p">:</span><span class="w"> </span>--<span class="l">build-arg VERSION=$(setVersionStep.fullVersion)</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>Enfin, nous conservons la tâche <em>Push image to container registry</em> telle quelle.</p>
+<h2 id="tester-le-nouveau-pipeline">Tester le nouveau pipeline
+</h2><p>Tout d’abord, vous devrez peut-être fusionner dans <code>develop</code> et <code>main</code> pour ajouter le pipeline à Azure DevOps. Et, si Azure DevOps le détecte pas automatiquement, suivez ces étapes :</p>
+<ul>
+<li>Sélectionnez deux fois l’onglet « Pipelines » et cliquez sur « Nouveau pipeline ».</li>
+<li>Sélectionnez <em>Azure Repos Git</em>.</li>
+<li>Sélectionnez le référentiel qui contient votre fichier YAML.</li>
+<li>Sélectionnez <em>Fichier YAML Azure Pipelines existant</em>.</li>
+<li>Sélectionnez le fichier dans la branche « develop ».</li>
+<li>Enregistrez pour terminer.</li>
+</ul>
+<div class="jli-notice jli-notice-note"  id="" >
+    <p class="jli-notice-title"></p><p>J’écris cet article un an après les faits, et même si j’ai pris beaucoup de notes, j’ai un doute sur le point ci-dessus.</p></div>
+<p>Ensuite, pour le tester, vous devez pousser une nouvelle branche vers le référentiel avec une modification dans <code>requirements.txt</code> (un espace supplémentaire ou un commentaire suffira). Cela devrait déclencher le nouveau pipeline.</p>
+<p>Une fois la compilation terminée, vous devriez voir un nouveau référentiel <code>myapp-ci</code> dans le <em>Azure Container Registry (ACR)</em> avec une image taguée <code>branch-[nom de votre branche]</code>.</p>
+<h2 id="mettre-à-jour-le-pipeline-pr-validation">Mettre à jour le pipeline <em>PR Validation</em>
+</h2><p>Maintenant que nous disposons d’une image Docker, nous pouvons mettre à jour le pipeline <em>PR Validation</em> afin d’utiliser l’image appropriée du référentiel ACR <code>myapp-ci</code>.</p>
+<p>Je vous explique tout en détail dans ce qui suit.</p>
+<h3 id="nouvelles-variables">Nouvelles variables
+</h3><p>Commencez par ajouter de nouvelles variables qui permettent d’extraire l’image cible :</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">dockerRegistryServiceConnection</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;[uid of dockerRegistryServiceConnection in DevOps]&#39;</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>devient :</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="w">  </span><span class="c"># ARM = Azure Resource Manager type of service connection</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">armAppRegistration</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># Azure DevOps identifier, not a Azure Resource identifier</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;[app registration Id]&#39;</span><span class="w"> 
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>Cela est nécessaire dans la première étape du pipeline de mise à jour <em>PR Validation</em>. En effet, une étape supplémentaire est nécessaire pour lire le registre d’image via l’interface CLI Azure.</p>
+<h3 id="nouvelle-étape">Nouvelle étape
+</h3><p>Nous avons besoin d’une nouvelle étape contenant une étape de type <em>script <code>AzureCLI</code></em> qui nous aidera à assigner la variable contenant la balise d’image à utiliser.</p>
+<p>Le script est simplement un script <code>bash</code> qui analyse la sortie de la requête de l’interface CLI Azure.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">stages</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">stage</span><span class="p">:</span><span class="w"> </span><span class="l">PreTestsSteps</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">displayName</span><span class="p">:</span><span class="w"> </span><span class="l">Pre-Tests Steps</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">jobs</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">job</span><span class="p">:</span><span class="w"> </span><span class="l">SetContainerTag</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">displayName</span><span class="p">:</span><span class="w"> </span><span class="l">Set the container tag to use in unit tests</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">pool</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">vmImage</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;ubuntu-latest&#39;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">steps</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span>- <span class="nt">task</span><span class="p">:</span><span class="w"> </span><span class="l">AzureCLI@2</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">inputs</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">              </span><span class="nt">azureSubscription</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;$(armAppRegistration)&#39;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">              </span><span class="nt">scriptType</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;bash&#39;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">              </span><span class="nt">scriptLocation</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;inlineScript&#39;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">              </span><span class="nt">inlineScript</span><span class="p">:</span><span class="w"> </span><span class="p">|</span><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="sd">                #!/bin/bash
+</span></span></span><span class="line"><span class="cl"><span class="sd">                echo &#34;System.PullRequest.SourceBranch = &lt;$(System.PullRequest.SourceBranch)&gt;&#34;
+</span></span></span><span class="line"><span class="cl"><span class="sd">                echo &#34;Normalize the TAG_NAME...&#34;
+</span></span></span><span class="line"><span class="cl"><span class="sd">                # IMPORTANT:
+</span></span></span><span class="line"><span class="cl"><span class="sd">                # If branch naming convention changes, make sure to update ap-build-ci-container.yml as well
+</span></span></span><span class="line"><span class="cl"><span class="sd">                TAG_NAME=&#34;branch-$(echo &#34;$(System.PullRequest.SourceBranch)&#34; | tr &#39;/#&#39; &#39;-&#39;)&#34;
+</span></span></span><span class="line"><span class="cl"><span class="sd">                echo $TAG_NAME
+</span></span></span><span class="line"><span class="cl"><span class="sd">                REGISTRY_NAME=&#34;$(containerRegistry)&#34;
+</span></span></span><span class="line"><span class="cl"><span class="sd">                REPOSITORY_NAME=&#34;$(imageRepository)&#34;
+</span></span></span><span class="line"><span class="cl"><span class="sd">                
+</span></span></span><span class="line"><span class="cl"><span class="sd">                if az acr repository show-tags --name $REGISTRY_NAME --repository $REPOSITORY_NAME --output tsv | grep -q &#34;^$TAG_NAME$&#34;; then
+</span></span></span><span class="line"><span class="cl"><span class="sd">                  echo &#34;Tag $TAG_NAME exists in repository $REPOSITORY_NAME&#34;
+</span></span></span><span class="line"><span class="cl"><span class="sd">                  echo &#34;##vso[task.setvariable variable=imageTag;isOutput=true]$TAG_NAME&#34;
+</span></span></span><span class="line"><span class="cl"><span class="sd">                else
+</span></span></span><span class="line"><span class="cl"><span class="sd">                  echo &#34;Tag $TAG_NAME does not exist in repository $REPOSITORY_NAME&#34;
+</span></span></span><span class="line"><span class="cl"><span class="sd">                  echo &#34;##vso[task.setvariable variable=imageTag;isOutput=true]ready-qa&#34;              
+</span></span></span><span class="line"><span class="cl"><span class="sd">                fi</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">setImageTag</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">displayName</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;Set image tag&#39;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">condition</span><span class="p">:</span><span class="w"> </span><span class="l">always()</span><span class="w"> </span><span class="c"># Continue even if it fails</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>Ensuite, nous utilisons la variable <code>imageTag</code> dans l’étape suivante :</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="w">    </span><span class="nt">jobs</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">job</span><span class="p">:</span><span class="w"> </span><span class="l">ExecuteUnitTests</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">displayName</span><span class="p">:</span><span class="w"> </span><span class="l">Execute Unit Tests</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">pool</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">vmImage</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;ubuntu-latest&#39;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c"># Initialiser le conteneur à utiliser dans la tâche à partir de l&#39;étape précédente.</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">container</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;$(containerRegistry)/$(imageRepository):$(imageTag)&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">endpoint</span><span class="p">:</span><span class="w"> </span><span class="l">mycontainerregistry.azurecr.io</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c"># Exécutez ensuite les étapes du travail (rien ne change à partir de ce stade).</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">steps</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c"># ...</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="tester-le-pipeline-mis-à-jour">Tester le pipeline mis à jour
+</h2><p>Pour tester, vous devrez peut-être d’abord fusionner avec <code>develop</code> et vérifier que l’image appropriée est correctement extraite et que les tests unitaires s’exécutent sans problème.</p>
+<p>Essayez avec et sans modification des trois fichiers marqués comme déclencheurs pour valider l’ensemble du processus.</p>
+<h2 id="conclusion">Conclusion
+</h2><p>Désormais, votre processus de requêtes de tirage gère à la fois les développements qui modifient les dépendances ou la CI, et ceux qui ne le font pas.</p>
+<p>Grâce à cela, vous n’avez plus à vous soucier d’exécuter des tests unitaires sur une image Docker obsolète ni à penser à préparer l’image avant cela.</p>
+<p>En prime, vous ne créez de nouvelles images Docker à jour que lorsque <em>cela est nécessaire</em>. La prochaine étape logique serait de <a href="/post/2025-03/retention-personnalisee-d-images-docker-sur-azure/">mettre à jour le compte d’automatisation</a> qui nettoie le référentiel des images obsolètes. En êtes-vous capable ? J’en suis sûr !</p>
+<div class="jli-notice jli-notice-tip"  id="Suivez-moi !" >
+    <p class="jli-notice-title">Suivez-moi !</p><p>Merci d’avoir lu cet article. Assurez-vous de <a href="https://x.com/LitzlerJeremie">me suivre sur X</a>, de <a href="https://iamjeremie.substack.com/">vous abonner à ma publication Substack</a> et d’ajouter mon blog à vos favoris pour ne pas manquer les prochains articles.</p></div>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/azure-devops/">Azure DevOps</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licencié sous CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">Contenus liés</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="has-image">
+    <a href="/post/2026-02/semantic-versionning-avec-azure-pipeline-et-docker/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="/post/2026-02/semantic-versionning-avec-azure-pipeline-et-docker/2024-07-24-logos-ms-azure-and-python.3ce3de4fab0f146320cf5a6ae6c0b154_hu_7e5a30add8fadce.jpeg" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy"
+                        alt="Logos de Microsoft Azure et Python" 
+						title="Logos de Microsoft Azure et Python"
+                        
+                        data-hash="md5-POPeT6sPFGMgz1pq5sCxVA==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Versionnage sémantique avec Azure Pipelines et Docker</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/post/2025-06/secrets-expires-sur-les-connexions-de-service-azure-devops/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="/post/2025-06/secrets-expires-sur-les-connexions-de-service-azure-devops/2025-06-16-expired-secrets-on-azure-devops.f1849d733bac633266befbcf03389260_hu_19e4c184dac9a54c.jpg" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy"
+                        alt="Secrets expirés sur Azure DevOps" 
+						title="Secrets expirés sur Azure DevOps"
+                        
+                        data-hash="md5-8YSdczusYzJmvvvPAziSYA==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Secrets expirés sur les services de connexion Azure DevOps</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/post/2026-02/semantic-release-with-github/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="/post/2026-02/semantic-release-with-github/2026-02-09-an-orange-wall-with-shelves-at-various-level.a15ac72ebcbb8158f55750a837a4b16c_hu_984fab618791b3c7.jpg" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy"
+                        alt="Un mur orange avec des étagères à différents niveaux" 
+						title="Un mur orange avec des étagères à différents niveaux"
+                        
+                        data-hash="md5-oVrHLry7gVj1V1CoN6SxbA==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Utilisation de Semantic Release sur GitHub</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/post/2026-01/a-timecostlogger-in-csharp/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="/post/2026-01/a-timecostlogger-in-csharp/2026-01-26-a-stopwatch.6f325fdf36351cfa2739d1a83fe259f7_hu_3610796f061df3f.jpg" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy"
+                        alt="Un chronomètre" 
+						title="Un chronomètre"
+                        
+                        data-hash="md5-bzJf3zY1HPonOdGoP&#43;JZ9w==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Un enregistreur de temps passé en C#</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/post/2026-01/rebase-vs-merge-avec-git/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="/post/2026-01/rebase-vs-merge-avec-git/2026-01-12-a-forest-with-trees.0a1a14d8f2e0f04535e3db823693c292_hu_642d2a988ac1b335.jpg" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy"
+                        alt="Une forêt avec des arbres" 
+						title="Une forêt avec des arbres"
+                        
+                        data-hash="md5-ChoU2PLg8EU149uCNpPCkg==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Rebase vs. Merge avec Git</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2026 Jérémie Litzler
+    </section>
+    
+    <section class="powerby">
+        
+            License GPLv3 | <a href="https://jeremielitzler.fr/page/mentions-legales/" title="Lire les mentions légales">Mentions légales</a> <br/>
+        Généré avec <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Thème <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.34.1">Stack</a></b> conçu par <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="/js/photoswipe.4.1.3.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="/js/photoswipe-ui-default.4.1.3.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="/css/photoswipe-default-skin.4.1.3.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="/css/photoswipe.4.1.3.min.css"crossorigin="anonymous"
+            >
+    
+
+
+
+
+            </main>
+        </div>
+        <script 
+                src="/js/vibrant.3.1.6.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.c922af694cc257bf1ecc41c0dd7b0430f9114ec280ccf67cd2c6ad55f5316c4e.js" defer></script>
+
+
+
+
+    <script data-collect-dnt="true" async defer src="https://scripts.simpleanalyticscdn.com/latest.js"></script>
+<noscript><img aria-hidden="true" src="https://queue.simpleanalyticscdn.com/hello.gif" alt="One pixel gif image is used to collect page views. Visit https://docs.simpleanalytics.com/without-javascript for more details." referrerpolicy="no-referrer-when-downgrade" /></noscript></body>
+</html>
