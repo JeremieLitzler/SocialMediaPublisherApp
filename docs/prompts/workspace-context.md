@@ -12,6 +12,7 @@
 - [x] Task-004: Setup Vitest and write tests for `useArticleState.ts`
 - [x] Task-005: Add test step to CI workflow
 - [x] Task-006: Implement `src/utils/htmlExtractor.ts`
+- [x] Task-007: Implement `src/utils/utm.ts`
 
 ## In Progress
 
@@ -19,7 +20,6 @@
 
 ## Up Next
 
-- [ ] Implement `src/utils/utm.ts`
 - [ ] Implement URL input + extraction UI
 
 ## Open Decisions
