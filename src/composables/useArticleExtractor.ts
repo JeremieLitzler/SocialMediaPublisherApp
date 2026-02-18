@@ -21,21 +21,24 @@ import {
 import type { Article } from '@/types/article'
 
 /**
- * Fetch HTML content from a URL
+ * Fetch HTML content from a URL via Netlify Function proxy
  */
 async function fetchHTML(url: string): Promise<string> {
-  const response = await fetch(url, {
-    mode: 'cors',
-    headers: {
-      Accept: 'text/html',
-    },
-  })
+  const functionUrl = `/.netlify/functions/fetch-article?url=${encodeURIComponent(url)}`
+
+  const response = await fetch(functionUrl)
 
   if (!response.ok) {
     throw new Error(`Failed to fetch article: ${response.status} ${response.statusText}`)
   }
 
-  return response.text()
+  const data = await response.json()
+
+  if (!data.success) {
+    throw new Error(data.error || 'Failed to fetch article')
+  }
+
+  return data.html
 }
 
 /**
