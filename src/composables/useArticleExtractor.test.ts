@@ -35,10 +35,11 @@ describe('useArticleExtractor', () => {
       // vi.stubGlobal replaces a global variable (like fetch) with a mock implementation
       // This is the recommended way to mock globals in Vitest, avoiding TypeScript issues
       // Documentation: https://vitest.dev/api/vi.html#vi-stubglobal
+      // Mock Netlify Function response format
       vi.stubGlobal('fetch', vi.fn(() =>
         Promise.resolve({
           ok: true,
-          text: () => Promise.resolve(englishWithIntroHTML),
+          json: () => Promise.resolve({ success: true, html: englishWithIntroHTML }),
         })
       ))
 
@@ -54,10 +55,11 @@ describe('useArticleExtractor', () => {
       const { extractionState } = useArticleState()
       const { extractArticle } = useArticleExtractor()
 
+      // Mock Netlify Function response format
       vi.stubGlobal('fetch', vi.fn(() =>
         Promise.resolve({
           ok: true,
-          text: () => Promise.resolve(englishWithIntroHTML),
+          json: () => Promise.resolve({ success: true, html: englishWithIntroHTML }),
         })
       ))
 
@@ -75,10 +77,11 @@ describe('useArticleExtractor', () => {
       const { extractionState } = useArticleState()
       const { extractArticle } = useArticleExtractor()
 
+      // Mock Netlify Function response format
       vi.stubGlobal('fetch', vi.fn(() =>
         Promise.resolve({
           ok: true,
-          text: () => Promise.resolve(frenchWithIntroHTML),
+          json: () => Promise.resolve({ success: true, html: frenchWithIntroHTML }),
         })
       ))
 
@@ -99,10 +102,11 @@ describe('useArticleExtractor', () => {
       // Remove all h2 tags from the HTML to simulate missing introduction
       const htmlWithoutH2 = englishWithIntroHTML.replace(/<h2[^>]*>.*?<\/h2>/gs, '')
 
+      // Mock Netlify Function response format
       vi.stubGlobal('fetch', vi.fn(() =>
         Promise.resolve({
           ok: true,
-          text: () => Promise.resolve(htmlWithoutH2),
+          json: () => Promise.resolve({ success: true, html: htmlWithoutH2 }),
         })
       ))
 
@@ -117,10 +121,11 @@ describe('useArticleExtractor', () => {
       const { extractionState } = useArticleState()
       const { extractArticle } = useArticleExtractor()
 
+      // Mock Netlify Function response format
       vi.stubGlobal('fetch', vi.fn(() =>
         Promise.resolve({
           ok: true,
-          text: () => Promise.resolve(englishNoCreditHTML),
+          json: () => Promise.resolve({ success: true, html: englishNoCreditHTML }),
         })
       ))
 
@@ -192,10 +197,11 @@ describe('useArticleExtractor', () => {
         manualIntroduction: 'some text',
       }
 
+      // Mock Netlify Function response format
       vi.stubGlobal('fetch', vi.fn(() =>
         Promise.resolve({
           ok: true,
-          text: () => Promise.resolve(englishWithIntroHTML),
+          json: () => Promise.resolve({ success: true, html: englishWithIntroHTML }),
         })
       ))
 
@@ -209,10 +215,11 @@ describe('useArticleExtractor', () => {
       const { extractionState } = useArticleState()
       const { extractArticle } = useArticleExtractor()
 
+      // Mock Netlify Function response format
       vi.stubGlobal('fetch', vi.fn(() =>
         Promise.resolve({
           ok: true,
-          text: () => Promise.resolve(englishWithIntroHTML),
+          json: () => Promise.resolve({ success: true, html: englishWithIntroHTML }),
         })
       ))
 

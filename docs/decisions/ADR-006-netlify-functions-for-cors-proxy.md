@@ -1,8 +1,10 @@
 # ADR-006: Use Netlify Functions as Backend Proxy for CORS-Free HTML Fetching
 
-**Status:** Proposed
+**Status:** Accepted
 
 **Date:** 2026-02-13
+
+**Implemented:** 2026-02-18
 
 **Related:** [Task-009](../prompts/tasks/task-009-backend-proxy-for-cors.md)
 
@@ -91,11 +93,11 @@ Refer to [Task-009 § Implementation Tasks](../prompts/tasks/task-009-backend-pr
 
 ## Acceptance Criteria
 
-- [ ] User can fetch HTML from blog URLs without CORS errors
-- [ ] Only whitelisted domains allowed
-- [ ] All existing tests pass
-- [ ] Works locally with `netlify dev`
-- [ ] Works in production deployment
+- [x] User can fetch HTML from blog URLs without CORS errors
+- [x] Only whitelisted domains allowed
+- [x] All existing tests pass
+- [x] Works locally with `netlify dev`
+- [ ] Works in production deployment (requires deployment)
 
 ## References
 
