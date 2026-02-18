@@ -143,7 +143,8 @@ Language is determined by `article.blog` (`'english'` → EN snippet, `'french'`
 
 - Substack page (separate task)
 - User-editable snippet configuration
-- Actual Medium API integration
+- Actual [Medium API integration is no longer available](https://help.medium.com/hc/en-us/articles/213480228-API-Importing) (checked on February 18, 2026).
+- [Import a post to Medium](https://help.medium.com/hc/en-us/articles/214550207-Importing-a-post-to-Medium) as limited support to my blogs.
 
 ## After Completion
 
