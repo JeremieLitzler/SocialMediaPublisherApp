@@ -17,7 +17,7 @@ Read before starting:
 
 ## Task
 
-Implement X (Twitter) content generation: split the article introduction into ≤280-character chunks, display each chunk with an individual copy button, and navigate the user to the `/x` page after successful extraction.
+Implement X (Twitter) content generation: split the article introduction into chunks of 280 characters max, display each chunk with an individual copy button, and navigate the user to the `/x` page after successful extraction.
 
 This task also establishes shared infrastructure (CopyButton component, HTML-to-text helper) reused by all subsequent platform tasks.
 

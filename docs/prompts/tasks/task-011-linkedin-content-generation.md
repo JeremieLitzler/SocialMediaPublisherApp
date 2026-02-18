@@ -39,7 +39,7 @@ Implement LinkedIn content generation: compose the article introduction as plain
 - [ ] `src/utils/linkedInContentGenerator.ts` created
 - [ ] Exported function: `generateLinkedInContent(article: Article): LinkedInContent`
 - [ ] Algorithm:
-  1. Convert `article.introduction` HTML to plain text using `htmlToText()`
+  1. Convert `article.introduction` HTML to plain text using `htmlToText()`. **Important:** preserve the paragraph from source article.
   2. Generate UTM link: `generateUTMLink(article.url, 'LinkedIn')`
   3. Compose `body` string:
      ```
