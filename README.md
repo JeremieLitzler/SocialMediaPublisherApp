@@ -96,6 +96,33 @@ nb
 npm run lint
 ```
 
+### Local Development with Netlify Functions
+
+This app uses [Netlify Functions](https://docs.netlify.com/functions/overview/) as a backend proxy to fetch blog article HTML server-side (bypassing CORS restrictions). To develop locally with functions enabled:
+
+```sh
+netlify dev
+```
+
+This runs both the Vue SPA and the Netlify Functions together. The app will be available at `http://localhost:8888` and functions at `http://localhost:8888/.netlify/functions/*`.
+
+**Prerequisites:**
+
+```sh
+npm install -g netlify-cli
+```
+
+**Function endpoints:**
+
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/.netlify/functions/fetch-article?url=<encoded-url>` | GET | Proxies HTML fetching from whitelisted blog domains |
+
+**Allowed domains (whitelist):**
+
+- `iamjeremie.me`
+- `jeremielitzler.fr`
+
 ## Semantic Release setup
 
 To use Semantic Release, you need to follow [this complete guide](https://gonzalohirsch.com/blog/semantic-release-and-branch-protection-rules/) to create your GitHub App installed on your account only to give it force-push rights when `semantic-release` workflow runs.

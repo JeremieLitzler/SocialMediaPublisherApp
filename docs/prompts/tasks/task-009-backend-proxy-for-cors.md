@@ -335,19 +335,19 @@ async function fetchHTML(url: string): Promise<string> {
 ## Implementation Tasks
 
 ### Step 1: Setup Netlify CLI for local development
-- [ ] Install Netlify CLI globally: `npm install -g netlify-cli`
-- [ ] Test local dev server: `netlify dev`
+- [x] Install Netlify CLI globally: `npm install -g netlify-cli`
+- [x] Test local dev server: `netlify dev`
   - SPA runs on `http://localhost:8888`
   - Functions auto-available at `/.netlify/functions/*`
-- [ ] Install Netlify Functions types: `npm install -D @netlify/functions`
+- [x] Install Netlify Functions types: `npm install -D @netlify/functions`
 
 ### Step 2: Create Netlify Function
-- [ ] Create folder structure: `netlify/functions/`
-- [ ] Create `netlify/functions/fetch-article.ts`
-- [ ] Implement URL validation against whitelist (iamjeremie.me, jeremielitzler.fr)
-- [ ] Implement HTML fetching with error handling
-- [ ] Add TypeScript types from `@netlify/functions`
-- [ ] Return proper JSON response with status codes
+- [x] Create folder structure: `netlify/functions/`
+- [x] Create `netlify/functions/fetch-article.ts`
+- [x] Implement URL validation against whitelist (iamjeremie.me, jeremielitzler.fr)
+- [x] Implement HTML fetching with error handling
+- [x] Add TypeScript types from `@netlify/functions`
+- [x] Return proper JSON response with status codes
 
 **Function Template:**
 ```typescript
@@ -361,11 +361,11 @@ export const handler: Handler = async (event: HandlerEvent) => {
 ```
 
 ### Step 3: Update SPA to use Netlify Function
-- [ ] Modify `src/composables/useArticleExtractor.ts` → `fetchHTML()` function
-- [ ] Change from direct fetch to `/.netlify/functions/fetch-article?url=...`
-- [ ] Update response parsing (now returns JSON with `{ success, html }`)
-- [ ] Update error handling for proxy errors
-- [ ] Test with both English and French blog URLs locally
+- [x] Modify `src/composables/useArticleExtractor.ts` → `fetchHTML()` function
+- [x] Change from direct fetch to `/.netlify/functions/fetch-article?url=...`
+- [x] Update response parsing (now returns JSON with `{ success, html }`)
+- [x] Update error handling for proxy errors
+- [x] Test with both English and French blog URLs locally
 
 **Updated fetchHTML:**
 ```typescript
@@ -389,18 +389,18 @@ async function fetchHTML(url: string): Promise<string> {
 ```
 
 ### Step 4: Testing
-- [ ] Test locally with `netlify dev`
-- [ ] Manual testing with real blog URLs
-- [ ] Test error cases:
-  - Invalid URL format
-  - Disallowed domain
-  - 404 from blog server
-  - Network timeout
-- [ ] Verify all existing tests still pass (mock the new endpoint)
-- [ ] Update `useArticleExtractor.test.ts` to mock Netlify function response
+- [x] Test locally with `netlify dev`
+- [x] Manual testing with real blog URLs
+- [x] Test error cases:
+  - [x] 400 Invalid URL format with `www.puzzlout.com`
+  - [x] 400 Disallowed domain with `https://www.puzzlout.com`
+  - [x] 404 from blog server with `https://iamjeremie.me/post/2026-02/doesnt-exist`
+  - [x] 500 Network timeout without Internet connection
+- [x] Verify all existing tests still pass (mock the new endpoint)
+- [x] Update `useArticleExtractor.test.ts` to mock Netlify function response
 
 ### Step 5: Deployment
-- [ ] Commit changes to git
+- [x] Commit changes to git
 - [ ] Push to GitHub
 - [ ] Netlify auto-deploys (if connected to repo)
 - [ ] Verify function appears in Netlify dashboard: Functions tab
@@ -408,7 +408,7 @@ async function fetchHTML(url: string): Promise<string> {
 - [ ] Monitor function logs in Netlify dashboard
 
 ### Step 6: Configuration (Optional)
-- [ ] Create `netlify.toml` if custom config needed:
+- [x] Create `netlify.toml` if custom config needed:
 ```toml
 [build]
   command = "npm run build"
@@ -420,12 +420,12 @@ async function fetchHTML(url: string): Promise<string> {
 ```
 
 ### Step 7: Documentation
-- [ ] Update README with:
+- [x] Update README with:
   - Local development: `netlify dev`
   - Netlify Functions setup
   - Function endpoint documentation
-- [ ] Add ADR for architecture decision (serverless functions)
-- [ ] Document allowed domains whitelist
+- [x] Add ADR for architecture decision (serverless functions)
+- [x] Document allowed domains whitelist
 
 ## Alternative: Quick Test with CORS Proxy Service
 
@@ -461,13 +461,13 @@ async function fetchHTML(url: string): Promise<string> {
 
 ## Acceptance Criteria
 
-- [ ] User can fetch HTML from blog URLs without CORS errors
-- [ ] Only whitelisted domains are allowed
-- [ ] Error messages are user-friendly
-- [ ] All existing tests pass
-- [ ] Local development works with `vercel dev` or similar
+- [x] User can fetch HTML from blog URLs without CORS errors
+- [x] Only whitelisted domains are allowed
+- [x] Error messages are user-friendly
+- [x] All existing tests pass
+- [x] Local development works with `netlify dev`
 - [ ] Production deployment works
-- [ ] Architecture decision documented in ADR
+- [x] Architecture decision documented in ADR
 
 ## Estimated Effort
 
