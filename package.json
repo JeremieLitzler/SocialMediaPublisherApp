@@ -28,7 +28,7 @@
     "tailwindcss-animate": "^1.0.7",
     "uuid": "^13.0.0",
     "vue": "^3.5.26",
-    "vue-router": "^4.5.1"
+    "vue-router": "^5.0.2"
   },
   "devDependencies": {
     "@netlify/functions": "^5.1.2",
