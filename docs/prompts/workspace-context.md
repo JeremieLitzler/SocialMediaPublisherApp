@@ -2,7 +2,7 @@
 
 ## Current Phase
 
-✅ Setup — codebase cleanup (TR-1) completed
+🔄 Content generation — platform-specific content generators
 
 ## Completed
 
@@ -13,6 +13,8 @@
 - [x] Task-005: Add test step to CI workflow
 - [x] Task-006: Implement `src/utils/htmlExtractor.ts`
 - [x] Task-007: Implement `src/utils/utm.ts`
+- [x] Task-008: Article extraction composable + ArticleInput / ManualIntroduction UI
+- [x] Task-009: Netlify Functions backend proxy for CORS-free HTML fetching
 
 ## In Progress
 
@@ -20,7 +22,10 @@
 
 ## Up Next
 
-- [ ] Implement URL input + extraction UI
+- [ ] Task-010: X (Twitter) content generation
+- [ ] Task-011: LinkedIn content generation
+- [ ] Task-012: Medium content generation
+- [ ] Task-013: Substack content generation
 
 ## Open Decisions
 
@@ -39,4 +44,4 @@ See [ADR Index](../decisions/README.md)
 - This is a bilingual app (EN/FR blogs) — always consider both languages
 - Medium does NOT accept full HTML paste — image must be handled separately
 - Substack DOES accept full HTML paste — image included in bodyHtml
-- No backend — all extraction happens client-side via fetch + DOM parsing
+- Backend proxy: HTML fetching goes via Netlify Function (`/.netlify/functions/fetch-article`), not direct client-side fetch — see ADR-006
