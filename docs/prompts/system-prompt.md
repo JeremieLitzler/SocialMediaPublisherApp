@@ -36,6 +36,8 @@ Read these when relevant to the task:
 - Utility functions in `src/utils/` — pure functions, no Vue dependencies
 - Configurable text snippets in `src/config/snippets.ts`
 - Use `useClipboard` from `@vueuse/core` for all clipboard operations
+- HTML fetching goes through the Netlify Function proxy (`/.netlify/functions/fetch-article`) — do NOT fetch blog URLs directly from the browser (see ADR-006)
+- Configurable text snippets (Medium "why" text, Substack share block) live in `src/config/snippets.ts` — never hardcode them in generators
 - Use singleton composable pattern for shared state (see ADR-002)
 - No Pinia — it has been removed (see ADR-002)
 
