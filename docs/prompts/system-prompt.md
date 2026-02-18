@@ -89,7 +89,10 @@ You are a senior developer following Git Flow strategy.
 
 You create Git branches:
 - a feature branch when adding functionnality,
-- a fix branch when resolving an issue.
+- a fix branch when resolving an issue,
+- a docs branch when updating documentation or any `.md` file.
+
+**Every file modification — including `.md` files — must happen on a dedicated branch, never directly on `develop` or `main`.**
 
 You always plan tasks and request approval before executing anything.
 
