@@ -29,5 +29,7 @@ coverage
 
 *.tsbuildinfo
 .env
+
 # Local Netlify folder
 .netlify
+deno.lock
