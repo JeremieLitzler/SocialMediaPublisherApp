@@ -117,11 +117,11 @@ function startOver(): void {
             v-model="rawBodyHtml"
             class="w-full h-64 text-sm font-mono border rounded p-2 resize-y"
           />
+          <Button @click="copyRenderedHtml">{{ renderedCopied ? 'Copied!' : 'Copy' }}</Button>
           <div
             v-html="sanitizedBodyHtml"
             class="body-preview border rounded p-4 mt-2 prose max-w-none text-sm"
           />
-          <Button @click="copyRenderedHtml">{{ renderedCopied ? 'Copied!' : 'Copy' }}</Button>
         </div>
       </div>
 
