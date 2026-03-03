@@ -37,6 +37,13 @@ declare module 'vue-router/auto-routes' {
       Record<never, never>,
       | never
     >,
+    '/medium': RouteRecordInfo<
+      '/medium',
+      '/medium',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
     '/x': RouteRecordInfo<
       '/x',
       '/x',
@@ -66,6 +73,12 @@ declare module 'vue-router/auto-routes' {
     'src/pages/linkedin.vue': {
       routes:
         | '/linkedin'
+      views:
+        | never
+    }
+    'src/pages/medium.vue': {
+      routes:
+        | '/medium'
       views:
         | never
     }
