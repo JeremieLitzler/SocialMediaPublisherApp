@@ -101,3 +101,20 @@ Once approved, create the PR using `gh pr create`.
 Use AskUserQuestion a second time to ask the user for approval to merge the PR. If the user does not approve, stop — the PR remains open for the user to merge manually.
 
 Once approved, run the merge command and return local repository to `develop branch`.
+
+## Bug Feedback Loop
+
+This loop activates when:
+- The versioning agent (any task) reports a bug it discovered and refused to fix.
+- The user reports a bug (e.g. CI failure on the PR, a test error, a runtime issue).
+
+### Steps
+
+1. Use AskUserQuestion to show the user the bug description and ask for approval to re-run the fix pipeline.
+   If the user does not approve, stop.
+
+2. Evaluate whether the bug implies a spec change:
+   - If yes: re-run Step 1 (specs), get human approval, re-run Step 2 (coding), re-run Step 3 (testing), then re-run Step 4 (versioning Tasks 4 and 5).
+   - If no (pure implementation or test fix): re-run Step 2 (coding) directly, then Step 3 (testing), then Step 4 (versioning Tasks 4 and 5).
+
+3. Each re-run counts toward MAX_RETRIES. If MAX_RETRIES is exceeded, stop and report to the user.
