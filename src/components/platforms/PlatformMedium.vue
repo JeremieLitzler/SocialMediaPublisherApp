@@ -35,33 +35,41 @@ function startOver(): void {
       <div class="fields space-y-4">
         <div class="field-row">
           <p class="font-semibold mb-1">Title</p>
-          <CopyButton :text="content.title" label="Copy title" />
+          <p class="text-sm mb-2">{{ content.title }}</p>
+          <CopyButton :text="content.title" label="Copy" />
         </div>
 
         <div class="field-row">
           <p class="font-semibold mb-1">Description</p>
-          <CopyButton :text="content.description" label="Copy description" />
+          <p class="text-sm mb-2">{{ content.description }}</p>
+          <CopyButton :text="content.description" label="Copy" />
         </div>
 
         <div class="field-row">
           <p class="font-semibold mb-1">Image alt text</p>
-          <CopyButton :text="content.imageAlt" label="Copy image alt" />
+          <p class="text-sm mb-2">{{ content.imageAlt }}</p>
+          <CopyButton :text="content.imageAlt" label="Copy" />
         </div>
 
         <div class="field-row">
           <p class="font-semibold mb-1">Image caption</p>
           <span v-if="!content.imageCaption" class="text-muted-foreground text-sm">None</span>
-          <CopyButton v-else :text="content.imageCaption" label="Copy caption" />
+          <template v-else>
+            <p class="text-sm mb-2">{{ content.imageCaption }}</p>
+            <CopyButton :text="content.imageCaption" label="Copy" />
+          </template>
         </div>
 
         <div class="field-row">
           <p class="font-semibold mb-1">Canonical URL</p>
-          <CopyButton :text="content.canonicalUrl" label="Copy canonical URL" />
+          <p class="text-sm mb-2">{{ content.canonicalUrl }}</p>
+          <CopyButton :text="content.canonicalUrl" label="Copy" />
         </div>
 
         <div class="field-row">
           <p class="font-semibold mb-1">Category</p>
-          <CopyButton :text="content.category" label="Copy category" />
+          <p class="text-sm mb-2">{{ content.category }}</p>
+          <CopyButton :text="content.category" label="Copy" />
         </div>
 
         <div class="field-row">
@@ -76,7 +84,7 @@ function startOver(): void {
           <textarea
             class="w-full h-64 text-sm font-mono border rounded p-2 resize-y"
           >{{ content.bodyHtml }}</textarea>
-          <CopyButton :text="content.bodyHtml" label="Copy body HTML" />
+          <CopyButton :text="content.bodyHtml" label="Copy" />
         </div>
       </div>
 
