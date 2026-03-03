@@ -28,8 +28,24 @@ const extractionState = ref<ExtractionState>({
  * extractionState.value.status = 'loading'
  * ```
  */
+/**
+ * Resets the singleton extraction state back to its initial values.
+ * Call this before navigating away (e.g. "Start over") so that index.vue
+ * renders the input form instead of a blank page.
+ */
+function resetState() {
+  extractionState.value = {
+    status: 'idle',
+    article: null,
+    error: null,
+    manualIntroduction: '',
+    selectedPlatform: null,
+  }
+}
+
 export function useArticleState() {
   return {
     extractionState,
+    resetState,
   }
 }
