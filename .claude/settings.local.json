@@ -1,14 +1,16 @@
 {
   "permissions": {
     "allow": [
-      "WebFetch(domain:deadlinkchecker-sample-website.netlify.app)",
-      "Bash(/e/Applications/Scoop/apps/python/current/python.exe -m unittest:*)",
+      "Bash(npm run test:*)",
+      "Bash(npm run build:*)",
+      "Bash(npm run lint:*)",
+      "Bash(npm run type-check:*)",
+      "Bash(npm run format:*)",
       "Bash(gh issue:*)",
       "Bash(git:*)",
       "Bash(gh pr:*)",
       "Bash(gh api:*)",
-      "Bash(powershell:*)",
-      "Bash(cd /e/Git/GitHub/deadlinkchecker && /e/Applications/Scoop/apps/python/current/python.exe -m pytest tests/ -v 2>&1)"
+      "Bash(powershell:*)"
     ]
   }
 }

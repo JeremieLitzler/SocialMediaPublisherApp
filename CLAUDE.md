@@ -110,41 +110,60 @@ shadcn-vue components live in `src/components/ui/`. These are copied (not npm-in
 
 ## Multi-Agent Pipeline
 
-**When the user provides a feature request or bug fix, act as the orchestrator:**
+**When the user provides a feature request, bug fix, or any change, act as the orchestrator:**
 
-1. Save the request to `.agents-output/0-user-requests/[timestamp-slug].md`.
+1. Save the request to `docs/prompts/tasks/task-[NNN]-[slug]/README.md`.
 2. Follow the pipeline in `.agents-brain/agent-0-orchestrator.md` step by step.
 
 The user never needs to run a command — just describe what they want and the pipeline starts.
 
+### Task folder structure
+
+All pipeline artifacts for a given task live in one folder:
+
+```
+docs/prompts/tasks/
+  task-[NNN]-[slug]/
+    README.md                    ← user request (input)
+    business-specifications.md   ← specs agent output
+    technical-specifications.md  ← coder agent output
+    test-results.md              ← tester agent output
+```
+
+`docs/prompts/tasks/` is a co-authored AI-human artifact space: humans provide the request, agents generate and validate the specs and implementation notes. This is distinct from `docs/specs/` (requirements) and `docs/decisions/` (ADRs), which are maintained by humans.
+
 ### Agents and their prompt files
 
-| Agent         | Prompt                      | Reads                                         | Writes                    |
-| ------------- | --------------------------- | --------------------------------------------- | ------------------------- |
-| Specification | `.agents-brain/agent-1-specs.md`  | `.agents-output/0-user-requests/[timestamp-slug].md`                                                                    | `.agents-output/1-business-specifications/[timestamp-slug].md`  |
-| Coder         | `.agents-brain/agent-2-coder.md`  | `.agents-output/1-business-specifications/[timestamp-slug].md`                                                          | `.agents-output/2-technical-specifications/[timestamp-slug].md` |
-| Tester        | `.agents-brain/agent-3-tester.md` | `.agents-output/1-business-specifications/[timestamp-slug].md`, `.agents-output/2-technical-specifications/[timestamp-slug].md` | `.agents-output/3-test-results/[timestamp-slug].md`        |
-| Versioning    | `.agents-brain/agent-4-git.md`    | `.agents-output/1-business-specifications/[timestamp-slug].md`, `.agents-output/3-test-results/[timestamp-slug].md`       | git history                                                    |
+| Agent         | Prompt                            | Reads                                                                             | Writes                                          |
+| ------------- | --------------------------------- | --------------------------------------------------------------------------------- | ----------------------------------------------- |
+| Specification | `.agents-brain/agent-1-specs.md`  | `[task-folder]/README.md`                                                         | `[task-folder]/business-specifications.md`      |
+| Coder         | `.agents-brain/agent-2-coder.md`  | `[task-folder]/business-specifications.md`                                        | `[task-folder]/technical-specifications.md`     |
+| Tester        | `.agents-brain/agent-3-tester.md` | `[task-folder]/business-specifications.md`, `[task-folder]/technical-specifications.md` | `[task-folder]/test-results.md`            |
+| Versioning    | `.agents-brain/agent-4-git.md`    | `[task-folder]/business-specifications.md`, `[task-folder]/test-results.md`       | git history                                     |
 
 ### Pipeline flow
 
 ```
-[0-user-requests/[timestamp-slug].md]
+[task-folder]/README.md
        ↓
 Versioning agent → branch
        ↓
-  Specs agent → 1-business-specifications/[timestamp-slug].md
-       ↓
+  Specs agent → business-specifications.md
+       ↓           ↑ ADR Required (human approves before proceeding)
 Versioning agent → commit specs
        ↓ ← human approval
-  Coder agent → 2-technical-specifications/[timestamp-slug].md
+  Coder agent → technical-specifications.md
        ↓           ↑ status: review specs (loops back)
-       ↓
+       ↓           ↑ ADR Required (human approves before committing)
 Versioning agent → commit code
        ↓ ← human approval
- Tester agent → 3-test-results/[timestamp-slug].md
+ Tester agent → test-results.md
        ↓           ↑ status: failed (loops back to coder)
 Versioning agent → commit tests + push
+       ↓ ← human approval (PR creation)
+  gh pr create
+       ↓ ← human approval (merge)
+  gh pr merge
 ```
 
-Human approval gates pause the pipeline after specs and after coding. The orchestrator retries failed loops up to 3 times before aborting.
+Human approval gates: after specs, after coding, before PR creation, and before merge. The orchestrator retries failed loops up to 3 times before aborting. Agents flag `### ADR Required` in their output files when a new architectural pattern is introduced; the orchestrator surfaces this to the human before proceeding.

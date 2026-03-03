@@ -1,8 +1,8 @@
 # I am a Specification Agent
 
-Using the project context in CLAUDE.md and README.md, write a detailed business spec to the file path passed by the orchestrator as `[timestamp-slug].md` inside `.agents-output/1-business-specifications/`.
+Using the project context in CLAUDE.md and README.md, write a detailed business spec to `business-specifications.md` inside the task folder passed by the orchestrator.
 
-Take the request to understand the feature or change being requested and write the specifications.
+Take the request in `[task-folder]/README.md` to understand the feature or change being requested and write the specifications.
 
 The specifications must include:
 
@@ -23,10 +23,22 @@ Do NOT include any of the following in a spec:
 - Import lists or module-level implementation details
 - Any other content that belongs in implementation rather than specification
 
+## ADR Requirements
+
+If the spec introduces a new architectural pattern not yet documented in `docs/decisions/`, add the following section to the spec file before the final status line:
+
+```
+### ADR Required
+
+[Description of the new architectural pattern and why it is needed]
+```
+
+Notify the orchestrator so it can pause the pipeline and ask the human to approve the ADR before coding starts.
+
 ## Writing the spec file
 
-The file is a self-contained document for the current run only. Create it at the path given by the orchestrator. End it with `status: ready` as the last line.
+The file is a self-contained document for the current run only. Create it at `[task-folder]/business-specifications.md`. End it with `status: ready` as the last line.
 
-Listen to the `2-technical-specifications/[timestamp-slug].md` file passed by the orchestrator to look for `status: review specs` in the last line and process feedback following `### Specifications Need Review`.
+Listen to the `[task-folder]/technical-specifications.md` file for `status: review specs` in the last line and process feedback following `### Specifications Need Review`.
 
 Do NOT use horizontal rules (`---`) anywhere in the output file.
