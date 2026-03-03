@@ -115,19 +115,19 @@ describe('htmlExtractor', () => {
   })
 
   describe('extractImageAlt', () => {
-    it('should extract image alt text from English article', () => {
+    it('should extract image alt text from English article via .article-header .article-image a img', () => {
       const imageAlt = extractImageAlt(englishWithIntroDoc)
       expect(imageAlt).toBeTruthy()
       expect(imageAlt.length).toBeGreaterThan(0)
     })
 
-    it('should extract image alt text from French article', () => {
+    it('should extract image alt text from French article via .article-header .article-image a img', () => {
       const imageAlt = extractImageAlt(frenchWithIntroDoc)
       expect(imageAlt).toBeTruthy()
       expect(imageAlt.length).toBeGreaterThan(0)
     })
 
-    it('should return empty string when image element is missing', () => {
+    it('should return empty string when .article-header .article-image a img is missing', () => {
       const emptyDoc = new JSDOM('<html><body></body></html>').window.document
       expect(extractImageAlt(emptyDoc)).toBe('')
     })
