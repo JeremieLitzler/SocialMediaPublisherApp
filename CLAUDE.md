@@ -77,7 +77,7 @@ Pure functions targeting these CSS selectors on the fetched blog HTML:
 - Introduction: All `<p>` tags before the first `<h2>` in `.article-content`
 - Categories: `<header class="article-category"> a`
 - Tags: `<section class="article-tags"> a`
-- Follow-me snippet: second-to-last child of `.article-content`
+- Follow-me snippet: second-to-last child of `.article-content`; if it is a `div.jli-notice.jli-notice-tip`, the inner `<p class="jli-notice-title">` is replaced with `<h2 class="jli-notice-title">`
 - Image credit: Last `<p>` starting with "Photo by" / "Photo de"
 - Blog detection: Derived from URL domain
 

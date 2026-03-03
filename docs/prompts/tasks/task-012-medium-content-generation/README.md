@@ -91,6 +91,9 @@ Language is determined by `article.blog` (`'english'` → EN snippet, `'french'`
   <p>⬇️⬇️⬇️<br /><a href="[UTM link]">Read the full article</a></p>
   <hr />
   [article.followMeSnippet as-is (already HTML)]
+  <!-- Note: if the follow-me element is a div.jli-notice.jli-notice-tip, its inner
+       <p class="jli-notice-title"> is replaced with <h2 class="jli-notice-title"> by
+       extractFollowMeSnippet before the snippet is stored in article.followMeSnippet. -->
   <hr />
   <h2>[Why snippet heading (EN or FR)]</h2>
   <p>[Why snippet body (EN or FR), with line breaks as <br />]</p>

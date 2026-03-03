@@ -215,6 +215,28 @@ describe('htmlExtractor', () => {
       expect(snippet).toContain('<')
     })
 
+    it('should replace the title <p> with <h2> inside jli-notice-tip (English)', () => {
+      const snippet = extractFollowMeSnippet(englishWithIntroDoc)
+      expect(snippet).toContain('<h2 class="jli-notice-title">')
+      expect(snippet).toContain('</h2>')
+      expect(snippet).not.toContain('<p class="jli-notice-title">')
+    })
+
+    it('should replace the title <p> with <h2> inside jli-notice-tip (French)', () => {
+      const snippet = extractFollowMeSnippet(frenchWithIntroDoc)
+      expect(snippet).toContain('<h2 class="jli-notice-title">')
+      expect(snippet).toContain('</h2>')
+      expect(snippet).not.toContain('<p class="jli-notice-title">')
+    })
+
+    it('should not modify title <p> for non-tip snippets', () => {
+      const doc = new JSDOM(
+        '<html><body><section class="article-content"><p>Intro</p><div class="jli-notice jli-notice-note"><p class="jli-notice-title">Note</p></div><p>Credit</p></section></body></html>'
+      ).window.document
+      const snippet = extractFollowMeSnippet(doc)
+      expect(snippet).toContain('<p class="jli-notice-title">')
+    })
+
     it('should return empty string when article-content is missing', () => {
       const emptyDoc = new JSDOM('<html><body></body></html>').window.document
       expect(extractFollowMeSnippet(emptyDoc)).toBe('')
