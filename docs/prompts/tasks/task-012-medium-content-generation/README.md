@@ -111,7 +111,7 @@ Language is determined by `article.blog` (`'english'` → EN snippet, `'french'`
   - **Canonical URL** — shows `canonicalUrl` text, copies `canonicalUrl`
   - **Category** — shows `category` text, copies `category`
   - **Tags** — one `<CopyButton>` per tag (label = tag name, already visible)
-  - **Body HTML** — copies `bodyHtml`; display as a `<pre>` or `<textarea>` so user can visually verify and edit if needed
+  - **Body HTML** — editable `<textarea>` bound to a local ref initialised from `bodyHtml`; a live rendered preview rendered below the textarea via `v-html`; the textarea and the preview are reactively connected (edits update the preview in real time); HTML is sanitized with DOMPurify before binding to `v-html` (see ADR-007); the Copy button writes the sanitized HTML to the clipboard as `text/html` (falls back to `text/plain`) so paste into a rich-text editor preserves structure
 - [ ] "Start over" / back-to-home button
 
 ### Testing

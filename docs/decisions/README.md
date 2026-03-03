@@ -18,6 +18,7 @@ Status values: `Proposed` | `Accepted` | `Deprecated` | `Superseded by ADR-XXX`
 | [ADR-004](./adr-004-semantic-release.md)                           | Semantic Release for Versioning              | Accepted | 2026-02-11 |
 | [ADR-005](./adr-005-testing-strategy.md)                           | Testing Strategy with Vitest                 | Accepted | 2026-02-12 |
 | [ADR-006](./ADR-006-netlify-functions-for-cors-proxy.md)           | Netlify Functions for CORS-Free HTML Fetching | Proposed | 2026-02-13 |
+| [ADR-007](./ADR-007-html-sanitization-for-vhtml.md)               | HTML Sanitization Strategy for v-html Rendering | Proposed | 2026-03-03 |
 
 ## How to Add a New ADR
 
