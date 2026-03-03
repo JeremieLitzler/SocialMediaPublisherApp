@@ -11,6 +11,7 @@ describe('useArticleState', () => {
       article: null,
       error: null,
       manualIntroduction: '',
+      selectedPlatform: null,
     }
   })
 
@@ -22,6 +23,7 @@ describe('useArticleState', () => {
       article: null,
       error: null,
       manualIntroduction: '',
+      selectedPlatform: null,
     })
   })
 
@@ -136,6 +138,7 @@ describe('useArticleState', () => {
       article: mockArticle,
       error: null,
       manualIntroduction: '',
+      selectedPlatform: null,
     }
 
     expect(extractionState.value.status).toBe('success')

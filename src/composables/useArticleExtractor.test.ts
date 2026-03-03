@@ -19,6 +19,7 @@ describe('useArticleExtractor', () => {
       article: null,
       error: null,
       manualIntroduction: '',
+      selectedPlatform: null,
     }
   })
 
@@ -195,6 +196,7 @@ describe('useArticleExtractor', () => {
         article: {} as any,
         error: null,
         manualIntroduction: 'some text',
+        selectedPlatform: null,
       }
 
       // Mock Netlify Function response format
