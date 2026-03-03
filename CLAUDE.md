@@ -107,3 +107,44 @@ shadcn-vue components live in `src/components/ui/`. These are copied (not npm-in
 - `docs/specs/` — Project specifications and requirements (FR-1 through FR-6)
 - `docs/decisions/` — Architecture Decision Records (ADR-001 through ADR-006)
 - `docs/prompts/` — Task plans (task-001 through task-013) documenting implementation milestones
+
+## Multi-Agent Pipeline
+
+**When the user provides a feature request or bug fix, act as the orchestrator:**
+
+1. Save the request to `.agents-output/0-user-requests/[timestamp-slug].md`.
+2. Follow the pipeline in `.agents-brain/agent-0-orchestrator.md` step by step.
+
+The user never needs to run a command — just describe what they want and the pipeline starts.
+
+### Agents and their prompt files
+
+| Agent         | Prompt                      | Reads                                         | Writes                    |
+| ------------- | --------------------------- | --------------------------------------------- | ------------------------- |
+| Specification | `.agents-brain/agent-1-specs.md`  | `.agents-output/0-user-requests/[timestamp-slug].md`                                                                    | `.agents-output/1-business-specifications/[timestamp-slug].md`  |
+| Coder         | `.agents-brain/agent-2-coder.md`  | `.agents-output/1-business-specifications/[timestamp-slug].md`                                                          | `.agents-output/2-technical-specifications/[timestamp-slug].md` |
+| Tester        | `.agents-brain/agent-3-tester.md` | `.agents-output/1-business-specifications/[timestamp-slug].md`, `.agents-output/2-technical-specifications/[timestamp-slug].md` | `.agents-output/3-test-results/[timestamp-slug].md`        |
+| Versioning    | `.agents-brain/agent-4-git.md`    | `.agents-output/1-business-specifications/[timestamp-slug].md`, `.agents-output/3-test-results/[timestamp-slug].md`       | git history                                                    |
+
+### Pipeline flow
+
+```
+[0-user-requests/[timestamp-slug].md]
+       ↓
+Versioning agent → branch
+       ↓
+  Specs agent → 1-business-specifications/[timestamp-slug].md
+       ↓
+Versioning agent → commit specs
+       ↓ ← human approval
+  Coder agent → 2-technical-specifications/[timestamp-slug].md
+       ↓           ↑ status: review specs (loops back)
+       ↓
+Versioning agent → commit code
+       ↓ ← human approval
+ Tester agent → 3-test-results/[timestamp-slug].md
+       ↓           ↑ status: failed (loops back to coder)
+Versioning agent → commit tests + push
+```
+
+Human approval gates pause the pipeline after specs and after coding. The orchestrator retries failed loops up to 3 times before aborting.
