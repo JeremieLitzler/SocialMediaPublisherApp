@@ -94,6 +94,7 @@ export function useArticleExtractor() {
       article: null,
       error: null,
       manualIntroduction: '',
+      selectedPlatform: null,
     }
 
     try {
@@ -106,6 +107,7 @@ export function useArticleExtractor() {
         article,
         error: null,
         manualIntroduction: '',
+        selectedPlatform: null,
       }
     } catch (error) {
       if (error instanceof Error && error.message === 'MISSING_INTRODUCTION') {
@@ -114,6 +116,7 @@ export function useArticleExtractor() {
           article: null,
           error: 'No introduction found. The article must have paragraphs before the first <h2>.',
           manualIntroduction: '',
+          selectedPlatform: null,
         }
         return
       }
@@ -126,6 +129,7 @@ export function useArticleExtractor() {
         article: null,
         error: errorMessage,
         manualIntroduction: '',
+        selectedPlatform: null,
       }
     }
   }

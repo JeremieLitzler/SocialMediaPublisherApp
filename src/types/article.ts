@@ -67,6 +67,8 @@ export interface ExtractionState {
   error: string | null
   /** Manual introduction input when status is 'missing-introduction' */
   manualIntroduction: string
+  /** Platform selected by the user at extraction time */
+  selectedPlatform: Platform | null
 }
 
 /**
