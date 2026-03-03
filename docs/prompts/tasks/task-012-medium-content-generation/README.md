@@ -88,7 +88,7 @@ Language is determined by `article.blog` (`'english'` → EN snippet, `'french'`
        The bare .article-image a img selector must NOT be used for either field. -->
   <hr />
   [article.introduction as-is (already HTML)]
-  <p>⬇️⬇️⬇️<br /><a href="[UTM link]">[UTM link]</a></p>
+  <p>⬇️⬇️⬇️<br /><a href="[UTM link]">Read the full article</a></p>
   <hr />
   [article.followMeSnippet as-is (already HTML)]
   <hr />

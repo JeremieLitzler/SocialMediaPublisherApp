@@ -34,7 +34,7 @@ function buildFigureHtml(article: Article): string {
 
 function buildUtmBlock(url: string): string {
   const utmLink = generateUTMLink(url, 'Medium')
-  return `<p>${VISUAL_SEPARATOR}<br /><a href="${utmLink}">${utmLink}</a></p>`
+  return `<p>${VISUAL_SEPARATOR}<br /><a href="${utmLink}">Read the full article</a></p>`
 }
 
 function buildWhyBlock(article: Article): string {
