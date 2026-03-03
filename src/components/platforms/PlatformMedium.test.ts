@@ -96,6 +96,36 @@ describe('PlatformMedium', () => {
     expect(generateMediumContent).toHaveBeenCalledWith(article)
   })
 
+  it('displays the actual title value as text', () => {
+    extractionState.value.article = makeArticle()
+    const wrapper = mount(PlatformMedium, { global: { stubs: globalStubs } })
+    expect(wrapper.text()).toContain('Test Article')
+  })
+
+  it('displays the actual description value as text', () => {
+    extractionState.value.article = makeArticle()
+    const wrapper = mount(PlatformMedium, { global: { stubs: globalStubs } })
+    expect(wrapper.text()).toContain('A description')
+  })
+
+  it('displays the actual imageAlt value as text', () => {
+    extractionState.value.article = makeArticle()
+    const wrapper = mount(PlatformMedium, { global: { stubs: globalStubs } })
+    expect(wrapper.text()).toContain('Hero image')
+  })
+
+  it('displays the actual canonicalUrl value as text', () => {
+    extractionState.value.article = makeArticle()
+    const wrapper = mount(PlatformMedium, { global: { stubs: globalStubs } })
+    expect(wrapper.text()).toContain('https://iamjeremie.me/post/test/')
+  })
+
+  it('displays the actual category value as text', () => {
+    extractionState.value.article = makeArticle()
+    const wrapper = mount(PlatformMedium, { global: { stubs: globalStubs } })
+    expect(wrapper.text()).toContain('Technology')
+  })
+
   it('renders the bodyHtml in a textarea', () => {
     extractionState.value.article = makeArticle()
     const wrapper = mount(PlatformMedium, { global: { stubs: globalStubs } })

@@ -103,14 +103,14 @@ Language is determined by `article.blog` (`'english'` → EN snippet, `'french'`
 - [ ] Reads `extractionState.article` from `useArticleState()`
 - [ ] If no article: show message and link back to home
 - [ ] Calls `generateMediumContent(article)`
-- [ ] Displays a labelled row for each field with a `<CopyButton>`:
-  - **Title** — copies `title`
-  - **Description** — copies `description`
-  - **Image alt text** — copies `imageAlt`
-  - **Image caption** — copies `imageCaption` (show "None" label if empty)
-  - **Canonical URL** — copies `canonicalUrl`
-  - **Category** — copies `category`
-  - **Tags** — one `<CopyButton>` per tag
+- [ ] Displays a labelled row for each field: label, actual value as text, then a `<CopyButton>`:
+  - **Title** — shows `title` text, copies `title`
+  - **Description** — shows `description` text, copies `description`
+  - **Image alt text** — shows `imageAlt` text, copies `imageAlt`
+  - **Image caption** — shows `imageCaption` text, copies `imageCaption`; show "None" label (no CopyButton) if empty
+  - **Canonical URL** — shows `canonicalUrl` text, copies `canonicalUrl`
+  - **Category** — shows `category` text, copies `category`
+  - **Tags** — one `<CopyButton>` per tag (label = tag name, already visible)
   - **Body HTML** — copies `bodyHtml`; display as a `<pre>` or `<textarea>` so user can visually verify and edit if needed
 - [ ] "Start over" / back-to-home button
 
