@@ -106,6 +106,7 @@ function startOver(): void {
 
         <div class="field-row">
           <p class="font-semibold mb-1">Tags</p>
+          <p class="text-sm mb-2">{{ content.tags.join(", ") }}</p>
           <div class="flex flex-wrap gap-2">
             <CopyButton v-for="tag in content.tags" :key="tag" :text="tag" :label="tag" />
           </div>
