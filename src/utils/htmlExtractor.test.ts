@@ -94,23 +94,21 @@ describe('htmlExtractor', () => {
   })
 
   describe('extractImageUrl', () => {
-    it('should extract image URL from English article', () => {
+    it('should extract absolute image URL from twitter:image meta in English article', () => {
       const imageUrl = extractImageUrl(englishWithIntroDoc)
       expect(imageUrl).toBeTruthy()
-      expect(imageUrl.length).toBeGreaterThan(0)
-      // Image URLs can be relative or absolute
+      expect(imageUrl).toMatch(/^https?:\/\//)
       expect(imageUrl).toMatch(/\.(jpg|png|webp|gif)$/i)
     })
 
-    it('should extract image URL from French article', () => {
+    it('should extract absolute image URL from twitter:image meta in French article', () => {
       const imageUrl = extractImageUrl(frenchWithIntroDoc)
       expect(imageUrl).toBeTruthy()
-      expect(imageUrl.length).toBeGreaterThan(0)
-      // Image URLs can be relative or absolute
+      expect(imageUrl).toMatch(/^https?:\/\//)
       expect(imageUrl).toMatch(/\.(jpg|png|webp|gif)$/i)
     })
 
-    it('should return empty string when image element is missing', () => {
+    it('should return empty string when twitter:image meta is missing', () => {
       const emptyDoc = new JSDOM('<html><body></body></html>').window.document
       expect(extractImageUrl(emptyDoc)).toBe('')
     })

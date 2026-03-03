@@ -38,13 +38,18 @@ export function extractDescription(doc: Document): string {
 }
 
 /**
- * Extract featured image URL from .article-image a img selector
+ * Extract featured image URL from the twitter:image meta tag.
+ *
+ * The meta tag always contains the full absolute URL, unlike the
+ * `.article-image a img` selector whose `src` can be a relative path
+ * that resolves against the wrong base when parsed by DOMParser.
+ *
  * @param doc - Parsed HTML document
- * @returns Image URL or empty string if not found
+ * @returns Full absolute image URL or empty string if not found
  */
 export function extractImageUrl(doc: Document): string {
-  const imgElement = doc.querySelector('.article-image a img') as HTMLImageElement | null
-  return imgElement?.src || ''
+  const metaElement = doc.querySelector('meta[name="twitter:image"]')
+  return metaElement?.getAttribute('content') || ''
 }
 
 /**

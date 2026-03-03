@@ -83,6 +83,8 @@ Language is determined by `article.blog` (`'english'` → EN snippet, `'french'`
     <img src="[article.imageUrl]" alt="[article.imageAlt]" />
     <figcaption>[plain text from article.imageCreditSnippet, or omitted if null]</figcaption>
   </figure>
+  <!-- Note: article.imageUrl must be the full absolute URL from <meta name="twitter:image">.
+       The .article-image a img selector yields a relative or mis-resolved URL and must NOT be used. -->
   <hr />
   [article.introduction as-is (already HTML)]
   <p>⬇️⬇️⬇️<br /><a href="[UTM link]">[UTM link]</a></p>
@@ -144,6 +146,7 @@ Language is determined by `article.blog` (`'english'` → EN snippet, `'french'`
 
 | File | Action |
 |------|--------|
+| `src/utils/htmlExtractor.ts` | Modify — change `extractImageUrl` to read `meta[name="twitter:image"]` |
 | `src/utils/mediumContentGenerator.ts` | Create |
 | `src/utils/mediumContentGenerator.test.ts` | Create |
 | `src/config/snippets.ts` | Create (if not exists) |
