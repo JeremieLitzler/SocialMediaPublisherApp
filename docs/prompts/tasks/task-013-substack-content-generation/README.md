@@ -67,6 +67,8 @@ Language determined by `article.blog` (`'english'` → EN, `'french'` → FR).
       <figcaption>[plain text from imageCreditSnippet]</figcaption>
     ]
   </figure>
+  <!-- Note: article.imageUrl must be the full absolute URL from <meta name="twitter:image">.
+       The .article-image a img selector yields a relative or mis-resolved URL and must NOT be used. -->
   [article.introduction as-is (already HTML)]
   <p>⬇️⬇️⬇️<br /><a href="[UTM link]">[UTM link]</a></p>
   <p><em>[attribution line (EN or FR)]</em></p>
@@ -122,6 +124,7 @@ Language determined by `article.blog` (`'english'` → EN, `'french'` → FR).
 
 | File | Action |
 |------|--------|
+| `src/utils/htmlExtractor.ts` | Modify — change `extractImageUrl` to read `meta[name="twitter:image"]` (if not already done in task-012) |
 | `src/utils/substackContentGenerator.ts` | Create |
 | `src/utils/substackContentGenerator.test.ts` | Create |
 | `src/config/snippets.ts` | Modify (add Substack snippets) |
