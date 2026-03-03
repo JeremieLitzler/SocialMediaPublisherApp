@@ -73,7 +73,7 @@ Pure functions targeting these CSS selectors on the fetched blog HTML:
 - Title: `.article-title a`
 - Description: `.article-subtitle`
 - Image URL: `meta[name="twitter:image"]` content attribute (full absolute URL)
-- Image alt: `.article-image a img` alt attribute
+- Image alt: `.article-header .article-image a img` alt attribute
 - Introduction: All `<p>` tags before the first `<h2>` in `.article-content`
 - Categories: `<header class="article-category"> a`
 - Tags: `<section class="article-tags"> a`
