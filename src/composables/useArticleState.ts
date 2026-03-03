@@ -10,6 +10,7 @@ const extractionState = ref<ExtractionState>({
   article: null,
   error: null,
   manualIntroduction: '',
+  selectedPlatform: null,
 })
 
 /**

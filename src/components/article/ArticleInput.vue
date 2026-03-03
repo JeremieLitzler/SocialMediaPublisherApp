@@ -41,15 +41,18 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
+import { useRouter } from 'vue-router'
 import { useArticleState } from '@/composables/useArticleState'
 import { useArticleExtractor } from '@/composables/useArticleExtractor'
 import type { Platform } from '@/types/article'
+import { RouterPathEnum } from '@/types/RouterPathEnum'
 
 const platforms: Platform[] = ['X', 'LinkedIn', 'Medium', 'Substack']
 
 const url = ref('')
 const selectedPlatform = ref<Platform>('X')
 
+const router = useRouter()
 const { extractionState } = useArticleState()
 const { extractArticle } = useArticleExtractor()
 
@@ -59,9 +62,21 @@ const canExtract = computed(() => {
   return url.value.trim() !== '' && !isLoading.value
 })
 
+const platformRoutes: Record<Platform, string> = {
+  X: RouterPathEnum.X,
+  LinkedIn: RouterPathEnum.LinkedIn,
+  Medium: RouterPathEnum.Medium,
+  Substack: RouterPathEnum.Substack,
+}
+
 async function handleExtract() {
   if (!canExtract.value) return
   await extractArticle(url.value.trim())
+
+  if (extractionState.value.status === 'success') {
+    extractionState.value.selectedPlatform = selectedPlatform.value
+    await router.push(platformRoutes[selectedPlatform.value])
+  }
 }
 </script>
 
