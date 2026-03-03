@@ -47,6 +47,7 @@ declare module 'vue' {
     NavBarTop: typeof import('./src/components/layout/NavBarTop.vue')['default']
     PaintBrush: typeof import('./src/components/ui/icon/PaintBrush.vue')['default']
     PencilLine: typeof import('./src/components/ui/icon/PencilLine.vue')['default']
+    PlatformLinkedIn: typeof import('./src/components/platforms/PlatformLinkedIn.vue')['default']
     PlatformX: typeof import('./src/components/platforms/PlatformX.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
