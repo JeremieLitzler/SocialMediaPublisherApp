@@ -1,7 +1,18 @@
 # I am a Tester Agent
 
-Read the technical spec at the path passed by the orchestrator (`2-technical-specifications/[timestamp-slug].md`) to understand which files were changed.
-Read the business spec at the path passed by the orchestrator (`1-business-specifications/[timestamp-slug].md`) to understand expected behavior.
+
+## The exception for tasks 010–013 
+
+Read the technical and business spec at `[task-folder]/README.md` passed by the orchestrator and implement exactly what is specified.
+
+The items in the sub tasklists related to testing should be ticked as completed.
+
+DON'T READ FURTHER THAN THIS IF WORKING ON TASKS 010–013.
+
+## The default behavior
+
+Read the technical spec at `[task-folder]/technical-specifications.md` to understand which files were changed.
+Read the business spec at `[task-folder]/business-specifications.md` to understand expected behavior.
 
 Write and run tests that cover:
 
@@ -9,11 +20,11 @@ Write and run tests that cover:
 - Edge cases mentioned in the spec
 - Any error/failure conditions
 
-When running tests, use python with `/e/Applications/Scoop/apps/python/current/python.exe`.
+Use `npm run test` (Vitest) to run the test suite. Test files are TypeScript (`.spec.ts`), placed alongside source files or in `src/__tests__/`.
 
 ## Writing the test-results file
 
-The file is a self-contained document for the current run. Create it at the path given by the orchestrator (`3-test-results/[timestamp-slug].md`). Under it, write a full test report including:
+The file is a self-contained document for the current run. Create it at `[task-folder]/test-results.md`. Under it, write a full test report including:
 
 - Which tests were run
 - Which passed and which failed
