@@ -74,7 +74,6 @@ function startOver(): void {
         <div class="field-row">
           <p class="font-semibold mb-1">Body HTML</p>
           <textarea
-            readonly
             class="w-full h-64 text-sm font-mono border rounded p-2 resize-y"
           >{{ content.bodyHtml }}</textarea>
           <CopyButton :text="content.bodyHtml" label="Copy body HTML" />
