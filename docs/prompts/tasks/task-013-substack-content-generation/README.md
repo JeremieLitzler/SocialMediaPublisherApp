@@ -107,6 +107,17 @@ Language determined by `article.blog` (`'english'` → EN, `'french'` → FR).
 - [ ] Test: `tags` array passed through unchanged
 - [ ] Run tests: `npm run test` — all pass
 
+- [ ] `src/components/platforms/PlatformSubstack.test.ts` created
+- [ ] Tests cover: no-article fallback, heading display, content rendering, CopyButton presence, Start over resets state and navigates home
+
+> **Mock pattern:** `useArticleState` returns `{ extractionState, resetState }`. Any test that mocks it **must** include both, or TypeScript will report TS2345. Use `vi.hoisted` for the router push mock and cast `resetState` as `() => void`:
+>
+> ```typescript
+> const mockPush = vi.hoisted(() => vi.fn())
+> vi.mock('vue-router', () => ({ useRouter: () => ({ push: mockPush }) }))
+> vi.mocked(useArticleState).mockReturnValue({ extractionState, resetState: vi.fn() as unknown as () => void })
+> ```
+
 ## Files to Create / Modify
 
 | File | Action |
