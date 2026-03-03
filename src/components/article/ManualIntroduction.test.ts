@@ -30,7 +30,7 @@ describe('ManualIntroduction', () => {
       manualIntroduction: '',
     })
 
-    vi.mocked(useArticleState).mockReturnValue({ extractionState })
+    vi.mocked(useArticleState).mockReturnValue({ extractionState, resetState: vi.fn() })
   })
 
   it('should render error message', () => {

@@ -34,7 +34,7 @@ describe('ArticleInput', () => {
 
     extractArticle = vi.fn()
 
-    vi.mocked(useArticleState).mockReturnValue({ extractionState })
+    vi.mocked(useArticleState).mockReturnValue({ extractionState, resetState: vi.fn() })
     vi.mocked(useArticleExtractor).mockReturnValue({ extractArticle })
   })
 
