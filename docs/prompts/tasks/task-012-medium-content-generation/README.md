@@ -111,7 +111,7 @@ Language is determined by `article.blog` (`'english'` → EN snippet, `'french'`
   - **Canonical URL** — copies `canonicalUrl`
   - **Category** — copies `category`
   - **Tags** — one `<CopyButton>` per tag
-  - **Body HTML** — copies `bodyHtml`; display as a `<pre>` or `<textarea readonly>` so user can visually verify
+  - **Body HTML** — copies `bodyHtml`; display as a `<pre>` or `<textarea>` so user can visually verify and edit if needed
 - [ ] "Start over" / back-to-home button
 
 ### Testing
