@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
+import DOMPurify from 'dompurify'
 import { useArticleState } from '@/composables/useArticleState'
 import { generateMediumContent } from '@/utils/mediumContentGenerator'
 
@@ -13,6 +14,37 @@ const content = computed(() => {
   if (!article.value) return null
   return generateMediumContent(article.value)
 })
+
+const rawBodyHtml = ref('')
+
+watch(
+  () => content.value?.bodyHtml,
+  (html) => { rawBodyHtml.value = html ?? '' },
+  { immediate: true },
+)
+
+const sanitizedBodyHtml = computed(() => DOMPurify.sanitize(rawBodyHtml.value))
+
+const renderedCopied = ref(false)
+
+async function writeHtmlToClipboard(html: string): Promise<void> {
+  const blob = new Blob([html], { type: 'text/html' })
+  await navigator.clipboard.write([new ClipboardItem({ 'text/html': blob })])
+}
+
+async function markCopied(): Promise<void> {
+  renderedCopied.value = true
+  setTimeout(() => { renderedCopied.value = false }, 2000)
+}
+
+async function copyRenderedHtml(): Promise<void> {
+  try {
+    await writeHtmlToClipboard(sanitizedBodyHtml.value)
+  } catch {
+    await navigator.clipboard.writeText(sanitizedBodyHtml.value)
+  }
+  await markCopied()
+}
 
 function startOver(): void {
   resetState()
@@ -82,9 +114,14 @@ function startOver(): void {
         <div class="field-row">
           <p class="font-semibold mb-1">Body HTML</p>
           <textarea
+            v-model="rawBodyHtml"
             class="w-full h-64 text-sm font-mono border rounded p-2 resize-y"
-          >{{ content.bodyHtml }}</textarea>
-          <CopyButton :text="content.bodyHtml" label="Copy" />
+          />
+          <div
+            v-html="sanitizedBodyHtml"
+            class="body-preview border rounded p-4 mt-2 prose max-w-none text-sm"
+          />
+          <Button @click="copyRenderedHtml">{{ renderedCopied ? 'Copied!' : 'Copy' }}</Button>
         </div>
       </div>
 
