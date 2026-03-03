@@ -14,7 +14,7 @@ export interface WhySnippet {
 const EN_WHY_SNIPPET: WhySnippet = {
   heading: 'Why does this post link to my blog?',
   bodyHtml:
-    `<p>I have been on Medium for a while, frankly, the editor isn't the best:</p>` +
+    `<p>I have been on Medium for a while and, frankly, the editor isn't the best:</p>` +
     `<ul>` +
     `<li>when I copy paste a post content from my blog on Medium, all the code extracts need manual adjustments.</li>` +
     `<li>Medium doesn't support WEBP or AVIF…</li>` +
@@ -26,7 +26,7 @@ const EN_WHY_SNIPPET: WhySnippet = {
 const FR_WHY_SNIPPET: WhySnippet = {
   heading: 'Pourquoi ce billet renvoie-t-il à mon blog ?',
   bodyHtml:
-    `<p>J'utilise Medium depuis un moment, franchement, l'éditeur manque d'efficacité :</p>` +
+    `<p>J'utilise Medium depuis un moment et franchement, l'éditeur manque d'efficacité</p>` +
     `<ul>` +
     `<li>Quand je copie-colle le contenu d'un billet de mon blog sur Medium, tous les extraits de code doivent être ajustés manuellement.</li>` +
     `<li>Medium ne supporte pas le WEBP ou l'AVIF…</li>` +
