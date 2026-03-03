@@ -134,6 +134,30 @@ describe('PlatformMedium', () => {
     expect(textarea.element.value).toContain('<figure>')
   })
 
+  it('renders a live HTML preview below the textarea', () => {
+    extractionState.value.article = makeArticle()
+    const wrapper = mount(PlatformMedium, { global: { stubs: globalStubs } })
+    expect(wrapper.find('.body-preview').exists()).toBe(true)
+  })
+
+  it('preview contains sanitized rendered HTML from the textarea', () => {
+    extractionState.value.article = makeArticle()
+    const wrapper = mount(PlatformMedium, { global: { stubs: globalStubs } })
+    const preview = wrapper.find('.body-preview')
+    expect(preview.html()).toContain('<figure>')
+  })
+
+  it('preview strips script tags from user input', async () => {
+    extractionState.value.article = makeArticle()
+    const wrapper = mount(PlatformMedium, { global: { stubs: globalStubs } })
+    const textarea = wrapper.find('textarea')
+    await textarea.setValue('<p>Safe</p><script>alert(1)<\/script>')
+    await wrapper.vm.$nextTick()
+    const preview = wrapper.find('.body-preview')
+    expect(preview.html()).not.toContain('<script>')
+    expect(preview.html()).toContain('<p>Safe</p>')
+  })
+
   it('renders CopyButton elements when article is loaded', () => {
     extractionState.value.article = makeArticle()
     const wrapper = mount(PlatformMedium, { global: { stubs: globalStubs } })
