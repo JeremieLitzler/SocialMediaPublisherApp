@@ -134,13 +134,7 @@ export function extractFollowMeSnippet(doc: Document): string {
   if (children.length < 2) return ''
 
   const secondToLast = children[children.length - 2]
-  if (!secondToLast) return ''
-
-  let html = secondToLast.outerHTML
-  if (secondToLast.matches('div.jli-notice.jli-notice-tip')) {
-    html = html.replace(/^<div/, '<h2').replace(/<\/div>$/, '</h2>')
-  }
-  return html
+  return secondToLast?.outerHTML || ''
 }
 
 /**
