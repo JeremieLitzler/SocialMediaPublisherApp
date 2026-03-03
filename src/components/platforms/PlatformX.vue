@@ -5,7 +5,7 @@ import { useArticleState } from '@/composables/useArticleState'
 import { generateXContent } from '@/utils/xContentGenerator'
 
 const router = useRouter()
-const { extractionState } = useArticleState()
+const { extractionState, resetState } = useArticleState()
 
 const article = computed(() => extractionState.value.article)
 
@@ -22,6 +22,7 @@ const chunkCountLabel = computed(() => {
 })
 
 function startOver(): void {
+  resetState()
   router.push('/')
 }
 </script>
