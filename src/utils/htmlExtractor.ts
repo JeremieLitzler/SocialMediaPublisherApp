@@ -7,7 +7,8 @@
  * Expected HTML structure:
  * - Title: `.article-title a`
  * - Description: `.article-subtitle`
- * - Image: `.article-image a img`
+ * - Image URL: `meta[name="twitter:image"]` content attribute
+ * - Image alt: `.article-header .article-image a img`
  * - Introduction: all `<p>` tags before first `<h2>` in `.article-content`
  * - Categories: `<header class="article-category">` all `<a>` elements
  * - Tags: `<section class="article-tags">` all `<a>` elements
@@ -58,7 +59,7 @@ export function extractImageUrl(doc: Document): string {
  * @returns Image alt text or empty string if not found
  */
 export function extractImageAlt(doc: Document): string {
-  const imgElement = doc.querySelector('.article-image a img') as HTMLImageElement | null
+  const imgElement = doc.querySelector('.article-header .article-image a img') as HTMLImageElement | null
   return imgElement?.alt || ''
 }
 

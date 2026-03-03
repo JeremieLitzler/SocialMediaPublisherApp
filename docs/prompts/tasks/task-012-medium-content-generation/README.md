@@ -84,7 +84,8 @@ Language is determined by `article.blog` (`'english'` → EN snippet, `'french'`
     <figcaption>[plain text from article.imageCreditSnippet, or omitted if null]</figcaption>
   </figure>
   <!-- Note: article.imageUrl must be the full absolute URL from <meta name="twitter:image">.
-       The .article-image a img selector yields a relative or mis-resolved URL and must NOT be used. -->
+       article.imageAlt is extracted from .article-header .article-image a img (precise selector).
+       The bare .article-image a img selector must NOT be used for either field. -->
   <hr />
   [article.introduction as-is (already HTML)]
   <p>⬇️⬇️⬇️<br /><a href="[UTM link]">[UTM link]</a></p>
