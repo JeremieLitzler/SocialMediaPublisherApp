@@ -10,7 +10,10 @@
       "Bash(git:*)",
       "Bash(gh pr:*)",
       "Bash(gh api:*)",
-      "Bash(powershell:*)"
+      "Bash(powershell:*)",
+      "Bash(git pull:*)",
+      "Bash(git checkout:*)",
+      "Bash(npm run:*)"
     ]
   }
 }
