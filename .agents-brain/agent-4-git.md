@@ -74,3 +74,13 @@ If the last line is `status: passed`:
 - Write a meaningful commit message that summarises the change based on `[task-folder]/business-specifications.md` within Git recommended message length. Put anything beyond the commit message limit into the commit description.
 - Commit on the current feature branch — never commit directly to develop or main.
 - Push the branch to origin.
+
+## Bug Discovery Rule (applies to all tasks)
+
+If human discovers a bug or code issue during any task, do **not** fix it. Stop immediately and report the issue to the orchestrator with:
+
+- A clear description of the bug
+- The file(s) affected
+- The root cause if identifiable
+
+The orchestrator will route the fix through the appropriate agents (coder → tester) before returning to commit.
