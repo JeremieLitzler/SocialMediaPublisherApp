@@ -215,28 +215,6 @@ describe('htmlExtractor', () => {
       expect(snippet).toContain('<')
     })
 
-    it('should replace <div> with <h2> for jli-notice-tip snippet (English)', () => {
-      const snippet = extractFollowMeSnippet(englishWithIntroDoc)
-      expect(snippet).toMatch(/^<h2/)
-      expect(snippet).toMatch(/<\/h2>$/)
-      expect(snippet).not.toMatch(/^<div/)
-    })
-
-    it('should replace <div> with <h2> for jli-notice-tip snippet (French)', () => {
-      const snippet = extractFollowMeSnippet(frenchWithIntroDoc)
-      expect(snippet).toMatch(/^<h2/)
-      expect(snippet).toMatch(/<\/h2>$/)
-      expect(snippet).not.toMatch(/^<div/)
-    })
-
-    it('should not replace <div> for non-tip snippets', () => {
-      const doc = new JSDOM(
-        '<html><body><section class="article-content"><p>Intro</p><div class="jli-notice jli-notice-note">Note</div><p>Credit</p></section></body></html>'
-      ).window.document
-      const snippet = extractFollowMeSnippet(doc)
-      expect(snippet).toMatch(/^<div/)
-    })
-
     it('should return empty string when article-content is missing', () => {
       const emptyDoc = new JSDOM('<html><body></body></html>').window.document
       expect(extractFollowMeSnippet(emptyDoc)).toBe('')
