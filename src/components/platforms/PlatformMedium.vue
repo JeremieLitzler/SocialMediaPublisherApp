@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
+import { computed, ref, watch, watchEffect } from 'vue'
 import { useRouter } from 'vue-router'
 import DOMPurify from 'dompurify'
 import { useArticleState } from '@/composables/useArticleState'
@@ -9,6 +9,10 @@ const router = useRouter()
 const { extractionState, resetState } = useArticleState()
 
 const article = computed(() => extractionState.value.article)
+
+watchEffect(() => {
+  if (!article.value) router.replace('/')
+})
 
 const content = computed(() => {
   if (!article.value) return null

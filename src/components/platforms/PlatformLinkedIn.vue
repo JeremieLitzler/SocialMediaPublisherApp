@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, watchEffect } from 'vue'
 import { useRouter } from 'vue-router'
 import { useArticleState } from '@/composables/useArticleState'
 import { generateLinkedInContent } from '@/utils/linkedInContentGenerator'
@@ -8,6 +8,10 @@ const router = useRouter()
 const { extractionState, resetState } = useArticleState()
 
 const article = computed(() => extractionState.value.article)
+
+watchEffect(() => {
+  if (!article.value) router.replace('/')
+})
 
 const body = computed(() => {
   if (!article.value) {
