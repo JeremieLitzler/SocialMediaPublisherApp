@@ -12,7 +12,8 @@ vi.mock('@/composables/useArticleExtractor')
 // Global stubs for UI components
 const globalStubs = {
   Input: {
-    template: '<input v-bind="$attrs" @input="$emit(\'update:modelValue\', $event.target.value)" />',
+    template:
+      '<input v-bind="$attrs" @input="$emit(\'update:modelValue\', $event.target.value)" />',
   },
   Button: {
     template: '<button v-bind="$attrs"><slot /></button>',
@@ -127,7 +128,7 @@ describe('ArticleInput', () => {
   it('should show "Extract Article" text when not loading', () => {
     const wrapper = mount(ArticleInput, { global: { stubs: globalStubs } })
     const button = wrapper.find('button')
-    expect(button.text()).toBe('Extract Article')
+    expect(button.text()).toBe('Extract Article And Share')
   })
 
   it('should display error message when status is error', () => {
