@@ -35,6 +35,8 @@ function startOver(): void {
     </div>
 
     <div v-if="article" class="content">
+      <PlatformSwitcher current-platform="X" />
+
       <div class="header">
         <h2 class="text-2xl font-bold mb-2">X (Twitter)</h2>
         <p class="text-sm text-muted-foreground mb-4">{{ chunkCountLabel }}</p>
