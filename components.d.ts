@@ -50,6 +50,7 @@ declare module 'vue' {
     PlatformLinkedIn: typeof import('./src/components/platforms/PlatformLinkedIn.vue')['default']
     PlatformMedium: typeof import('./src/components/platforms/PlatformMedium.vue')['default']
     PlatformSubstack: typeof import('./src/components/platforms/PlatformSubstack.vue')['default']
+    PlatformSwitcher: typeof import('./src/components/platforms/PlatformSwitcher.vue')['default']
     PlatformX: typeof import('./src/components/platforms/PlatformX.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
