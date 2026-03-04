@@ -14,8 +14,8 @@
 ### Substack snippets co-located with Medium snippets in `snippets.ts`
 The file already existed from Task-012. Substack constants were prepended in a clearly delimited section. Co-location follows the established pattern and keeps all bilingual snippet logic in one place.
 
-### UTM link anchor text is a descriptive phrase, not the raw URL
-The anchor text is `I'd like to read the full article` rather than the raw URL. This follows the same intent as Medium's `Read the full article` but uses first-person phrasing that fits the Substack newsletter tone.
+### UTM link anchor text is bilingual
+`buildUtmBlock` accepts `blog` alongside `url`. The anchor text is sourced from `getSubstackUtmAnchorText(blog)` in `snippets.ts`: EN → `I'd like to read the full article`, FR → `Allez lire l'article complet`. Keeping the text in `snippets.ts` is consistent with the share block pattern (plain text, no HTML construction needed).
 
 ### French attribution contains an HTML anchor; attribution logic lives in the generator, not `snippets.ts`
 Both attribution lines (`Originally published on <a href="...">iamjeremie.me</a>` and `Originallement publiée sur <a href="...">jeremielitzler.fr</a>.`) require UTM links to the respective blog homepages, which depends on the platform name — knowledge that belongs in the content generator, not in the platform-agnostic `snippets.ts`. `getSubstackAttributionLine` was therefore removed from `snippets.ts`; the generator handles attribution via `buildEnglishAttributionLine()` and `buildFrenchAttributionLine()`, each generating a UTM link to their blog homepage (`ENGLISH_BLOG_URL` / `FRENCH_BLOG_URL`). `snippets.ts` retains only plain-text constants.
