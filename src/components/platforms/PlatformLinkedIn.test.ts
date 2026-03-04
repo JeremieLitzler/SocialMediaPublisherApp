@@ -5,12 +5,13 @@ import PlatformLinkedIn from './PlatformLinkedIn.vue'
 import { useArticleState } from '@/composables/useArticleState'
 import { generateLinkedInContent } from '@/utils/linkedInContentGenerator'
 
-// vi.hoisted ensures mockPush is available inside the vi.mock factory (which is hoisted)
+// vi.hoisted ensures mocks are available inside the vi.mock factory (which is hoisted)
 const mockPush = vi.hoisted(() => vi.fn())
+const mockReplace = vi.hoisted(() => vi.fn())
 
 vi.mock('@/composables/useArticleState')
 vi.mock('@/utils/linkedInContentGenerator')
-vi.mock('vue-router', () => ({ useRouter: () => ({ push: mockPush }) }))
+vi.mock('vue-router', () => ({ useRouter: () => ({ push: mockPush, replace: mockReplace }) }))
 
 const globalStubs = {
   CopyButton: { template: '<button class="copy-btn" v-bind="$attrs"><slot /></button>' },
@@ -56,22 +57,12 @@ describe('PlatformLinkedIn', () => {
       body: 'Intro paragraph.\n\n⬇️⬇️⬇️\nhttps://iamjeremie.me/post/test/?utm_medium=social&utm_source=LinkedIn',
     })
     mockPush.mockReset()
+    mockReplace.mockReset()
   })
 
-  it('shows fallback message when no article is loaded', () => {
-    const wrapper = mount(PlatformLinkedIn, { global: { stubs: globalStubs } })
-    expect(wrapper.text()).toContain('No article loaded.')
-  })
-
-  it('shows a link home when no article is loaded', () => {
-    const wrapper = mount(PlatformLinkedIn, { global: { stubs: globalStubs } })
-    const link = wrapper.find('a')
-    expect(link.attributes('to')).toBe('/')
-  })
-
-  it('does not show content block when no article', () => {
-    const wrapper = mount(PlatformLinkedIn, { global: { stubs: globalStubs } })
-    expect(wrapper.find('.content').exists()).toBe(false)
+  it('redirects to home when no article is loaded', () => {
+    mount(PlatformLinkedIn, { global: { stubs: globalStubs } })
+    expect(mockReplace).toHaveBeenCalledWith('/')
   })
 
   it('shows LinkedIn heading when article is loaded', () => {
