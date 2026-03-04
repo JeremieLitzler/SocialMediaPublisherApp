@@ -86,7 +86,7 @@ describe('generateSubstackContent', () => {
 
   it('bodyHtml UTM link anchor text is the English phrase for English article', () => {
     const result = generateSubstackContent(makeEnglishArticle())
-    expect(result.bodyHtml).toContain("I'd like to read the full article")
+    expect(result.bodyHtml).toContain("Let's review this in the full article")
   })
 
   it('bodyHtml UTM link anchor text is the French phrase for French article', () => {
