@@ -7,7 +7,7 @@
           id="article-url"
           v-model="url"
           type="url"
-          placeholder="https://iamjeremie.me/post/..."
+          placeholder="Your article URL (e.g., https://iamjeremie.me/post/...)"
           :disabled="isLoading"
         />
       </div>
@@ -29,10 +29,13 @@
       </div>
 
       <Button @click="handleExtract" :disabled="!canExtract" class="w-full">
-        {{ isLoading ? 'Extracting...' : 'Extract Article' }}
+        {{ isLoading ? 'Extracting...' : 'Extract Article And Share' }}
       </Button>
 
-      <div v-if="extractionState.error && extractionState.status === 'error'" class="text-destructive text-sm">
+      <div
+        v-if="extractionState.error && extractionState.status === 'error'"
+        class="text-destructive text-sm"
+      >
         {{ extractionState.error }}
       </div>
     </div>
