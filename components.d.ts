@@ -49,6 +49,7 @@ declare module 'vue' {
     PencilLine: typeof import('./src/components/ui/icon/PencilLine.vue')['default']
     PlatformLinkedIn: typeof import('./src/components/platforms/PlatformLinkedIn.vue')['default']
     PlatformMedium: typeof import('./src/components/platforms/PlatformMedium.vue')['default']
+    PlatformSubstack: typeof import('./src/components/platforms/PlatformSubstack.vue')['default']
     PlatformX: typeof import('./src/components/platforms/PlatformX.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']

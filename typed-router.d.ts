@@ -44,6 +44,13 @@ declare module 'vue-router/auto-routes' {
       Record<never, never>,
       | never
     >,
+    '/substack': RouteRecordInfo<
+      '/substack',
+      '/substack',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
     '/x': RouteRecordInfo<
       '/x',
       '/x',
@@ -79,6 +86,12 @@ declare module 'vue-router/auto-routes' {
     'src/pages/medium.vue': {
       routes:
         | '/medium'
+      views:
+        | never
+    }
+    'src/pages/substack.vue': {
+      routes:
+        | '/substack'
       views:
         | never
     }
