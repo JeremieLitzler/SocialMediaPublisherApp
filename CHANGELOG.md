@@ -1,3 +1,9 @@
+## [1.1.0](https://github.com/JeremieLitzler/SocialMediaPublisherApp/compare/v1.0.0...v1.1.0) (2026-03-04)
+
+### Features
+
+* **layout:** add persistent footer with attribution, license and hosting links ([#61](https://github.com/JeremieLitzler/SocialMediaPublisherApp/issues/61)) ([#62](https://github.com/JeremieLitzler/SocialMediaPublisherApp/issues/62)) ([8e048bf](https://github.com/JeremieLitzler/SocialMediaPublisherApp/commit/8e048bf6484c3e2358b85fa4d23c5c7396c542c3)), closes [#059](https://github.com/JeremieLitzler/SocialMediaPublisherApp/issues/059) [#59](https://github.com/JeremieLitzler/SocialMediaPublisherApp/issues/59) [#59](https://github.com/JeremieLitzler/SocialMediaPublisherApp/issues/59)
+
 ## 1.0.0 (2026-03-04)
 
 ### Features
