@@ -1,5 +1,22 @@
 import type { Blog } from '@/types/article'
 
+// ─── Substack ────────────────────────────────────────────────────────────────
+
+const EN_SUBSTACK_SHARE_BLOCK =
+  'Thanks for reading my publication! This post is public so feel free to share it.'
+const FR_SUBSTACK_SHARE_BLOCK =
+  "Merci pour votre intérêt pour ma publication ! Cet article est public, n'hésitez pas à le partager."
+
+/**
+ * Return the Substack share block text for the given blog language.
+ */
+export function getSubstackShareBlockText(blog: Blog): string {
+  if (blog === 'french') return FR_SUBSTACK_SHARE_BLOCK
+  return EN_SUBSTACK_SHARE_BLOCK
+}
+
+// ─── Medium ──────────────────────────────────────────────────────────────────
+
 /**
  * Bilingual "Why does this post link to my blog?" snippet for Medium cross-posts.
  * See FR-8 in requirements for the full text.
