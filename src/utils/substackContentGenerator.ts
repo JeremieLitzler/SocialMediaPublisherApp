@@ -11,7 +11,7 @@
 import type { Article, SubstackContent } from '@/types/article'
 import { generateUTMLink } from './utm'
 import { htmlToText } from './htmlToText'
-import { getSubstackShareBlockText } from '@/config/snippets'
+import { getSubstackShareBlockText, getSubstackUtmAnchorText } from '@/config/snippets'
 
 const VISUAL_SEPARATOR = '⬇️⬇️⬇️'
 const ENGLISH_BLOG_URL = 'https://iamjeremie.me'
@@ -28,9 +28,10 @@ function buildFigureHtml(article: Article): string {
   return `<figure>${imgTag}${figcaption}</figure>`
 }
 
-function buildUtmBlock(url: string): string {
+function buildUtmBlock(url: string, blog: Article['blog']): string {
   const utmLink = generateUTMLink(url, 'Substack')
-  return `<p>${VISUAL_SEPARATOR}<br /><a href="${utmLink}">I'd like to read the full article</a></p>`
+  const anchorText = getSubstackUtmAnchorText(blog)
+  return `<p>${VISUAL_SEPARATOR}<br /><a href="${utmLink}">${anchorText}</a></p>`
 }
 
 function buildFrenchAttributionLine(): string {
@@ -61,7 +62,7 @@ function buildBodyHtml(article: Article): string {
   return [
     buildFigureHtml(article),
     article.introduction,
-    buildUtmBlock(article.url),
+    buildUtmBlock(article.url, article.blog),
     buildAttributionBlock(article),
     buildShareBlock(article),
   ].join('')

@@ -7,12 +7,23 @@ const EN_SUBSTACK_SHARE_BLOCK =
 const FR_SUBSTACK_SHARE_BLOCK =
   "Merci pour votre intérêt pour ma publication ! Cet article est public, n'hésitez pas à le partager."
 
+const EN_SUBSTACK_UTM_ANCHOR = "I'd like to read the full article"
+const FR_SUBSTACK_UTM_ANCHOR = "Allez lire l'article complet"
+
 /**
  * Return the Substack share block text for the given blog language.
  */
 export function getSubstackShareBlockText(blog: Blog): string {
   if (blog === 'french') return FR_SUBSTACK_SHARE_BLOCK
   return EN_SUBSTACK_SHARE_BLOCK
+}
+
+/**
+ * Return the Substack UTM link anchor text for the given blog language.
+ */
+export function getSubstackUtmAnchorText(blog: Blog): string {
+  if (blog === 'french') return FR_SUBSTACK_UTM_ANCHOR
+  return EN_SUBSTACK_UTM_ANCHOR
 }
 
 // ─── Medium ──────────────────────────────────────────────────────────────────

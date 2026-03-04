@@ -84,9 +84,14 @@ describe('generateSubstackContent', () => {
     expect(result.bodyHtml).toContain('utm_medium=social')
   })
 
-  it('bodyHtml UTM link anchor text is the descriptive phrase', () => {
+  it('bodyHtml UTM link anchor text is the English phrase for English article', () => {
     const result = generateSubstackContent(makeEnglishArticle())
     expect(result.bodyHtml).toContain("I'd like to read the full article")
+  })
+
+  it('bodyHtml UTM link anchor text is the French phrase for French article', () => {
+    const result = generateSubstackContent(makeFrenchArticle())
+    expect(result.bodyHtml).toContain("Allez lire l'article complet")
   })
 
   it('bodyHtml contains EN attribution for English article', () => {
