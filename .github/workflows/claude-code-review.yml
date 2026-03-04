@@ -1,14 +1,17 @@
 name: Claude Code Review
 
 on:
+  # disable workflow as it doesn't work (see https://github.com/JeremieLitzler/SocialMediaPublisherApp/actions/runs/22658021884/job/65671870426?pr=46)
+  # related to https://github.com/anthropics/claude-code-action/issues/911 ?
   pull_request:
-    types: [opened, synchronize, ready_for_review, reopened]
-    # Optional: Only run on specific file changes
-    # paths:
-    #   - "src/**/*.ts"
-    #   - "src/**/*.tsx"
-    #   - "src/**/*.js"
-    #   - "src/**/*.jsx"
+    #types: [opened, synchronize, ready_for_review, reopened]
+    types: []
+  # Optional: Only run on specific file changes
+  # paths:
+  #   - "src/**/*.ts"
+  #   - "src/**/*.tsx"
+  #   - "src/**/*.js"
+  #   - "src/**/*.jsx"
 
 jobs:
   claude-review:
@@ -41,4 +44,3 @@ jobs:
           prompt: '/code-review:code-review ${{ github.repository }}/pull/${{ github.event.pull_request.number }}'
           # See https://github.com/anthropics/claude-code-action/blob/main/docs/usage.md
           # or https://code.claude.com/docs/en/cli-reference for available options
-
