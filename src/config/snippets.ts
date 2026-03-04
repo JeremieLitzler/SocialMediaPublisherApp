@@ -7,7 +7,7 @@ const EN_SUBSTACK_SHARE_BLOCK =
 const FR_SUBSTACK_SHARE_BLOCK =
   "Merci pour votre intérêt pour ma publication ! Cet article est public, n'hésitez pas à le partager."
 
-const EN_SUBSTACK_UTM_ANCHOR = "I'd like to read the full article"
+const EN_SUBSTACK_UTM_ANCHOR = "Let's review this in the full article"
 const FR_SUBSTACK_UTM_ANCHOR = "Allez lire l'article complet"
 
 /**
