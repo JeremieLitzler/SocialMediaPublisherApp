@@ -30,6 +30,8 @@ function startOver(): void {
     </div>
 
     <div v-if="article" class="content">
+      <PlatformSwitcher current-platform="LinkedIn" />
+
       <div class="header">
         <h2 class="text-2xl font-bold mb-2">LinkedIn</h2>
       </div>
