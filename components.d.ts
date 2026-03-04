@@ -11,6 +11,7 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    AppFooter: typeof import('./src/components/layout/AppFooter.vue')['default']
     AppFormField: typeof import('./src/components/AppFormField.vue')['default']
     AppHeading: typeof import('./src/components/AppHeading.vue')['default']
     AppLink: typeof import('./src/components/AppLink.vue')['default']
