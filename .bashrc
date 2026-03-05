@@ -14,14 +14,26 @@ alias sp-db-rs='sp-db-reset && node --env-file=.env database/sedding.js'
 alias node-env-debug='source .env && node -e "console.log(true)"'
 alias debug-alias='/usr/bin/echo "test"'
 alias ui-add='npx shadcn-vue@latest add'
-alias git-ac='git ac '
-alias git-a='git add '
-alias git-c='git commit -m '
-alias git-d='git pull'
-alias git-u='git push'
-alias git-nb='git cb '
-alias git-pb='git ct origin/'
-alias git-rb='git c main && git branch -D '
+# git checkout
+alias g-c='git c ' 
+# git add + commit
+alias g-ac='git ac ' 
+alias g-a='git add '
+alias g-m='git commit -m '
+alias g-d='git pull'
+alias g-u='git push'
+# git checkout -b
+alias g-nb='git cb ' 
+# git checkout -t origin/
+alias g-pb='git ct origin/' 
+# git checkout main && git branch -D [branch-name]
+alias g-rb='git c main && git branch -D ' 
+# refresh local repo with the latest changes from main
+alias g-um='git c main && git pull --rebase' 
+# refresh local repo with the latest changes from develop
+alias g-ud='git c develop && git pull --rebase' 
+# list commits that are in the current branch but not in develop
+alias g-log='git log develop..HEAD --oneline' 
 alias nd='npm run dev'
 alias nb='npm run build'
 alias np='npm run preview'
