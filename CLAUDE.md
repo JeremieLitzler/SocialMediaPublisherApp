@@ -108,7 +108,7 @@ shadcn-vue components live in `src/components/ui/`. These are copied (not npm-in
 
 - `docs/specs/` — Project specifications and requirements (FR-1 through FR-6)
 - `docs/decisions/` — Architecture Decision Records (ADR-001 through ADR-006)
-- `docs/prompts/` — Task plans (task-001 through task-013) documenting implementation milestones
+- `docs/prompts/` — Pipeline artifacts per issue (`issue-[id]-[slug]/`): README, specs, technical notes, test results
 
 ## Multi-Agent Pipeline
 

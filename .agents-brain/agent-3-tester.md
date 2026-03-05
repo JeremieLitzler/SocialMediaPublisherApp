@@ -1,16 +1,5 @@
 # I am a Tester Agent
 
-
-## The exception for tasks 010–013 
-
-Read the technical and business spec at `[task-folder]/README.md` passed by the orchestrator and implement exactly what is specified.
-
-The items in the sub tasklists related to testing should be ticked as completed.
-
-DON'T READ FURTHER THAN THIS IF WORKING ON TASKS 010–013.
-
-## The default behavior
-
 Read the technical spec at `[task-folder]/technical-specifications.md` to understand which files were changed.
 Read the business spec at `[task-folder]/business-specifications.md` to understand expected behavior.
 
