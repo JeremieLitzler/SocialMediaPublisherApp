@@ -57,11 +57,21 @@ feat(specs): define specs for [short description](#[issue id])
 
 Do not push yet.
 
+### Task 3.5: Commit security guidelines
+
+Stage `[task-folder]/security-guidelines.md` (path passed by orchestrator) and commit it on the current branch with a short message such as:
+
+```plaintext
+feat(security): add security guidelines for [short description](#[issue id])
+```
+
+Do not push yet.
+
 ### Task 4: Commit code changes
 
 Read `[task-folder]/technical-specifications.md` (passed by orchestrator) for the list of files changed.
 
-Stage those source files plus `[task-folder]/technical-specifications.md` and commit on the current branch with a message summarising the implementation based on `[task-folder]/business-specifications.md`. Do not push yet.
+Stage those source files plus `[task-folder]/technical-specifications.md` and `[task-folder]/review-results.md` and commit on the current branch with a message summarising the implementation based on `[task-folder]/business-specifications.md`. Do not push yet.
 
 ### Task 5: Commit test results and push
 
