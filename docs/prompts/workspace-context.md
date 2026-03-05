@@ -2,7 +2,7 @@
 
 ## Current Phase
 
-🔄 Content generation — platform-specific content generators
+Issue-driven pipeline — pick next GitHub issue and run the multi-agent pipeline
 
 ## Completed
 
