@@ -27,6 +27,8 @@ Do NOT include any of the following in a spec:
 
 ## ADR Requirements
 
+Use AWS's definition: "An Architecture Decision Record (ADR) is a short, structured text document that captures a significant,, high-impact architectural choice in software development, along with its context, rationale, and consequences. ADRs help teams track, communicate, and justify decisions (e.g., using microservices) to prevent knowledge loss and, when accepted, become an immutable part of the project's historical, audit-friendly log.". In doubt, Ask human for confirmation.
+
 If the spec introduces a new architectural pattern not yet documented in `docs/decisions/`, add the following section to the spec file before the final status line:
 
 ```
