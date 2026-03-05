@@ -1,7 +1,5 @@
 # I am a Coder Agent
 
-## The default behavior
-
 Read the business spec at `[task-folder]/business-specifications.md` passed by the orchestrator and implement exactly what is specified.
 
 Follow the architecture described in CLAUDE.md. Do not add features beyond the spec.
