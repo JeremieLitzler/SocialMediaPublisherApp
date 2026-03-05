@@ -53,7 +53,7 @@ describe('generateXContent', () => {
       const article = makeArticle({ url, introduction: `<p>${intro}</p>` })
       const utmLink = generateUTMLink(url, 'X')
       const result = generateXContent(article)
-      expect(result.chunks[0]).toBe(`${intro}\n\n⬇️⬇️⬇️\n${utmLink}`)
+      expect(result.chunks[0].text).toBe(`${intro}\n\n⬇️⬇️⬇️\n${utmLink}`)
     })
 
     it('chunk content is ≤280 chars before the appended separator+link', () => {
@@ -97,7 +97,7 @@ describe('generateXContent', () => {
       const result = generateXContent(article)
       const allButLast = result.chunks.slice(0, -1)
       allButLast.forEach((chunk, i) => {
-        expect(chunk.endsWith('\n\n⬇️'), `chunk ${i} should end with ⬇️`).toBe(true)
+        expect(chunk.text.endsWith('\n\n⬇️'), `chunk ${i} should end with ⬇️`).toBe(true)
       })
     })
 
@@ -107,7 +107,7 @@ describe('generateXContent', () => {
       const utmLink = generateUTMLink(url, 'X')
       const result = generateXContent(article)
       const lastChunk = result.chunks[result.chunks.length - 1]
-      expect(lastChunk.endsWith(`\n\n⬇️⬇️⬇️\n${utmLink}`)).toBe(true)
+      expect(lastChunk.text.endsWith(`\n\n⬇️⬇️⬇️\n${utmLink}`)).toBe(true)
     })
 
     it('non-last chunks do NOT end with ⬇️⬇️⬇️', () => {
@@ -115,7 +115,7 @@ describe('generateXContent', () => {
       const result = generateXContent(article)
       const allButLast = result.chunks.slice(0, -1)
       allButLast.forEach((chunk, i) => {
-        expect(chunk.includes('⬇️⬇️⬇️'), `chunk ${i} must not contain triple arrows`).toBe(false)
+        expect(chunk.text.includes('⬇️⬇️⬇️'), `chunk ${i} must not contain triple arrows`).toBe(false)
       })
     })
 
@@ -124,7 +124,7 @@ describe('generateXContent', () => {
       const result = generateXContent(article)
       result.chunks.forEach((chunk, i) => {
         // Strip the formatting suffix to get the raw chunk text
-        const rawChunk = chunk
+        const rawChunk = chunk.text
           .replace(/\n\n⬇️⬇️⬇️\n.+$/, '') // last chunk suffix
           .replace(/\n\n⬇️$/, '') // non-last chunk suffix
         expect(
@@ -150,7 +150,7 @@ describe('generateXContent', () => {
       const result = generateXContent(article)
       // Should still produce exactly one chunk (the oversized sentence)
       expect(result.chunks).toHaveLength(1)
-      const rawChunk = result.chunks[0].replace(/\n\n⬇️⬇️⬇️\n.+$/, '')
+      const rawChunk = result.chunks[0].text.replace(/\n\n⬇️⬇️⬇️\n.+$/, '')
       expect(rawChunk).toBe(longSentence)
     })
 
@@ -172,7 +172,7 @@ describe('generateXContent', () => {
       expect(result.chunks.length).toBeGreaterThanOrEqual(2)
 
       // First raw chunk must be the long sentence alone
-      const firstRaw = result.chunks[0].replace(/\n\n⬇️$/, '').replace(/\n\n⬇️⬇️⬇️\n.+$/, '')
+      const firstRaw = result.chunks[0].text.replace(/\n\n⬇️$/, '').replace(/\n\n⬇️⬇️⬇️\n.+$/, '')
       expect(firstRaw).toBe(longSentenceWithPeriod)
     })
   })
@@ -186,7 +186,7 @@ describe('generateXContent', () => {
       const result = generateXContent(article)
 
       expect(result.chunks).toHaveLength(1)
-      expect(result.chunks[0]).toBe(`Hello world. This is a test.\n\n⬇️⬇️⬇️\n${utmLink}`)
+      expect(result.chunks[0].text).toBe(`Hello world. This is a test.\n\n⬇️⬇️⬇️\n${utmLink}`)
     })
 
     it('no HTML angle-bracket characters appear in any chunk', () => {
@@ -195,8 +195,8 @@ describe('generateXContent', () => {
       const article = makeArticle({ introduction: html })
       const result = generateXContent(article)
       result.chunks.forEach((chunk) => {
-        expect(chunk).not.toContain('<')
-        expect(chunk).not.toContain('>')
+        expect(chunk.text).not.toContain('<')
+        expect(chunk.text).not.toContain('>')
       })
     })
   })
@@ -208,7 +208,7 @@ describe('generateXContent', () => {
       const expectedLink = generateUTMLink(url, 'X')
       const result = generateXContent(article)
       const lastChunk = result.chunks[result.chunks.length - 1]
-      expect(lastChunk).toContain(expectedLink)
+      expect(lastChunk.text).toContain(expectedLink)
     })
 
     it('UTM link contains utm_medium=social and utm_source=X', () => {
@@ -216,8 +216,71 @@ describe('generateXContent', () => {
       const article = makeArticle({ url, introduction: '<p>A sentence.</p>' })
       const result = generateXContent(article)
       const lastChunk = result.chunks[result.chunks.length - 1]
-      expect(lastChunk).toContain('utm_medium=social')
-      expect(lastChunk).toContain('utm_source=X')
+      expect(lastChunk.text).toContain('utm_medium=social')
+      expect(lastChunk.text).toContain('utm_source=X')
+    })
+  })
+
+  describe('paragraph-first chunking', () => {
+    it('two <p> paragraphs each ≤280 chars produce one chunk per paragraph', () => {
+      const para1 = 'First paragraph, short enough to fit in a single chunk easily.'
+      const para2 = 'Second paragraph, also short enough to remain a single chunk on its own.'
+      const html = `<p>${para1}</p><p>${para2}</p>`
+      const article = makeArticle({ introduction: html })
+      const result = generateXContent(article)
+      expect(result.chunks).toHaveLength(2)
+      const rawFirst = result.chunks[0].text.replace(/\n\n⬇️$/, '').replace(/\n\n⬇️⬇️⬇️\n.+$/, '')
+      const rawSecond = result.chunks[1].text.replace(/\n\n⬇️⬇️⬇️\n.+$/, '')
+      expect(rawFirst).toBe(para1)
+      expect(rawSecond).toBe(para2)
+    })
+
+    it('one <p> >280 chars with sentence boundaries splits across multiple chunks, no oversized flag', () => {
+      const sentence1 =
+        'The first sentence of this article is intentionally written to be quite long and descriptive.'
+      const sentence2 =
+        'The second sentence continues the thought and adds even more context for the reader.'
+      const sentence3 =
+        'The third sentence wraps up the opening paragraph with a concluding remark about the topic.'
+      const sentence4 =
+        'A fourth sentence is added to make absolutely certain that the text exceeds the 280-character limit.'
+      const introText = `${sentence1} ${sentence2} ${sentence3} ${sentence4}`
+      expect(introText.length).toBeGreaterThan(280)
+
+      const article = makeArticle({ introduction: `<p>${introText}</p>` })
+      const result = generateXContent(article)
+
+      expect(result.chunks.length).toBeGreaterThan(1)
+      result.chunks.forEach((chunk) => {
+        expect(chunk.oversized).toBeFalsy()
+      })
+    })
+
+    it('one <p> >280 chars with no sentence boundary produces one chunk with oversized: true', () => {
+      const longSentence =
+        'This is a very long sentence with absolutely no terminal punctuation followed by a space so the algorithm cannot split it and it must be placed as a single oversized chunk regardless of the two-hundred-and-eighty character limit that normally applies to tweets posted on the X platform'
+      expect(longSentence.length).toBeGreaterThan(280)
+
+      const article = makeArticle({ introduction: `<p>${longSentence}</p>` })
+      const result = generateXContent(article)
+
+      expect(result.chunks).toHaveLength(1)
+      expect(result.chunks[0].oversized).toBe(true)
+    })
+
+    it('warning message does not appear in any chunk text field', () => {
+      const longSentence =
+        'This is a very long sentence with absolutely no terminal punctuation followed by a space so the algorithm cannot split it and it must be placed as a single oversized chunk regardless of the two-hundred-and-eighty character limit that normally applies to tweets posted on the X platform'
+      const article = makeArticle({ introduction: `<p>${longSentence}</p>` })
+      const result = generateXContent(article)
+
+      result.chunks.forEach((chunk) => {
+        // The warning message is rendered by PlatformX.vue separately; it must
+        // never appear inside the chunk text that goes to the clipboard.
+        expect(chunk.text).not.toContain('oversized')
+        expect(chunk.text).not.toContain('warning')
+        expect(chunk.text).not.toContain('exceeds')
+      })
     })
   })
 })
