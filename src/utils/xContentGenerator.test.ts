@@ -270,7 +270,7 @@ describe('generateXContent', () => {
 
     it('warning message does not appear in any chunk text field', () => {
       const longSentence =
-        'This is a very long sentence with absolutely no terminal punctuation followed by a space so the algorithm cannot split it and it must be placed as a single oversized chunk regardless of the two-hundred-and-eighty character limit that normally applies to tweets posted on the X platform'
+        'Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat non proident sunt in culpa qui officia deserunt mollit anim id est laborum'
       const article = makeArticle({ introduction: `<p>${longSentence}</p>` })
       const result = generateXContent(article)
 
