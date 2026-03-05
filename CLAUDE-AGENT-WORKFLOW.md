@@ -1,5 +1,7 @@
 # Agent Workflow Alignment Plan
 
+**Claude Code, DO NOT READ FILE PAST March 2, 2026**.
+
 This file documents the changes to be applied to `.agents-brain/`, `.claude/settings.local.json`, and `CLAUDE.md` to align the multi-agent pipeline with this project (TypeScript / Vue / Vitest — not Python).
 
 Pending user approval, each section below will be applied in order.
@@ -29,7 +31,7 @@ The agents should write into `docs/prompts/tasks/` a folder per task with the fo
                   |__ test-results.md
 ```
 
-For tasks 10 to 13, DON'T run the specifications agent. However, the other agents should update the `README.md` in the task subfolder as the job is executed. 
+For tasks 10 to 13, DON'T run the specifications agent. However, the other agents should update the `README.md` in the task subfolder as the job is executed.
 
 Beyond those tasks, the agents should use the `task-NNN` structure as template. From then, the logic of tasks 10 to 13 MUST be removed from agents brain.
 
@@ -42,6 +44,7 @@ Beyond those tasks, the agents should use the `task-NNN` structure as template. 
 
 **Current:** Step 5 says "you must request human approval to run the merge command" — one gate only.
 **Change:** Add **two** explicit gates:
+
 1. Before creating the PR (ask human to confirm PR details).
 2. Before running the merge command (ask human to confirm merge).
 
@@ -60,47 +63,51 @@ Beyond those tasks, the agents should use the `task-NNN` structure as template. 
 ### no-else rule (TypeScript)
 
 Before:
+
 ```typescript
 function statusLabel(code: number): string {
   if (code === 200) {
-    return "ok";
+    return 'ok'
   } else {
-    return "not ok";
+    return 'not ok'
   }
 }
 ```
 
 After (guard clause, no `else`):
+
 ```typescript
 function statusLabel(code: number): string {
-  if (code === 200) return "ok";
-  return "not ok";
+  if (code === 200) return 'ok'
+  return 'not ok'
 }
 ```
 
 ### one-level-of-indentation rule (TypeScript)
 
 Before:
+
 ```typescript
 function collectValid(items: Item[]): Item[] {
-  const result: Item[] = [];
+  const result: Item[] = []
   for (const item of items) {
     if (item.isValid()) {
-      result.push(item);
+      result.push(item)
     }
   }
-  return result;
+  return result
 }
 ```
 
 After (inner block extracted):
+
 ```typescript
 function collectValid(items: Item[]): Item[] {
-  return items.filter(isValid);
+  return items.filter(isValid)
 }
 
 function isValid(item: Item): boolean {
-  return item.isValid();
+  return item.isValid()
 }
 ```
 
@@ -123,11 +130,14 @@ function isValid(item: Item): boolean {
 ## agent-4-git.md
 
 ### Task 1
+
 **Current:** Pull latest `main`.
 **Change:** Pull latest `develop`.
 
 ### Commit rules
+
 **Remove:**
+
 - Reference to `.agents-output/specs.md` (file does not exist in this project).
 - "except for issue #23" special case (project-specific to deadlinkchecker, not this repo).
 
@@ -136,6 +146,7 @@ function isValid(item: Item): boolean {
 **Fix path:** `.claude\settings.local.json` → `.claude/settings.local.json` (forward slash, cross-platform).
 
 ### Task 3
+
 **Current:** `feat(specs): record specs for [short description]`
 **Change:** `feat(specs): define specs for [short description](#[issue id])`
 
@@ -144,11 +155,13 @@ function isValid(item: Item): boolean {
 ## .claude/settings.local.json
 
 **Remove:**
+
 - `WebFetch(domain:deadlinkchecker-sample-website.netlify.app)` — dead link checker domain, wrong project.
 - `Bash(/e/Applications/Scoop/apps/python/current/python.exe -m unittest:*)` — Python test runner, wrong stack.
 - `Bash(cd /e/Git/GitHub/deadlinkchecker && ...)` — wrong repo path.
 
 **Add:**
+
 - `Bash(npm run test:*)` — Vitest test runner.
 - `Bash(npm run build:*)` — Vite build.
 - `Bash(npm run lint:*)` — ESLint.
@@ -156,6 +169,7 @@ function isValid(item: Item): boolean {
 - `Bash(npm run format:*)` — Prettier.
 
 **Keep unchanged:**
+
 - `Bash(gh issue:*)`
 - `Bash(git:*)`
 - `Bash(gh pr:*)`

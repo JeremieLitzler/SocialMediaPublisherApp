@@ -16,9 +16,8 @@ Obtain the GitHub issue number and title from the user request (or fetch from Gi
 
 Build:
 
-- `NNN` = zero-padded issue number (e.g. `014`, `015`).
 - `slug` = issue title in lowercase, spaces and special characters replaced by hyphens.
-- `task-folder` = `docs/prompts/tasks/task-[NNN]-[slug]/`
+- `task-folder` = `docs/prompts/tasks/issue-[id of issue]-[slug]/`
 
 Save the user request to `[task-folder]/README.md`.
 
@@ -26,11 +25,7 @@ Read `.agents-brain/agent-4-git.md` and spawn a subagent using the Task tool wit
 
 Wait for the branch to be created before proceeding.
 
-**Special handling for tasks 010–013:** If NNN is between 010 and 013 inclusive, skip Step 1 (Specs agent) and proceed directly to Step 2. The pre-existing AIand human co-authored specs in `[task-folder]/README.md` serves as the business, technical specification and test results storage.
-
 ### Step 1 — Specs
-
-> Skip this step for tasks 010–013. See Step 0 special handling.
 
 Read `.agents-brain/agent-1-specs.md` and spawn a subagent using the Task tool with that prompt. Pass the task folder path `[task-folder]` to the subagent.
 
@@ -49,8 +44,7 @@ Read `.agents-brain/agent-4-git.md` and spawn a subagent using the Task tool wit
 
 Read `.agents-brain/agent-2-coder.md` and spawn a subagent using the Task tool with that prompt. Pass the task folder path `[task-folder]` to the subagent.
 
-For tasks 010–013, instruct the subagent to use `[task-folder]/README.md` as the business specification. It must check items in the inner tasklist.
-For all other tasks, the subagent reads `[task-folder]/business-specifications.md`.
+For all tasks, the subagent reads `[task-folder]/business-specifications.md`.
 
 The subagent writes `[task-folder]/technical-specifications.md`.
 
@@ -105,6 +99,7 @@ Once approved, run the merge command and return local repository to `develop bra
 ## Bug Feedback Loop
 
 This loop activates when:
+
 - The versioning agent (any task) reports a bug it discovered and refused to fix.
 - The user reports a bug (e.g. CI failure on the PR, a test error, a runtime issue).
 

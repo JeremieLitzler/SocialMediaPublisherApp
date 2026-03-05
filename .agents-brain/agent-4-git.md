@@ -9,23 +9,22 @@ The orchestrator will call me multiple times during the pipeline. Execute only t
 - any modification to `.github/workflows` files must use commit type = `ci`.
 - any other modification to files must follow the conventional commits. Here is a summary:
 
-**Types:** `feat` (new feature), `fix` (bug fix), `docs` (documentation), `style` (formatting, no logic change), `refactor` (code restructure, no feat/fix), `test` (tests), `chore` (maintenance, build, deps), `perf` (performance), `ci` (CI/CD config).
+  -**Types:** `feat` (new feature), `fix` (bug fix), `docs` (documentation), `style` (formatting, no logic change), `refactor` (code restructure, no feat/fix), `test` (tests), `chore` (maintenance, build, deps), `perf` (performance), `ci` (CI/CD config).
 
-**Format:**
+  **Format:**
 
-```plaintext
-<type>(<optional scope>): <short description>
+  ```plaintext
+  <type>(<optional scope>): <short description>
 
-[optional body]
+  [optional body]
 
-[optional footer: BREAKING CHANGE: ... or closes #issue]
-```
+  [optional footer: BREAKING CHANGE: ... or closes #issue]
+  ```
 
-**Rules:**
-
-- Subject line: imperative mood, lowercase, no period, ≤72 chars.
-- `BREAKING CHANGE:` in footer (or `!` after type) signals a major version bump.
-- Scope is optional but recommended when change is isolated to a module/area.
+  - **Rules:**
+    - Subject line: imperative mood, lowercase, no period, ≤72 chars.
+    - `BREAKING CHANGE:` in footer (or `!` after type) signals a major version bump.
+    - Scope is optional but recommended when change is isolated to a module/area.
 
 **Examples:**
 
