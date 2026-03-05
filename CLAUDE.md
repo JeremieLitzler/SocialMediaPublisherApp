@@ -7,12 +7,13 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 It is a senior engineer following Git Flow strategy, suggesting performant, secure and clean solutions.
 
 It must create:
+
 - a feature branch when adding functionnality,
 - a fix branch when resolving an issue,
 - a docs branch when updating Markdown files only.
 - a new branch when a file is modified and it doesn't fall in the three previous scenarii. Follow conventional commit and Git Flow rules when naming branches.
 
-It always plans tasks and requests approval before after writing docs or code. 
+It always plans tasks and requests approval before after writing docs or code.
 No need to confirm file creation or modification, but confirm content is OK with Claude code's user.
 
 No need to congratulate or use language that use unnecessary output tokens. Go to the point.
@@ -85,7 +86,7 @@ Pure functions targeting these CSS selectors on the fetched blog HTML:
 
 `Platform` = `'X' | 'LinkedIn' | 'Medium' | 'Substack'`
 
-Each platform has its own content interface: `XContent`, `LinkedInContent`, `MediumContent`, `SubstackContent`. Content generation components for each platform are planned in tasks 010–013.
+Each platform has its own content interface: `XContent`, `LinkedInContent`, `MediumContent`, `SubstackContent`.
 
 ### Routing
 
@@ -113,7 +114,7 @@ shadcn-vue components live in `src/components/ui/`. These are copied (not npm-in
 
 **When the user provides a feature request, bug fix, or any change, act as the orchestrator:**
 
-1. Save the request to `docs/prompts/tasks/task-[NNN]-[slug]/README.md`.
+1. Save the request to `docs/prompts/tasks/issue-[id of issue]-[slug]/README.md`.
 2. Follow the pipeline in `.agents-brain/agent-0-orchestrator.md` step by step.
 
 The user never needs to run a command — just describe what they want and the pipeline starts.
@@ -124,7 +125,7 @@ All pipeline artifacts for a given task live in one folder:
 
 ```
 docs/prompts/tasks/
-  task-[NNN]-[slug]/
+  issue-[id of issue]-[slug]/
     README.md                    ← user request (input)
     business-specifications.md   ← specs agent output
     technical-specifications.md  ← coder agent output
@@ -135,12 +136,12 @@ docs/prompts/tasks/
 
 ### Agents and their prompt files
 
-| Agent         | Prompt                            | Reads                                                                             | Writes                                          |
-| ------------- | --------------------------------- | --------------------------------------------------------------------------------- | ----------------------------------------------- |
-| Specification | `.agents-brain/agent-1-specs.md`  | `[task-folder]/README.md`                                                         | `[task-folder]/business-specifications.md`      |
-| Coder         | `.agents-brain/agent-2-coder.md`  | `[task-folder]/business-specifications.md`                                        | `[task-folder]/technical-specifications.md`     |
-| Tester        | `.agents-brain/agent-3-tester.md` | `[task-folder]/business-specifications.md`, `[task-folder]/technical-specifications.md` | `[task-folder]/test-results.md`            |
-| Versioning    | `.agents-brain/agent-4-git.md`    | `[task-folder]/business-specifications.md`, `[task-folder]/test-results.md`       | git history                                     |
+| Agent         | Prompt                            | Reads                                                                                   | Writes                                      |
+| ------------- | --------------------------------- | --------------------------------------------------------------------------------------- | ------------------------------------------- |
+| Specification | `.agents-brain/agent-1-specs.md`  | `[task-folder]/README.md`                                                               | `[task-folder]/business-specifications.md`  |
+| Coder         | `.agents-brain/agent-2-coder.md`  | `[task-folder]/business-specifications.md`                                              | `[task-folder]/technical-specifications.md` |
+| Tester        | `.agents-brain/agent-3-tester.md` | `[task-folder]/business-specifications.md`, `[task-folder]/technical-specifications.md` | `[task-folder]/test-results.md`             |
+| Versioning    | `.agents-brain/agent-4-git.md`    | `[task-folder]/business-specifications.md`, `[task-folder]/test-results.md`             | git history                                 |
 
 ### Pipeline flow
 

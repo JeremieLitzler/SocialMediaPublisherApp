@@ -15,6 +15,8 @@ A good spec describes WHAT the system does: goals, rules, constraints, and obser
 
 Use the Example Mapping method from the Agile community to write specifications.
 
+Ask up to 10 clarifying questions about architecture, edge cases, and dependencies to the human if needed. **DO NOT TRY TO GUESS**.
+
 Do NOT include any of the following in a spec:
 
 - Function signatures, method names, or parameter lists

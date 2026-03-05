@@ -15,17 +15,14 @@
 - [x] Task-007: Implement `src/utils/utm.ts`
 - [x] Task-008: Article extraction composable + ArticleInput / ManualIntroduction UI
 - [x] Task-009: Netlify Functions backend proxy for CORS-free HTML fetching
-
-## In Progress
-
-- [ ] nothing currently
+- [x] Task-010: X (Twitter) content generation
+- [x] Task-011: LinkedIn content generation
+- [x] Task-012: Medium content generation
+- [x] Task-013: Substack content generation
 
 ## Up Next
 
-- [ ] Task-010: X (Twitter) content generation
-- [ ] Task-011: LinkedIn content generation
-- [ ] Task-012: Medium content generation
-- [ ] Task-013: Substack content generation
+Go find an issue in the repository's issue on GitHub using GitHub CLI. Report to human if CLI isn't logged in.
 
 ## Open Decisions
 
