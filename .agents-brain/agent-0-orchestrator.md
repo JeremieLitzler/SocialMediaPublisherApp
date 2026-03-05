@@ -38,7 +38,19 @@ If the spec file contains `### ADR Required`, pause the pipeline and use AskUser
 Use AskUserQuestion to show the user a summary of `[task-folder]/business-specifications.md` and ask for approval before proceeding to commit changes.
 If the user does not approve, stop the pipeline and report why.
 
-Read `.agents-brain/agent-4-git.md` and spawn a subagent using the Task tool with that prompt, instructing it to perform **Task 3 only** (commit specs output). Then proceed to coding.
+Read `.agents-brain/agent-4-git.md` and spawn a subagent using the Task tool with that prompt, instructing it to perform **Task 3 only** (commit specs output). Then proceed to Step 1.5.
+
+### Step 1.5 — Security
+
+Read `.agents-brain/agent-5-security.md` and spawn a subagent using the Task tool with that prompt. Pass the task folder path `[task-folder]` to the subagent.
+
+The subagent reads `[task-folder]/business-specifications.md` and writes `[task-folder]/security-guidelines.md`.
+
+Wait for `[task-folder]/security-guidelines.md` to end with `status: ready`.
+
+If the file contains `### ADR Required`, pause the pipeline and use AskUserQuestion to present the ADR details to the user. The human must approve the ADR before coding starts. If the user does not approve, stop the pipeline and report why.
+
+Read `.agents-brain/agent-4-git.md` and spawn a subagent using the Task tool with that prompt, instructing it to perform **Task 3.5 only** (commit security guidelines). Then proceed to coding.
 
 ### Step 2 — Coding
 
@@ -55,12 +67,27 @@ If `status: review specs`:
 - Inform the user and re-run Step 1 (counts toward MAX_RETRIES).
 - On approval, retry Step 2.
 
-If `status: ready`:
+If `status: ready`, proceed to Step 2.5.
 
-- If the technical-spec file contains `### ADR Required`, pause the pipeline and use AskUserQuestion to present the ADR details to the user. The human must approve the ADR before committing code. If the user does not approve, stop the pipeline.
+### Step 2.5 — Code Review
+
+Read `.agents-brain/agent-6-reviewer.md` and spawn a subagent using the Task tool with that prompt. Pass the task folder path `[task-folder]` to the subagent.
+
+The subagent reviews the changed source files against `[task-folder]/security-guidelines.md` and `[task-folder]/business-specifications.md`, runs `npm run lint` and `npm run type-check`, and writes `[task-folder]/review-results.md`.
+
+Wait for `[task-folder]/review-results.md` to end with either `status: approved` or `status: changes requested`.
+
+If `status: changes requested`:
+
+- Re-run Step 2 (coder reads `review-results.md` and fixes). Counts toward MAX_RETRIES.
+- Then re-run Step 2.5.
+
+If `status: approved`:
+
+- If `[task-folder]/technical-specifications.md` contains `### ADR Required`, pause the pipeline and use AskUserQuestion to present the ADR details to the user. The human must approve the ADR before committing code. If the user does not approve, stop the pipeline.
 - Use AskUserQuestion to show the user a summary of `[task-folder]/technical-specifications.md` and ask for approval before testing.
   - If the user does not approve, stop the pipeline.
-- Read `.agents-brain/agent-4-git.md` and spawn a subagent using the Task tool with that prompt, instructing it to perform **Task 4 only** (commit code changes).
+- Read `.agents-brain/agent-4-git.md` and spawn a subagent using the Task tool with that prompt, instructing it to perform **Task 4 only** (commit code and review changes).
 
 ### Step 3 — Testing
 

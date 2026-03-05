@@ -128,7 +128,9 @@ docs/prompts/tasks/
   issue-[id of issue]-[slug]/
     README.md                    ← user request (input)
     business-specifications.md   ← specs agent output
+    security-guidelines.md       ← security agent output
     technical-specifications.md  ← coder agent output
+    review-results.md            ← reviewer agent output
     test-results.md              ← tester agent output
 ```
 
@@ -136,36 +138,45 @@ docs/prompts/tasks/
 
 ### Agents and their prompt files
 
-| Agent         | Prompt                            | Reads                                                                                   | Writes                                      |
-| ------------- | --------------------------------- | --------------------------------------------------------------------------------------- | ------------------------------------------- |
-| Specification | `.agents-brain/agent-1-specs.md`  | `[task-folder]/README.md`                                                               | `[task-folder]/business-specifications.md`  |
-| Coder         | `.agents-brain/agent-2-coder.md`  | `[task-folder]/business-specifications.md`                                              | `[task-folder]/technical-specifications.md` |
-| Tester        | `.agents-brain/agent-3-tester.md` | `[task-folder]/business-specifications.md`, `[task-folder]/technical-specifications.md` | `[task-folder]/test-results.md`             |
-| Versioning    | `.agents-brain/agent-4-git.md`    | `[task-folder]/business-specifications.md`, `[task-folder]/test-results.md`             | git history                                 |
+| Agent         | Prompt                               | Reads                                                                                                          | Writes                                          |
+| ------------- | ------------------------------------ | -------------------------------------------------------------------------------------------------------------- | ----------------------------------------------- |
+| Specification | `.agents-brain/agent-1-specs.md`     | `[task-folder]/README.md`                                                                                      | `[task-folder]/business-specifications.md`      |
+| Security      | `.agents-brain/agent-5-security.md`  | `[task-folder]/business-specifications.md`                                                                     | `[task-folder]/security-guidelines.md`          |
+| Coder         | `.agents-brain/agent-2-coder.md`     | `[task-folder]/business-specifications.md`, `[task-folder]/security-guidelines.md`                            | `[task-folder]/technical-specifications.md`     |
+| Reviewer      | `.agents-brain/agent-6-reviewer.md`  | `[task-folder]/technical-specifications.md`, `[task-folder]/security-guidelines.md`, `[task-folder]/business-specifications.md` | `[task-folder]/review-results.md` |
+| Tester        | `.agents-brain/agent-3-tester.md`    | `[task-folder]/business-specifications.md`, `[task-folder]/technical-specifications.md`                       | `[task-folder]/test-results.md`                 |
+| Versioning    | `.agents-brain/agent-4-git.md`       | `[task-folder]/business-specifications.md`, `[task-folder]/test-results.md`                                   | git history                                     |
 
 ### Pipeline flow
 
-```
-[task-folder]/README.md
-       ↓
-Versioning agent → branch
-       ↓
-  Specs agent → business-specifications.md
-       ↓           ↑ ADR Required (human approves before proceeding)
-Versioning agent → commit specs
-       ↓ ← human approval
-  Coder agent → technical-specifications.md
-       ↓           ↑ status: review specs (loops back)
-       ↓           ↑ ADR Required (human approves before committing)
-Versioning agent → commit code
-       ↓ ← human approval
- Tester agent → test-results.md
-       ↓           ↑ status: failed (loops back to coder)
-Versioning agent → commit tests + push
-       ↓ ← human approval (PR creation)
-  gh pr create
-       ↓ ← human approval (merge)
-  gh pr merge
+```mermaid
+flowchart TD
+    userRequest([User request<br />docs/prompts/tasks/issue-&lsqb;id&rsqb;-&lsqb;slug&rsqb;/README.md]) --> versioningBranch[Versioning agent<br />Task 1-2: pull develop + create branch]
+    versioningBranch --> specsAgent[Specs agent<br />writes business-specifications.md]
+    specsAgent -->|ADR Required → human approves| specsAgent
+    specsAgent --> approveSpecs{Human approves<br />business specs?}
+    approveSpecs -->|Rejected| stoppedAfterSpecs([Pipeline stopped])
+    approveSpecs -->|Approved| versioningCommitSpecs[Versioning agent<br />Task 3: commit business-specifications.md]
+    versioningCommitSpecs --> securityAgent[Security agent<br />writes security-guidelines.md]
+    securityAgent -->|ADR Required → human approves| securityAgent
+    securityAgent --> versioningCommitSecurity[Versioning agent<br />Task 3.5: commit security-guidelines.md]
+    versioningCommitSecurity --> coderAgent[Coder agent<br />writes technical-specifications.md]
+    coderAgent -->|status: review specs → loop back| specsAgent
+    coderAgent --> reviewerAgent[Reviewer agent<br />runs lint + type-check + writes review-results.md]
+    reviewerAgent -->|status: changes requested → loop back| coderAgent
+    reviewerAgent -->|ADR Required → human approves| reviewerAgent
+    reviewerAgent --> approveTechnicalSpecs{Human approves<br />technical specs?}
+    approveTechnicalSpecs -->|Rejected| stoppedAfterReview([Pipeline stopped])
+    approveTechnicalSpecs -->|Approved| versioningCommitCode[Versioning agent<br />Task 4: commit source files + review-results.md]
+    versioningCommitCode --> testerAgent[Tester agent<br />runs npm test + writes test-results.md]
+    testerAgent -->|status: failed → loop back| coderAgent
+    testerAgent --> versioningCommitTests[Versioning agent<br />Task 5: commit test files + push branch]
+    versioningCommitTests --> approvePR{Human approves<br />PR creation?}
+    approvePR -->|Rejected| stoppedBeforePR([Pipeline stopped])
+    approvePR -->|Approved| createPR[gh pr create]
+    createPR --> approveMerge{Human approves<br />merge?}
+    approveMerge -->|Rejected| prRemainsOpen([PR remains open])
+    approveMerge -->|Approved| mergePR([gh pr merge + return to develop])
 ```
 
 Human approval gates: after specs, after coding, before PR creation, and before merge. The orchestrator retries failed loops up to 3 times before aborting. Agents flag `### ADR Required` in their output files when a new architectural pattern is introduced; the orchestrator surfaces this to the human before proceeding.
