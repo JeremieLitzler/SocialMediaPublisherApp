@@ -20,9 +20,18 @@ const chunks = computed(() => {
   return generateXContent(article.value).chunks
 })
 
+const oversizedCount = computed(() => chunks.value.filter((chunk) => chunk.oversized).length)
+
 const chunkCountLabel = computed(() => {
-  const count = chunks.value.length
-  return count === 1 ? '1 chunk to post' : `${count} chunks to post`
+  const total = chunks.value.length
+  const oversized = oversizedCount.value
+  const baseLabel = total === 1 ? '1 chunk to post' : `${total} chunks to post`
+
+  if (oversized === 0) {
+    return baseLabel
+  }
+
+  return `${baseLabel}, ${oversized} oversized`
 })
 
 function startOver(): void {
@@ -51,9 +60,13 @@ function startOver(): void {
           v-for="(chunk, index) in chunks"
           :key="index"
           class="chunk border rounded-lg p-4"
+          :class="{ 'border-orange-500': chunk.oversized }"
         >
-          <pre class="whitespace-pre-wrap text-sm mb-3">{{ chunk }}</pre>
-          <CopyButton :text="chunk" label="Copy chunk" />
+          <pre class="whitespace-pre-wrap text-sm mb-3">{{ chunk.text }}</pre>
+          <CopyButton :text="chunk.text" label="Copy chunk" />
+          <p v-if="chunk.oversized" class="text-sm text-orange-600 mt-2">
+            This chunk exceeds 280 characters and could not be split. Consider adapting it before posting.
+          </p>
         </div>
       </div>
 

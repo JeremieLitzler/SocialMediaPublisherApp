@@ -72,12 +72,25 @@ export interface ExtractionState {
 }
 
 /**
+ * A single X (Twitter) chunk with optional oversized warning flag.
+ * The `text` field holds the fully formatted chunk (with arrow/UTM suffix).
+ * The `oversized` flag is true when the source paragraph exceeds 280 characters
+ * and contains no sentence boundary that would allow splitting.
+ */
+export interface XChunk {
+  /** Fully formatted chunk text including arrow/UTM suffix */
+  text: string
+  /** True when paragraph exceeded 280 chars with no sentence boundary */
+  oversized?: boolean
+}
+
+/**
  * Generated content for X (Twitter)
  * Introduction split into 280-character chunks
  */
 export interface XContent {
-  /** Array of text chunks, each ≤280 chars, individually copyable */
-  chunks: string[]
+  /** Array of chunk objects, each with formatted text and optional oversized flag */
+  chunks: XChunk[]
 }
 
 /**
