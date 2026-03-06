@@ -191,7 +191,7 @@ p {
   }
   .field,
   .link {
-    @apply focus:outline-2;
+    @apply focus:outline-2 underline;
   }
 
   .label {
