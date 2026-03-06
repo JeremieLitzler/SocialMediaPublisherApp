@@ -1,7 +1,7 @@
 <template>
   <footer class="border-t flex flex-wrap justify-center items-center gap-4 px-4 py-3 text-sm">
     <span>
-      Made by
+      Made 🛠️ by
       <AppLink to="https://iamjeremie.me/">Jeremie</AppLink>
       and
       <AppLink to="https://claude.ai/code">Claude</AppLink>
