@@ -86,9 +86,9 @@ describe('AppFooter', () => {
     })
   })
 
-  it('footer text contains "Made by"', () => {
+  it('footer text contains "Made 🛠️ by"', () => {
     const wrapper = mount(AppFooter, globalConfig)
-    expect(wrapper.find('footer').text()).toContain('Made by')
+    expect(wrapper.find('footer').text()).toContain('Made 🛠️ by')
   })
 
   it('footer text contains "and"', () => {
