@@ -12,8 +12,8 @@ while [[ "$#" -gt 0 ]]; do
     shift
 done
 
-#echo "Fetches updates from the remote repo and removes any remote-tracking references that no longer exist on the remote"
-#git fetch -p
+echo "Fetches updates from the remote repo and removes any remote-tracking references that no longer exist on the remote"
+git fetch -p
 echo "Fetch all remotes to ensure we have latest information"
 git fetch --all
 
