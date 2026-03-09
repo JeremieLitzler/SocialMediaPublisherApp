@@ -2,6 +2,10 @@
 
 Using the project context in CLAUDE.md and README.md, write a detailed business spec to `business-specifications.md` inside the task folder passed by the orchestrator.
 
+The orchestrator passes:
+- `Task folder: [task-folder]` — directory where all pipeline artifacts are written
+- `Worktree: [worktree]` — absolute path to the active worktree; resolve `[task-folder]` as a path under it
+
 Take the request in `[task-folder]/README.md` to understand the feature or change being requested and write the specifications.
 
 The specifications must include:

@@ -39,13 +39,21 @@ docs: update API usage in README
 
 ### Task 1: Make Sure Local Repository Is Up-to-date
 
-Pull latest `develop` to ensure the branch is created from a clean base.
+Run `git fetch origin` to update all remote refs. The bare repo has no working tree to pull into — do **not** use `git pull`.
 
-### Task 2: Create new branch
+### Task 2: Create new branch and worktree
 
 Read the user request file at `[task-folder]/README.md` to understand the nature of the change (feature, fix, or docs).
 
-Create the branch according to `CLAUDE.md` instructions before any other agent writes files.
+Determine `<type>` (e.g. `feat`, `fix`, `ci`, `docs`) and `<slug>` from the issue title.
+
+From inside `<repo>.git/` (the bare repository root), run:
+
+```bash
+git worktree add <type>_<slug> -b <type>/<slug>
+```
+
+The resulting worktree path is `<repo>.git/<type>_<slug>/`. Report this path back to the orchestrator as `Worktree: <absolute-path>` so every subsequent agent can use it.
 
 ### Task 3: Commit specs output
 
@@ -83,6 +91,22 @@ If the last line is `status: passed`:
 - Write a meaningful commit message that summarises the change based on `[task-folder]/business-specifications.md` within Git recommended message length. Put anything beyond the commit message limit into the commit description.
 - Commit on the current feature branch — never commit directly to develop or main.
 - Push the branch to origin.
+- After pushing, update the `develop` worktree so it is ready for the next task:
+
+```bash
+git -C <repo>.git/develop pull
+```
+
+### Task 6: Remove worktree (post-merge cleanup)
+
+Run from inside `<repo>.git/` (the bare repository root):
+
+```bash
+git worktree remove <type>_<slug>
+git branch -d <type>/<slug>
+```
+
+Then run `git -C <repo>.git/develop pull` to ensure `develop` reflects the merged commit.
 
 ## Bug Discovery Rule (applies to all tasks)
 

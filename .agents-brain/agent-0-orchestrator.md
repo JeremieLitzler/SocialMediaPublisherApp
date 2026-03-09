@@ -21,13 +21,16 @@ Build:
 
 Save the user request to `[task-folder]/README.md`.
 
-Read `.agents-brain/agent-4-git.md` and spawn a subagent using the Task tool with that prompt, instructing it to perform **Task 1 and Task 2 only** (pull latest develop and create the branch). Do not ask it to commit or push yet.
+Read `.agents-brain/agent-4-git.md` and spawn a subagent using the Task tool with that prompt, instructing it to perform **Task 1 and Task 2 only** (fetch latest from origin and create the branch + worktree). Do not ask it to commit or push yet.
 
-Wait for the branch to be created before proceeding.
+Wait for the agent to report back the worktree path (`Worktree: <absolute-path>`). Store this path as `[worktree]` — pass it in the `Worktree:` field of every subsequent subagent task handoff.
 
 ### Step 1 — Specs
 
-Read `.agents-brain/agent-1-specs.md` and spawn a subagent using the Task tool with that prompt. Pass the task folder path `[task-folder]` to the subagent.
+Read `.agents-brain/agent-1-specs.md` and spawn a subagent using the Task tool with that prompt. Pass the following to the subagent:
+
+- `Task folder: [task-folder]`
+- `Worktree: [worktree]`
 
 The subagent will read `[task-folder]/README.md` and write `[task-folder]/business-specifications.md`.
 
@@ -38,11 +41,14 @@ If the spec file contains `### ADR Required`, pause the pipeline and use AskUser
 Use AskUserQuestion to show the user a summary of `[task-folder]/business-specifications.md` and ask for approval before proceeding to commit changes.
 If the user does not approve, stop the pipeline and report why.
 
-Read `.agents-brain/agent-4-git.md` and spawn a subagent using the Task tool with that prompt, instructing it to perform **Task 3 only** (commit specs output). Then proceed to Step 1.5.
+Read `.agents-brain/agent-4-git.md` and spawn a subagent using the Task tool with that prompt, instructing it to perform **Task 3 only** (commit specs output). Pass `Worktree: [worktree]`. Then proceed to Step 1.5.
 
 ### Step 1.5 — Security
 
-Read `.agents-brain/agent-5-security.md` and spawn a subagent using the Task tool with that prompt. Pass the task folder path `[task-folder]` to the subagent.
+Read `.agents-brain/agent-5-security.md` and spawn a subagent using the Task tool with that prompt. Pass the following to the subagent:
+
+- `Task folder: [task-folder]`
+- `Worktree: [worktree]`
 
 The subagent reads `[task-folder]/business-specifications.md` and writes `[task-folder]/security-guidelines.md`.
 
@@ -50,15 +56,16 @@ Wait for `[task-folder]/security-guidelines.md` to end with `status: ready`.
 
 If the file contains `### ADR Required`, pause the pipeline and use AskUserQuestion to present the ADR details to the user. The human must approve the ADR before coding starts. If the user does not approve, stop the pipeline and report why.
 
-Read `.agents-brain/agent-4-git.md` and spawn a subagent using the Task tool with that prompt, instructing it to perform **Task 3.5 only** (commit security guidelines). Then proceed to coding.
+Read `.agents-brain/agent-4-git.md` and spawn a subagent using the Task tool with that prompt, instructing it to perform **Task 3.5 only** (commit security guidelines). Pass `Worktree: [worktree]`. Then proceed to coding.
 
 ### Step 2 — Coding
 
-Read `.agents-brain/agent-2-coder.md` and spawn a subagent using the Task tool with that prompt. Pass the task folder path `[task-folder]` to the subagent.
+Read `.agents-brain/agent-2-coder.md` and spawn a subagent using the Task tool with that prompt. Pass the following to the subagent:
 
-For all tasks, the subagent reads `[task-folder]/business-specifications.md`.
+- `Task folder: [task-folder]`
+- `Worktree: [worktree]`
 
-The subagent writes `[task-folder]/technical-specifications.md`.
+The subagent reads `[task-folder]/business-specifications.md` and writes `[task-folder]/technical-specifications.md`.
 
 Wait for `[task-folder]/technical-specifications.md` to end with either `status: ready` or `status: review specs`.
 
@@ -71,9 +78,12 @@ If `status: ready`, proceed to Step 2.5.
 
 ### Step 2.5 — Code Review
 
-Read `.agents-brain/agent-6-reviewer.md` and spawn a subagent using the Task tool with that prompt. Pass the task folder path `[task-folder]` to the subagent.
+Read `.agents-brain/agent-6-reviewer.md` and spawn a subagent using the Task tool with that prompt. Pass the following to the subagent:
 
-The subagent reviews the changed source files against `[task-folder]/security-guidelines.md` and `[task-folder]/business-specifications.md`, runs `npm run lint` and `npm run type-check`, and writes `[task-folder]/review-results.md`.
+- `Task folder: [task-folder]`
+- `Worktree: [worktree]`
+
+The subagent reviews the changed source files against `[task-folder]/security-guidelines.md` and `[task-folder]/business-specifications.md`, runs `npm run lint` and `npm run type-check` from `[worktree]`, and writes `[task-folder]/review-results.md`.
 
 Wait for `[task-folder]/review-results.md` to end with either `status: approved` or `status: changes requested`.
 
@@ -87,11 +97,14 @@ If `status: approved`:
 - If `[task-folder]/technical-specifications.md` contains `### ADR Required`, pause the pipeline and use AskUserQuestion to present the ADR details to the user. The human must approve the ADR before committing code. If the user does not approve, stop the pipeline.
 - Use AskUserQuestion to show the user a summary of `[task-folder]/technical-specifications.md` and ask for approval before testing.
   - If the user does not approve, stop the pipeline.
-- Read `.agents-brain/agent-4-git.md` and spawn a subagent using the Task tool with that prompt, instructing it to perform **Task 4 only** (commit code and review changes).
+- Read `.agents-brain/agent-4-git.md` and spawn a subagent using the Task tool with that prompt, instructing it to perform **Task 4 only** (commit code and review changes). Pass `Worktree: [worktree]`.
 
 ### Step 3 — Testing
 
-Read `.agents-brain/agent-3-tester.md` and spawn a subagent using the Task tool with that prompt. Pass the task folder path `[task-folder]` to the subagent.
+Read `.agents-brain/agent-3-tester.md` and spawn a subagent using the Task tool with that prompt. Pass the following to the subagent:
+
+- `Task folder: [task-folder]`
+- `Worktree: [worktree]`
 
 The subagent writes `[task-folder]/test-results.md`.
 
@@ -109,7 +122,7 @@ If MAX_RETRIES is exceeded at any step, stop the pipeline and report the failure
 
 ### Step 4 — Versioning
 
-Read `.agents-brain/agent-4-git.md` and spawn a subagent using the Task tool with that prompt, instructing it to perform **Task 5 only** (commit test results and push the branch).
+Read `.agents-brain/agent-4-git.md` and spawn a subagent using the Task tool with that prompt, instructing it to perform **Task 5 only** (commit test results and push the branch). Pass `Worktree: [worktree]`.
 
 Report the branch name and commit message to the user when done.
 
@@ -121,7 +134,9 @@ Once approved, create the PR using `gh pr create`.
 
 Use AskUserQuestion a second time to ask the user for approval to merge the PR. If the user does not approve, stop — the PR remains open for the user to merge manually.
 
-Once approved, run the merge command and return local repository to `develop branch`.
+Once approved, run the merge command.
+
+Read `.agents-brain/agent-4-git.md` and spawn a subagent using the Task tool with that prompt, instructing it to perform **Task 6 only** (remove the worktree and update develop). Pass `Worktree: [worktree]`.
 
 ## Bug Feedback Loop
 

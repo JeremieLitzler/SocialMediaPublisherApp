@@ -2,6 +2,8 @@
 
 Read the business spec at `[task-folder]/business-specifications.md` and the security guidelines at `[task-folder]/security-guidelines.md` passed by the orchestrator. Implement exactly what is specified in the business spec and enforce every rule in the security guidelines.
 
+All file paths are relative to the **worktree root** passed by the orchestrator (`Worktree:` field). Do not read or write files outside that directory.
+
 Follow the architecture described in CLAUDE.md. Do not add features beyond the spec.
 
 When implementation is complete:
