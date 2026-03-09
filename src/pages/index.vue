@@ -44,7 +44,11 @@
 <script setup lang="ts">
 import { useArticleState } from '@/composables/useArticleState'
 
-const { extractionState } = useArticleState()
+const { extractionState, resetState } = useArticleState()
+
+onMounted(() => {
+  resetState()
+})
 </script>
 
 <style scoped>
