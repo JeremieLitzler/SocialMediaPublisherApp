@@ -162,6 +162,97 @@ describe('htmlExtractor', () => {
       const introduction = extractIntroduction(englishWithIntroDoc)
       expect(introduction).not.toContain('<h2>')
     })
+
+    describe('expanded element types — <pre>, <ul>, <blockquote>', () => {
+      function makeDoc(innerHtml: string): Document {
+        return new JSDOM(
+          `<html><body><section class="article-content">${innerHtml}</section></body></html>`
+        ).window.document
+      }
+
+      it('extracts a <pre> element before first <h2>', () => {
+        const doc = makeDoc('<pre>code block</pre><h2>Section</h2>')
+        const result = extractIntroduction(doc)
+        expect(result).toContain('<pre>')
+        expect(result).toContain('code block')
+      })
+
+      it('extracts a <ul> element before first <h2>', () => {
+        const doc = makeDoc('<ul><li>item one</li><li>item two</li></ul><h2>Section</h2>')
+        const result = extractIntroduction(doc)
+        expect(result).toContain('<ul>')
+        expect(result).toContain('<li>item one</li>')
+      })
+
+      it('extracts a <blockquote> element before first <h2>', () => {
+        const doc = makeDoc('<blockquote><p>quoted text</p></blockquote><h2>Section</h2>')
+        const result = extractIntroduction(doc)
+        expect(result).toContain('<blockquote>')
+        expect(result).toContain('quoted text')
+      })
+
+      it('preserves source order across mixed element types', () => {
+        const doc = makeDoc(
+          '<p>First.</p><pre>code</pre><p>Second.</p><ul><li>item</li></ul><h2>Section</h2>'
+        )
+        const result = extractIntroduction(doc)
+        expect(result).not.toBeNull()
+        const pIndex = result!.indexOf('<p>First.')
+        const preIndex = result!.indexOf('<pre>')
+        const p2Index = result!.indexOf('<p>Second.')
+        const ulIndex = result!.indexOf('<ul>')
+        expect(pIndex).toBeLessThan(preIndex)
+        expect(preIndex).toBeLessThan(p2Index)
+        expect(p2Index).toBeLessThan(ulIndex)
+      })
+
+      it('excludes <pre> that appears after the first <h2>', () => {
+        const doc = makeDoc('<p>Intro.</p><h2>Section</h2><pre>body code</pre>')
+        const result = extractIntroduction(doc)
+        expect(result).not.toContain('<pre>')
+        expect(result).toContain('<p>Intro.</p>')
+      })
+
+      it('succeeds when introduction contains only a <pre> element', () => {
+        const doc = makeDoc('<pre>only code</pre><h2>Section</h2>')
+        const result = extractIntroduction(doc)
+        expect(result).not.toBeNull()
+        expect(result).not.toBe('')
+        expect(result).toContain('<pre>')
+      })
+
+      it('includes an empty <pre> element verbatim', () => {
+        const doc = makeDoc('<pre></pre><h2>Section</h2>')
+        const result = extractIntroduction(doc)
+        expect(result).toContain('<pre>')
+      })
+
+      it('preserves nested HTML inside <pre> (e.g. syntax-highlighted spans)', () => {
+        const doc = makeDoc(
+          '<pre><span class="kw">const</span> x = 1</pre><h2>Section</h2>'
+        )
+        const result = extractIntroduction(doc)
+        expect(result).toContain('<span class="kw">const</span>')
+      })
+
+      it('preserves nested HTML inside <blockquote>', () => {
+        const doc = makeDoc('<blockquote><p>nested paragraph</p></blockquote><h2>Section</h2>')
+        const result = extractIntroduction(doc)
+        expect(result).toContain('<p>nested paragraph</p>')
+      })
+
+      it('does not include <ol> elements (not in the allowlist)', () => {
+        const doc = makeDoc('<p>Intro.</p><ol><li>ordered</li></ol><h2>Section</h2>')
+        const result = extractIntroduction(doc)
+        expect(result).not.toContain('<ol>')
+        expect(result).toContain('<p>Intro.</p>')
+      })
+
+      it('returns null when no <h2> is present even if <pre> exists', () => {
+        const doc = makeDoc('<pre>code</pre>')
+        expect(extractIntroduction(doc)).toBeNull()
+      })
+    })
   })
 
   describe('extractCategories', () => {
