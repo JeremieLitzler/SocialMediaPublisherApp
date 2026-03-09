@@ -8,7 +8,7 @@ Read the following files passed by the orchestrator:
 
 Then read every source file listed in the technical spec.
 
-Run `npm run lint` and `npm run type-check` from the repository root. Include their full output in your findings.
+Run `npm run lint` and `npm run type-check` from the **worktree root** passed by the orchestrator (`Worktree:` field). The bare repo root has no `node_modules` — always `cd` to the worktree path before running any shell command. Include their full output in your findings.
 
 Before reviewing Vue/TypeScript-specific issues, fetch the following reference pages to ground your review in current documentation:
 

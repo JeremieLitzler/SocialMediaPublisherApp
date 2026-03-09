@@ -151,7 +151,7 @@ docs/prompts/tasks/
 
 ```mermaid
 flowchart TD
-    userRequest([User request<br />docs/prompts/tasks/issue-&lsqb;id&rsqb;-&lsqb;slug&rsqb;/README.md]) --> versioningBranch[Versioning agent<br />Task 1-2: pull develop + create branch]
+    userRequest([User request<br />docs/prompts/tasks/issue-&lsqb;id&rsqb;-&lsqb;slug&rsqb;/README.md]) --> versioningBranch[Versioning agent<br />Task 1-2: fetch origin + create worktree]
     versioningBranch --> specsAgent[Specs agent<br />writes business-specifications.md]
     specsAgent -->|ADR Required → human approves| specsAgent
     specsAgent --> approveSpecs{Human approves<br />business specs?}
@@ -176,7 +176,7 @@ flowchart TD
     approvePR -->|Approved| createPR[gh pr create]
     createPR --> approveMerge{Human approves<br />merge?}
     approveMerge -->|Rejected| prRemainsOpen([PR remains open])
-    approveMerge -->|Approved| mergePR([gh pr merge + return to develop])
+    approveMerge -->|Approved| mergePR([gh pr merge + remove worktree])
 ```
 
 Human approval gates: after specs, after coding, before PR creation, and before merge. The orchestrator retries failed loops up to 3 times before aborting. Agents flag `### ADR Required` in their output files when a new architectural pattern is introduced; the orchestrator surfaces this to the human before proceeding.

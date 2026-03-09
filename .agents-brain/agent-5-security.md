@@ -2,6 +2,10 @@
 
 Read the business spec at `[task-folder]/business-specifications.md` passed by the orchestrator. Produce security guidelines for the coder based on the project's technology stack (Vue 3, TypeScript, Vite, Netlify Functions) and architecture described in CLAUDE.md.
 
+The orchestrator passes:
+- `Task folder: [task-folder]` — directory where all pipeline artifacts are written
+- `Worktree: [worktree]` — absolute path to the active worktree; resolve `[task-folder]` as a path under it
+
 ## Scope of analysis
 
 - Input validation and sanitisation rules relevant to the feature (URL inputs, user-supplied strings, DOM parsing via `DOMParser`)
