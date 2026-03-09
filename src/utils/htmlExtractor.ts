@@ -9,7 +9,7 @@
  * - Description: `.article-subtitle`
  * - Image URL: `meta[name="twitter:image"]` content attribute
  * - Image alt: `.article-header .article-image a img`
- * - Introduction: all `<p>` tags before first `<h2>` in `.article-content`
+ * - Introduction: all `<p>`, `<pre>`, `<ul>`, `<blockquote>` tags before first `<h2>` in `.article-content`
  * - Categories: `<header class="article-category">` all `<a>` elements
  * - Tags: `<section class="article-tags">` all `<a>` elements
  * - Follow-me snippet: second-to-last child of `.article-content`
@@ -63,9 +63,29 @@ export function extractImageAlt(doc: Document): string {
   return imgElement?.alt || ''
 }
 
+const INTRODUCTION_ELEMENT_TAGS = new Set(['P', 'PRE', 'UL', 'BLOCKQUOTE'])
+
+function isIntroductionElement(element: Element): boolean {
+  return INTRODUCTION_ELEMENT_TAGS.has(element.tagName)
+}
+
+// Assumes firstH2 is a direct child of articleContent (guaranteed by blog structure).
+// querySelector('h2') would find a nested h2 that is never reached by sibling traversal,
+// causing all direct children to be collected as introduction — a known structural invariant.
+function collectIntroductionElements(articleContent: Element, firstH2: Element): string[] {
+  const collected: string[] = []
+  let current = articleContent.firstElementChild
+  while (current && current !== firstH2) {
+    if (isIntroductionElement(current)) collected.push(current.outerHTML)
+    current = current.nextElementSibling
+  }
+  return collected
+}
+
 /**
- * Extract introduction paragraphs before first h2 in article content
- * Returns null if no h2 is found (invalid article structure)
+ * Extract introduction elements before first h2 in article content.
+ * Retains <p>, <pre>, <ul>, and <blockquote> elements in source order.
+ * Returns null if no h2 is found (invalid article structure).
  * @param doc - Parsed HTML document
  * @returns Introduction HTML string or null if no h2 found
  */
@@ -74,19 +94,9 @@ export function extractIntroduction(doc: Document): string | null {
   if (!articleContent) return null
 
   const firstH2 = articleContent.querySelector('h2')
-  if (!firstH2) return null // No h2 means no valid introduction structure
+  if (!firstH2) return null
 
-  const introParagraphs: string[] = []
-  let currentElement = articleContent.firstElementChild
-
-  while (currentElement && currentElement !== firstH2) {
-    if (currentElement.tagName === 'P') {
-      introParagraphs.push(currentElement.outerHTML)
-    }
-    currentElement = currentElement.nextElementSibling
-  }
-
-  return introParagraphs.join('')
+  return collectIntroductionElements(articleContent, firstH2).join('')
 }
 
 /**

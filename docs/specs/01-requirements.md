@@ -17,7 +17,7 @@
 - **So that** I don't have to manually copy each piece of information
 - **Acceptance Criteria:**
   - Select article body from `<section class="article-content">`
-  - Extract introduction (all `<p>` tags before first `<h2>`)
+  - Extract introduction (all `<p>`, `<pre>`, `<ul>`, and `<blockquote>` tags before first `<h2>`, preserved in source order)
   - Extract featured image from selector `.article-image a img`
   - Extract category from `<header class="article-category">` → all `<a>` elements
   - Extract tags from `<section class="article-tags">` → all `<a>` elements

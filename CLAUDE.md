@@ -75,7 +75,7 @@ Pure functions targeting these CSS selectors on the fetched blog HTML:
 - Description: `.article-subtitle`
 - Image URL: `meta[name="twitter:image"]` content attribute (full absolute URL)
 - Image alt: `.article-header .article-image a img` alt attribute
-- Introduction: All `<p>` tags before the first `<h2>` in `.article-content`
+- Introduction: All `<p>`, `<pre>`, `<ul>`, and `<blockquote>` tags before the first `<h2>` in `.article-content`, preserved in source order
 - Categories: `<header class="article-category"> a`
 - Tags: `<section class="article-tags"> a`
 - Follow-me snippet: second-to-last child of `.article-content`; if it is a `div.jli-notice.jli-notice-tip`, the inner `<p class="jli-notice-title">` is replaced with `<h2 class="jli-notice-title">`
