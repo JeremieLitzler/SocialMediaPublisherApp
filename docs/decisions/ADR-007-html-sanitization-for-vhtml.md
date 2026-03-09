@@ -33,7 +33,7 @@ const sanitizedBodyHtml = computed(() => DOMPurify.sanitize(rawBodyHtml.value))
 The default DOMPurify configuration strips all active content (`<script>`, inline event
 handlers, `javascript:` URLs, `<iframe>`, `<object>`, etc.) while preserving all HTML
 structure and styling used in the bodyHtml template (`<figure>`, `<img>`, `<p>`, `<ul>`,
-`<li>`, `<h2>`, `<a>`, `<hr>`, `<figcaption>`, `<br>`).
+`<li>`, `<h2>`, `<a>`, `<hr>`, `<figcaption>`, `<br>`, `<pre>`, `<blockquote>`, `<span>`).
 
 The Copy button for Body HTML uses the **Clipboard API** (`navigator.clipboard.write`) with
 a `ClipboardItem` of type `text/html`, so that pasting into a rich-text editor (such as
@@ -47,7 +47,7 @@ environments where `ClipboardItem` is unavailable.
 - Eliminates XSS risk from user-edited HTML rendered via `v-html`
 - DOMPurify is purpose-built, battle-tested, and actively maintained
 - Default configuration requires no custom allowlist — all safe tags used in bodyHtml are
-  preserved automatically
+  preserved automatically, including `<pre>`, `<blockquote>`, and `<span>` added in issue #75
 - The `text/html` clipboard format allows pasting formatted content directly into Medium's
   visual editor without manual reformatting
 
@@ -70,7 +70,7 @@ environments where `ClipboardItem` is unavailable.
 
 ## Notes
 
-- Applies only to `PlatformMedium.vue`. Other platform components do not render HTML via
-  `v-html`.
+- Applies to `PlatformMedium.vue` and `PlatformSubstack.vue`, both of which render `bodyHtml`
+  via `v-html` using the same DOMPurify computed property pattern.
 - If `v-html` is introduced in other components in the future, the same DOMPurify pattern
   must be applied.
