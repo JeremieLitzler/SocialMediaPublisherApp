@@ -32,7 +32,7 @@ Obtain the GitHub issue number and title from the user request (or fetch from Gi
 
 Build:
 
-- `slug` = issue title in lowercase, spaces and special characters replaced by hyphens.
+- `slug` = a short (≤ 30 characters) kebab-case summary of the issue title (e.g. `back-button-fix`, `article-extract-error`). Do NOT use the full issue title — long slugs cause path-length failures on Windows (MINGW64) that break subagents running shell commands.
 - `task-folder` = `docs/prompts/tasks/issue-[id of issue]-[slug]/`
 
 Save the user request to `[task-folder]/README.md`.
