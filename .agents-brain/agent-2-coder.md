@@ -128,3 +128,7 @@ function isValid(item: Item): boolean {
 ```
 
 Where strict compliance would conflict with framework conventions (e.g. Vue lifecycle hooks, composable conventions following `useXxx` patterns), document the exception in the technical-choices section of `[task-folder]/technical-specifications.md`.
+
+## Shell Command Retry Limit
+
+Do not execute more than **3 failing shell commands in total** — whether retrying the same command or trying a different one. After 3 failed executions, stop immediately and report the full error output to the orchestrator.

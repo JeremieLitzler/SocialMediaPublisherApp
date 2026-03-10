@@ -110,6 +110,10 @@ shadcn-vue components live in `src/components/ui/`. These are copied (not npm-in
 - `docs/decisions/` — Architecture Decision Records (ADR-001 through ADR-006)
 - `docs/prompts/` — Pipeline artifacts per issue (`issue-[id]-[slug]/`): README, specs, technical notes, test results
 
+## Agent Pipeline Issue Handling
+
+When the user reports a problem with an agent's behaviour or instructions, follow `CLAUDE-AGENT-WORFLOW-ISSUES-HANDLING.md` — never modify `develop` directly.
+
 ## Multi-Agent Pipeline
 
 **When the user provides a feature request, bug fix, or any change, act as the orchestrator:**

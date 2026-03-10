@@ -50,3 +50,7 @@ The file is a self-contained document for the current run only. Create it at `[t
 Listen to the `[task-folder]/technical-specifications.md` file for `status: review specs` in the last line and process feedback following `### Specifications Need Review`.
 
 Do NOT use horizontal rules (`---`) anywhere in the output file.
+
+## Shell Command Retry Limit
+
+Do not execute more than **3 failing shell commands in total** — whether retrying the same command or trying a different one. After 3 failed executions, stop immediately and report the full error output to the orchestrator.

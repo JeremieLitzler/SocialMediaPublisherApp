@@ -97,16 +97,50 @@ If the last line is `status: passed`:
 git -C <repo>.git/develop pull
 ```
 
-### Task 6: Remove worktree (post-merge cleanup)
+### Task 6: Create pull request
+
+Run from the worktree root:
+
+```bash
+gh pr create --base develop --title "<title>" --body "<body>"
+```
+
+- Derive the PR title from `[task-folder]/business-specifications.md` (short imperative summary, ≤70 chars).
+- The PR body must include: a summary of what changed and why, a test plan checklist, and a reference to the issue (`Closes #<issue-id>`).
+- Target branch is always `develop` — never `main`.
+- Report the PR URL back to the orchestrator.
+
+### Task 7: Merge pull request
+
+Run:
+
+```bash
+gh pr merge <pr-url> --squash --delete-branch
+```
+
+- Always squash-merge to keep `develop` history linear.
+- `--delete-branch` removes the remote branch automatically.
+
+### Task 8: Remove worktree (post-merge cleanup)
 
 Run from inside `<repo>.git/` (the bare repository root):
 
 ```bash
+git fetch origin
+git worktree prune
 git worktree remove <type>_<slug>
-git branch -d <type>/<slug>
+git branch -D <type>/<slug>
 ```
 
+Notes:
+- `git worktree prune` must run before `git worktree remove` to clear stale refs when the worktree directory is already empty.
+- Use `-D` (force) instead of `-d` because GitHub squash-merges do not create a merge commit, so git never considers the local branch "fully merged".
+
 Then run `git -C <repo>.git/develop pull` to ensure `develop` reflects the merged commit.
+
+## Shell Command Retry Limit
+
+Do not execute more than **3 failing shell commands in total** — whether retrying the same command or trying a different one. After 3 failed executions, stop immediately: report the full error output to the orchestrator and stop.
 
 ## Bug Discovery Rule (applies to all tasks)
 

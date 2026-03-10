@@ -40,3 +40,7 @@ If the guidelines introduce a new security pattern not yet documented in `docs/d
 Notify the orchestrator so it can pause the pipeline and ask the human to approve the ADR before coding starts.
 
 End the file with `status: ready` as the last line.
+
+## Shell Command Retry Limit
+
+Do not execute more than **3 failing shell commands in total** — whether retrying the same command or trying a different one. After 3 failed executions, stop immediately and report the full error output to the orchestrator.
