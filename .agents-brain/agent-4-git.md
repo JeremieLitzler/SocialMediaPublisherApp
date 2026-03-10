@@ -106,7 +106,7 @@ If the last line is `status: passed`:
 - After pushing, update the `develop` worktree so it is ready for the next task:
 
 ```bash
-git -C <repo>.git/develop pull
+git -C <repo>.git/develop pull origin develop
 ```
 
 ### Task 6: Create pull request
@@ -127,10 +127,10 @@ gh pr create --base develop --title "<title>" --body "<body>"
 Run:
 
 ```bash
-gh pr merge <pr-url> --squash --delete-branch
+gh pr merge <pr-url> --rebase --delete-branch
 ```
 
-- Always squash-merge to keep `develop` history linear.
+- Always rebase-merge to keep `develop` history linear (the repository does not allow squash or merge commits).
 - `--delete-branch` removes the remote branch automatically.
 
 ### Task 8: Remove worktree (post-merge cleanup)
@@ -148,7 +148,7 @@ Notes:
 - `git worktree prune` must run before `git worktree remove` to clear stale refs when the worktree directory is already empty.
 - Use `-D` (force) instead of `-d` because GitHub squash-merges do not create a merge commit, so git never considers the local branch "fully merged".
 
-Then run `git -C <repo>.git/develop pull` to ensure `develop` reflects the merged commit.
+Then run `git -C <repo>.git/develop pull origin develop` to ensure `develop` reflects the merged commit.
 
 ## Shell Command Retry Limit
 
