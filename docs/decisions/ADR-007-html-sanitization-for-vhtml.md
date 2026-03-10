@@ -1,7 +1,8 @@
 # ADR-007: HTML Sanitization Strategy for v-html Rendering
 
 **Date:** 2026-03-03
-**Status:** Proposed
+**Status:** Accepted
+**Implemented:** 2026-03-09
 
 ## Context
 
@@ -11,9 +12,9 @@ user can edit it in the textarea before copying. Any content fed to `v-html` tha
 `<script>`, event handlers (`onerror`, `onclick`, …), or other active HTML is executed
 directly in the browser, creating an XSS risk.
 
-Vue's official documentation explicitly warns: *"Dynamically rendering arbitrary HTML on
+Vue's official documentation explicitly warns: _"Dynamically rendering arbitrary HTML on
 your website is very dangerous because it can easily lead to XSS vulnerabilities. Only use
-`v-html` on trusted content and never on user-provided content."*
+`v-html` on trusted content and never on user-provided content."_
 
 Since the textarea is user-editable, the rendered preview must be sanitized before binding
 to `v-html`.
