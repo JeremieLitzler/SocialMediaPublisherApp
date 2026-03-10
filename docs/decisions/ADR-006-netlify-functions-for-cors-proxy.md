@@ -1,9 +1,7 @@
 # ADR-006: Use Netlify Functions as Backend Proxy for CORS-Free HTML Fetching
 
-**Status:** Accepted
-
 **Date:** 2026-02-13
-
+**Status:** Accepted
 **Implemented:** 2026-02-18
 
 **Related:** [Task-009](../prompts/tasks/task-009-backend-proxy-for-cors.md)
@@ -39,6 +37,7 @@ sequenceDiagram
 ```
 
 **Key points:**
+
 - Function endpoint: `/.netlify/functions/fetch-article?url=<encoded-url>`
 - Domain whitelist: `['iamjeremie.me', 'jeremielitzler.fr']`
 - Response format: `{ success: true, html: "..." }`
@@ -83,6 +82,7 @@ See [Task-009 § Alternatives](../prompts/tasks/task-009-backend-proxy-for-cors.
 ## Implementation
 
 Refer to [Task-009 § Implementation Tasks](../prompts/tasks/task-009-backend-proxy-for-cors.md#implementation-tasks) for:
+
 - Complete function code example
 - SPA integration changes
 - Security implementation
