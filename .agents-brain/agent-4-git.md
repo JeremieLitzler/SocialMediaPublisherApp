@@ -39,7 +39,19 @@ docs: update API usage in README
 
 ### Task 1: Make Sure Local Repository Is Up-to-date
 
-Run `git fetch origin` to update all remote refs. The bare repo has no working tree to pull into — do **not** use `git pull`.
+First verify the bare repo has `origin` configured:
+
+```bash
+git -C <repo>.git remote -v
+```
+
+If `origin` is missing, add it before fetching:
+
+```bash
+git -C <repo>.git remote add origin https://github.com/<owner>/<repo>.git
+```
+
+Then run `git fetch origin` to update all remote refs. The bare repo has no working tree to pull into — do **not** use `git pull`.
 
 ### Task 2: Create new branch and worktree
 
