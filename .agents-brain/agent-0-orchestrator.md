@@ -8,6 +8,14 @@ MAX_RETRIES = 3
 
 All sub agents must retry `MAX_RETRIES` at most before notifying human.
 
+## Shell Command Retry Limit
+
+Applies to the orchestrator and all sub agents. Do not execute more than **3 failing shell commands in total** — whether retrying the same command or trying a different one. After 3 failed executions, stop immediately and report the full error output to the human.
+
+## Agent Pipeline Issue Handling
+
+When the user reports a problem with an agent's behaviour or instructions, follow `CLAUDE-AGENT-WORFLOW-ISSUES-HANDLING.md`. Spawn `.agents-brain/agent-7-pipeline-maintainer.md` to apply the fix in the dedicated worktree, then use the git agent for commit, PR, and cleanup.
+
 ## Pipeline
 
 ### Step 0 — Task Folder and Branching
@@ -130,13 +138,13 @@ Report the branch name and commit message to the user when done.
 
 Use AskUserQuestion to show the user the proposed PR title and description and ask for approval to create the PR. If the user does not approve, stop and report why.
 
-Once approved, create the PR using `gh pr create`.
+Once approved, read `.agents-brain/agent-4-git.md` and spawn a subagent using the Task tool with that prompt, instructing it to perform **Task 6 only** (create the PR). Pass `Worktree: [worktree]`. Wait for the subagent to report the PR URL.
 
-Use AskUserQuestion a second time to ask the user for approval to merge the PR. If the user does not approve, stop — the PR remains open for the user to merge manually.
+Use AskUserQuestion a second time to show the user the PR URL and ask for approval to merge. If the user does not approve, stop — the PR remains open for the user to merge manually.
 
-Once approved, run the merge command.
+Once approved, read `.agents-brain/agent-4-git.md` and spawn a subagent using the Task tool with that prompt, instructing it to perform **Task 7 only** (merge the PR). Pass `Worktree: [worktree]`.
 
-Read `.agents-brain/agent-4-git.md` and spawn a subagent using the Task tool with that prompt, instructing it to perform **Task 6 only** (remove the worktree and update develop). Pass `Worktree: [worktree]`.
+Read `.agents-brain/agent-4-git.md` and spawn a subagent using the Task tool with that prompt, instructing it to perform **Task 8 only** (remove the worktree and update develop). Pass `Worktree: [worktree]`.
 
 ## Bug Feedback Loop
 

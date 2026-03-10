@@ -10,6 +10,10 @@ Then read every source file listed in the technical spec.
 
 Run `npm run lint` and `npm run type-check` from the **worktree root** passed by the orchestrator (`Worktree:` field). The bare repo root has no `node_modules` — always `cd` to the worktree path before running any shell command. Include their full output in your findings.
 
+## Shell Command Retry Limit
+
+Do not execute more than **3 failing shell commands in total** — whether retrying the same command or trying a different one. After 3 failed executions, stop immediately: record the full error output in `[task-folder]/review-results.md` and end the file with `status: changes requested`.
+
 Before reviewing Vue/TypeScript-specific issues, fetch the following reference pages to ground your review in current documentation:
 
 - `https://vuejs.org/guide/essentials/reactivity-fundamentals` — reactivity model
