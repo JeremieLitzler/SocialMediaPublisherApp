@@ -6,7 +6,7 @@ This document records the model assigned to each pipeline agent, the rationale f
 
 | Agent | File | Model | Reasoning demand |
 |---|---|---|---|
-| agent-0-orchestrator | `.agents-brain/agent-0-orchestrator.md` | sonnet | Coordinates the full pipeline: routes between agents, evaluates ADR flags, manages human approval gates, and applies retry logic — requires sustained multi-step reasoning. |
+| agent-0-orchestrator | `.agents-brain/agent-0-orchestrator.md` | sonnet | Routes between agents, checks status lines, applies retry logic — mostly procedural, but produces human-facing summaries and evaluates whether a bug implies a spec change, both of which require judgment. |
 | agent-1-specs | `.agents-brain/agent-1-specs.md` | sonnet | Produces business specifications using Example Mapping, identifies ADR-worthy patterns, and must ask clarifying questions rather than guess — requires deep understanding of intent and context. |
 | agent-2-coder | `.agents-brain/agent-2-coder.md` | sonnet | Implements source code only, applies all nine Object Calisthenics rules, performs a self-code review, and documents non-trivial technical decisions — requires strong reasoning about code quality and architecture. |
 | agent-3-test-writer | `.agents-brain/agent-3-test-writer.md` | sonnet | Runs twice: before coding to derive test scenarios from specs and write `test-cases.md`; after coding to translate those scenarios into `.spec.ts` files using the now-known implementation structure — requires interpreting specs and reasoning about observable behaviour independently of the coder. |
@@ -37,6 +37,18 @@ Specs → Security → Test Writer (pass 1) → Coder → Test Writer (pass 2) �
 ```
 
 The key discipline: test scenarios are defined before coding by an agent that has not seen the implementation, and test code is written after coding by the same independent agent — never by the coder itself.
+
+## Why agent-0-orchestrator Uses Sonnet (and when it could drop to Haiku)
+
+On the happy path the orchestrator is almost entirely procedural: it reads a status line, branches on its value, increments a retry counter, and spawns the next subagent with a templated prompt. That is Haiku-level work.
+
+Two tasks keep it on Sonnet:
+
+**Human approval summaries.** Before each approval gate the orchestrator must distill a full spec or technical document into a meaningful summary for the human. A poor summary leads to a bad approval decision with no error signal — the human approves something they would have rejected if shown an accurate picture. This is silent quality degradation, the hardest failure mode to detect.
+
+**Bug triage.** The bug feedback loop requires answering "does this bug imply a spec change?" That is not a string match — it requires reading a bug description and reasoning about whether the root cause is a requirements gap or an implementation error. Getting this wrong routes the fix through the wrong agents and wastes pipeline runs.
+
+**Condition for dropping to Haiku:** if approval summaries are removed from the orchestrator and delegated to the specialist agents (e.g. the specs agent writes a one-paragraph summary at the end of `business-specifications.md` that the orchestrator forwards verbatim), and bug triage is similarly delegated to a dedicated step, the orchestrator becomes fully procedural and Haiku would be justified.
 
 ## Why agent-4-git Uses Haiku
 
