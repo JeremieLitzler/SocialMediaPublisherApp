@@ -9,7 +9,7 @@
  * - Description: `.article-subtitle`
  * - Image URL: `meta[name="twitter:image"]` content attribute
  * - Image alt: `.article-header .article-image a img`
- * - Introduction: all `<p>`, `<pre>`, `<ul>`, `<blockquote>` tags before first `<h2>` in `.article-content`
+ * - Introduction: all `<p>`, `<pre>`, `<ul>`, `<blockquote>`, and `<div class="highlight">` tags before first `<h2>` in `.article-content`
  * - Categories: `<header class="article-category">` all `<a>` elements
  * - Tags: `<section class="article-tags">` all `<a>` elements
  * - Follow-me snippet: second-to-last child of `.article-content`
@@ -65,8 +65,13 @@ export function extractImageAlt(doc: Document): string {
 
 const INTRODUCTION_ELEMENT_TAGS = new Set(['P', 'PRE', 'UL', 'BLOCKQUOTE'])
 
+function isFencedCodeWrapper(element: Element): boolean {
+  return element.tagName === 'DIV' && element.classList.contains('highlight')
+}
+
 function isIntroductionElement(element: Element): boolean {
-  return INTRODUCTION_ELEMENT_TAGS.has(element.tagName)
+  if (INTRODUCTION_ELEMENT_TAGS.has(element.tagName)) return true
+  return isFencedCodeWrapper(element)
 }
 
 // Assumes firstH2 is a direct child of articleContent (guaranteed by blog structure).
