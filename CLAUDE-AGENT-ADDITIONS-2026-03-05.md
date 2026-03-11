@@ -97,7 +97,7 @@ Insert two new steps:
 ```
 ### Step 1.5 — Security
 
-Read `.agents-brain/agent-5-security.md` and spawn a subagent. Pass `[task-folder]`.
+Read `.claude/agents/agent-5-security.md` and spawn a subagent. Pass `[task-folder]`.
 
 The subagent reads `[task-folder]/business-specifications.md` and writes `[task-folder]/security-guidelines.md`.
 
@@ -109,7 +109,7 @@ Wait for `status: ready`. On failure, stop and report.
 ```
 ### Step 2.5 — Code Review
 
-Read `.agents-brain/agent-6-reviewer.md` and spawn a subagent. Pass `[task-folder]`.
+Read `.claude/agents/agent-6-reviewer.md` and spawn a subagent. Pass `[task-folder]`.
 
 The subagent reviews source files listed in `[task-folder]/technical-specifications.md` against
 `[task-folder]/security-guidelines.md` and `[task-folder]/business-specifications.md`.
@@ -130,8 +130,8 @@ Add agents 5 and 6 to the agents table and update the pipeline flow diagram:
 
 | Agent    | Prompt                              | Reads                                                                               | Writes                                 |
 | -------- | ----------------------------------- | ----------------------------------------------------------------------------------- | -------------------------------------- |
-| Security | `.agents-brain/agent-5-security.md` | `[task-folder]/business-specifications.md`                                          | `[task-folder]/security-guidelines.md` |
-| Reviewer | `.agents-brain/agent-6-reviewer.md` | `[task-folder]/technical-specifications.md`, `[task-folder]/security-guidelines.md` | `[task-folder]/review-results.md`      |
+| Security | `.claude/agents/agent-5-security.md` | `[task-folder]/business-specifications.md`                                          | `[task-folder]/security-guidelines.md` |
+| Reviewer | `.claude/agents/agent-6-reviewer.md` | `[task-folder]/technical-specifications.md`, `[task-folder]/security-guidelines.md` | `[task-folder]/review-results.md`      |
 
 Updated pipeline flow:
 

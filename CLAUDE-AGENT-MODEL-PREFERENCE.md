@@ -6,15 +6,15 @@ This document records the model assigned to each pipeline agent, the rationale f
 
 | Agent | File | Model | Reasoning demand |
 |---|---|---|---|
-| agent-0-orchestrator | `.agents-brain/agent-0-orchestrator.md` | sonnet | Routes between agents, checks status lines, applies retry logic — mostly procedural, but produces human-facing summaries and evaluates whether a bug implies a spec change, both of which require judgment. |
-| agent-1-specs | `.agents-brain/agent-1-specs.md` | sonnet | Produces business specifications using Example Mapping, identifies ADR-worthy patterns, and must ask clarifying questions rather than guess — requires deep understanding of intent and context. |
-| agent-2-coder | `.agents-brain/agent-2-coder.md` | sonnet | Implements source code only, applies all nine Object Calisthenics rules, performs a self-code review, and documents non-trivial technical decisions — requires strong reasoning about code quality and architecture. |
-| agent-3-test-writer | `.agents-brain/agent-3-test-writer.md` | sonnet | Runs twice: before coding to derive test scenarios from specs and write `test-cases.md`; after coding to translate those scenarios into `.spec.ts` files using the now-known implementation structure — requires interpreting specs and reasoning about observable behaviour independently of the coder. |
-| agent-3-test-runner | `.agents-brain/agent-3-test-runner.md` | haiku | Runs `npm run test` against `.spec.ts` files written by agent-3-test-writer and records structured pass/fail output — purely mechanical. |
-| agent-4-git | `.agents-brain/agent-4-git.md` | haiku | Executes a fixed sequence of git and GitHub CLI commands (fetch, branch, commit, push, PR, merge, cleanup) following explicit task numbers — no creative or analytical reasoning required. |
-| agent-5-security | `.agents-brain/agent-5-security.md` | sonnet | Performs threat analysis across input validation, XSS surfaces, Netlify Function boundaries, CORS, secrets handling, and dependency risks — requires domain knowledge and nuanced judgment. |
-| agent-6-reviewer | `.agents-brain/agent-6-reviewer.md` | sonnet | Cross-references implementation against business specs and security guidelines, runs lint and type-check, detects Vue reactivity pitfalls and TypeScript type-safety issues, and fetches reference documentation — requires broad technical judgment. |
-| agent-7-pipeline-maintainer | `.agents-brain/agent-7-pipeline-maintainer.md` | sonnet | Diagnoses pipeline issues, identifies cascading effects across multiple agent files, and applies minimal targeted edits — requires careful reasoning about agent interdependencies. |
+| agent-0-orchestrator | `.claude/agents/agent-0-orchestrator.md` | sonnet | Routes between agents, checks status lines, applies retry logic — mostly procedural, but produces human-facing summaries and evaluates whether a bug implies a spec change, both of which require judgment. |
+| agent-1-specs | `.claude/agents/agent-1-specs.md` | sonnet | Produces business specifications using Example Mapping, identifies ADR-worthy patterns, and must ask clarifying questions rather than guess — requires deep understanding of intent and context. |
+| agent-2-coder | `.claude/agents/agent-2-coder.md` | sonnet | Implements source code only, applies all nine Object Calisthenics rules, performs a self-code review, and documents non-trivial technical decisions — requires strong reasoning about code quality and architecture. |
+| agent-3-test-writer | `.claude/agents/agent-3-test-writer.md` | sonnet | Runs twice: before coding to derive test scenarios from specs and write `test-cases.md`; after coding to translate those scenarios into `.spec.ts` files using the now-known implementation structure — requires interpreting specs and reasoning about observable behaviour independently of the coder. |
+| agent-3-test-runner | `.claude/agents/agent-3-test-runner.md` | haiku | Runs `npm run test` against `.spec.ts` files written by agent-3-test-writer and records structured pass/fail output — purely mechanical. |
+| agent-4-git | `.claude/agents/agent-4-git.md` | haiku | Executes a fixed sequence of git and GitHub CLI commands (fetch, branch, commit, push, PR, merge, cleanup) following explicit task numbers — no creative or analytical reasoning required. |
+| agent-5-security | `.claude/agents/agent-5-security.md` | sonnet | Performs threat analysis across input validation, XSS surfaces, Netlify Function boundaries, CORS, secrets handling, and dependency risks — requires domain knowledge and nuanced judgment. |
+| agent-6-reviewer | `.claude/agents/agent-6-reviewer.md` | sonnet | Cross-references implementation against business specs and security guidelines, runs lint and type-check, detects Vue reactivity pitfalls and TypeScript type-safety issues, and fetches reference documentation — requires broad technical judgment. |
+| agent-7-pipeline-maintainer | `.claude/agents/agent-7-pipeline-maintainer.md` | sonnet | Diagnoses pipeline issues, identifies cascading effects across multiple agent files, and applies minimal targeted edits — requires careful reasoning about agent interdependencies. |
 
 ## TDD split: agent-3-test-writer and agent-3-test-runner
 
@@ -69,9 +69,9 @@ Two tasks keep it on Sonnet:
 
 **Do not reassign based on cost alone.** Model selection must reflect task demand. A wrong model choice in a reasoning-heavy agent (specs, security, reviewer) will produce silent quality degradation that is harder to detect than a failed shell command.
 
-## Migration: .agents-brain/ → .claude/agents/
+## Migration: .claude/agents/ → .claude/agents/
 
-Claude Code's native subagent system loads agent files from `.claude/agents/`, not `.agents-brain/`. Each file must have a YAML frontmatter block at the top; the markdown body becomes the system prompt automatically. This eliminates the current "read file → pass as prompt" pattern in the orchestrator.
+Claude Code's native subagent system loads agent files from `.claude/agents/`, not `.claude/agents/`. Each file must have a YAML frontmatter block at the top; the markdown body becomes the system prompt automatically. This eliminates the current "read file → pass as prompt" pattern in the orchestrator.
 
 ### Step 1 — Add YAML frontmatter to each agent file
 
@@ -162,16 +162,16 @@ tools: Read, Write, Edit, Glob
 
 ```bash
 mkdir -p .claude/agents
-cp .agents-brain/*.md .claude/agents/
+cp .claude/agents/*.md .claude/agents/
 ```
 
 ### Step 3 — Update the orchestrator invocation pattern
 
-Every "Read `.agents-brain/agent-X.md` and spawn a subagent using the Task tool with that prompt" block in `agent-0-orchestrator.md` and `CLAUDE-AGENT-WORFLOW-ISSUES-HANDLING.md` becomes a direct invocation by name:
+Every "Read `.claude/agents/agent-X.md` and spawn a subagent using the Task tool with that prompt" block in `agent-0-orchestrator.md` and `CLAUDE-AGENT-WORFLOW-ISSUES-HANDLING.md` becomes a direct invocation by name:
 
 ```
 # Before
-Read `.agents-brain/agent-3-test-runner.md` and spawn a subagent using the Task tool with that prompt.
+Read `.claude/agents/agent-3-test-runner.md` and spawn a subagent using the Task tool with that prompt.
 Pass: Task folder: [task-folder] / Worktree: [worktree]
 
 # After
@@ -182,19 +182,19 @@ The orchestrator no longer reads agent files — the system loads them automatic
 
 ### Step 4 — Update cascading references
 
-All files that reference `.agents-brain/` must be updated:
+All files that reference `.claude/agents/` must be updated:
 
 | File | What to update |
 |---|---|
 | `agent-4-git.md` commit rules | `ci(agent)` scope: `.agents-brain` → `.claude/agents` |
-| `agent-7-pipeline-maintainer.md` scope | Allowed edit paths: `.agents-brain/agent-*.md` → `.claude/agents/agent-*.md` |
+| `agent-7-pipeline-maintainer.md` scope | Allowed edit paths: `.claude/agents/agent-*.md` → `.claude/agents/agent-*.md` |
 | `CLAUDE.md` | Agent table paths + pipeline step 2 reference |
 | `CLAUDE-AGENT-WORFLOW-ISSUES-HANDLING.md` | All `.agents-brain` references (5 occurrences) |
 | `CLAUDE-AGENT-ADDITIONS-2026-03-05.md` | All `.agents-brain` references (4 occurrences) |
 | `CLAUDE-AGENT-WORKFLOW.md` | 1 occurrence |
 | `CLAUDE-AGENT-WORKFLOW-WORKTREE-AND-AGENT-PARALLELISM.md` | 1 occurrence |
 
-### Step 5 — Delete .agents-brain/
+### Step 5 — Delete .claude/agents/
 
 Once all files are in `.claude/agents/` and all references updated:
 

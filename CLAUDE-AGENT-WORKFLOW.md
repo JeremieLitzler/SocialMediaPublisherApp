@@ -2,7 +2,7 @@
 
 **Claude Code, DO NOT READ FILE PAST March 2, 2026**.
 
-This file documents the changes to be applied to `.agents-brain/`, `.claude/settings.local.json`, and `CLAUDE.md` to align the multi-agent pipeline with this project (TypeScript / Vue / Vitest — not Python).
+This file documents the changes to be applied to `.claude/agents/`, `.claude/settings.local.json`, and `CLAUDE.md` to align the multi-agent pipeline with this project (TypeScript / Vue / Vitest — not Python).
 
 Pending user approval, each section below will be applied in order.
 
@@ -192,7 +192,7 @@ function isValid(item: Item): boolean {
 
 ## Verification (after all changes applied)
 
-Run grep across `.agents-brain/` and `.claude/` for the following terms — all must return zero results:
+Run grep across `.claude/agents/` and `.claude/` for the following terms — all must return zero results:
 
 - `main` (as a branch name — should now be `develop`)
 - `python.exe`
