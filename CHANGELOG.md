@@ -1,3 +1,49 @@
+## [1.2.0](https://github.com/JeremieLitzler/SocialMediaPublisherApp/compare/v1.1.0...v1.2.0) (2026-03-11)
+
+### Features
+
+* **layout:** add persistent footer with attribution, license and hosting links ([#61](https://github.com/JeremieLitzler/SocialMediaPublisherApp/issues/61)) ([9a8470f](https://github.com/JeremieLitzler/SocialMediaPublisherApp/commit/9a8470f11d31ffb3658c54d9c8c491ac6b346193)), closes [#059](https://github.com/JeremieLitzler/SocialMediaPublisherApp/issues/059) [#59](https://github.com/JeremieLitzler/SocialMediaPublisherApp/issues/59) [#59](https://github.com/JeremieLitzler/SocialMediaPublisherApp/issues/59)
+* **layout:** add persistent footer with attribution, license and hosting links ([#61](https://github.com/JeremieLitzler/SocialMediaPublisherApp/issues/61)) ([#62](https://github.com/JeremieLitzler/SocialMediaPublisherApp/issues/62)) ([88b800c](https://github.com/JeremieLitzler/SocialMediaPublisherApp/commit/88b800c686a4c85a0481198b39a4a249a8aab2f3)), closes [#059](https://github.com/JeremieLitzler/SocialMediaPublisherApp/issues/059) [#59](https://github.com/JeremieLitzler/SocialMediaPublisherApp/issues/59) [#59](https://github.com/JeremieLitzler/SocialMediaPublisherApp/issues/59)
+
+### Bug Fixes
+
+* add underline to all links ([f247066](https://github.com/JeremieLitzler/SocialMediaPublisherApp/commit/f2470660f26d4db0c00d9c35b3e9ad9e2df577a1))
+* **extractor:** include <pre>, <ul>, <blockquote> in introduction ([#75](https://github.com/JeremieLitzler/SocialMediaPublisherApp/issues/75)) ([26fd082](https://github.com/JeremieLitzler/SocialMediaPublisherApp/commit/26fd08280af8fde5d766a7023d8bc7f8c4de2671))
+* **index:** reset extraction state on mount to fix back-button bug ([#51](https://github.com/JeremieLitzler/SocialMediaPublisherApp/issues/51)) ([2f4f840](https://github.com/JeremieLitzler/SocialMediaPublisherApp/commit/2f4f840b337c2f4d3002c6fbb6e9ead3c4f244d9))
+* **platform:** switch Medium and Substack to shared sanitizeBodyHtml ([471dabb](https://github.com/JeremieLitzler/SocialMediaPublisherApp/commit/471dabb32926e99ce94a00dffc247d845a10c59f))
+* **sanitize:** add FORBID_TAGS and FORBID_ATTR to DOMPurify config ([dd8a383](https://github.com/JeremieLitzler/SocialMediaPublisherApp/commit/dd8a3832bf26a9525ecfe67f2a5c99fd2837ac02))
+* **sanitize:** extend DOMPurify allowlist to preserve fenced code block structure ([51a21ad](https://github.com/JeremieLitzler/SocialMediaPublisherApp/commit/51a21ad82f170ee53e69f5d38062ff9f0b294fe3))
+* **sanitize:** resolve TS2503 and TS2322 in sanitize.ts ([84168de](https://github.com/JeremieLitzler/SocialMediaPublisherApp/commit/84168dec9c6de0d1bff593addcbdcb9582a7a201))
+* **x-content:** preserve paragraphs as chunk boundaries ([#52](https://github.com/JeremieLitzler/SocialMediaPublisherApp/issues/52)) ([67d362e](https://github.com/JeremieLitzler/SocialMediaPublisherApp/commit/67d362ef25b60b4b3b05313c54eaee4cbb254488))
+
+### Others
+
+* add agent pipeline issue handling and max-retries gap analysis ([#81](https://github.com/JeremieLitzler/SocialMediaPublisherApp/issues/81)) ([07a6f4b](https://github.com/JeremieLitzler/SocialMediaPublisherApp/commit/07a6f4ba0667315cfebb686fb0bd171255c12763))
+* add Claude agent model preference file ([8284d1e](https://github.com/JeremieLitzler/SocialMediaPublisherApp/commit/8284d1e9ba0ac3264e11ecc56d8241638614de07))
+* add CLAUDE-v1.md as pre-migration fallback ([c306b88](https://github.com/JeremieLitzler/SocialMediaPublisherApp/commit/c306b8856bb867cbb7732bb760d43b888d415a08))
+* add design notes for security and reviewer agent additions ([40fe52c](https://github.com/JeremieLitzler/SocialMediaPublisherApp/commit/40fe52c22fa91ad428bed88b92bfc416e4c1f081))
+* add model ID reference table and fix stale migration section ([d698ecd](https://github.com/JeremieLitzler/SocialMediaPublisherApp/commit/d698ecd7d51f0c327e6b4cb434cea67bd342c1ed))
+* add orchestrator model rationale with Haiku drop condition ([38d815a](https://github.com/JeremieLitzler/SocialMediaPublisherApp/commit/38d815a63bd13a108c21ac97e086ac879421daa5))
+* add task README and update auto-generated type exports for issue 52 ([ce29859](https://github.com/JeremieLitzler/SocialMediaPublisherApp/commit/ce298593c5ac44e680c4e949c5b4c8b1c3cf7fd1))
+* adjust tests ([c4e6107](https://github.com/JeremieLitzler/SocialMediaPublisherApp/commit/c4e61079c4be25635109a8e658bbc488025fc6b7))
+* **cases:** define test scenarios for fenced code DOMPurify fix ([#80](https://github.com/JeremieLitzler/SocialMediaPublisherApp/issues/80)) ([92f8d88](https://github.com/JeremieLitzler/SocialMediaPublisherApp/commit/92f8d8848b652847d4c5381d0e4de69cb917a50b))
+* **extractor:** cover <pre>, <ul>, <blockquote> introduction extraction ([#75](https://github.com/JeremieLitzler/SocialMediaPublisherApp/issues/75)) ([8c59f83](https://github.com/JeremieLitzler/SocialMediaPublisherApp/commit/8c59f83d7395a8e07e541fdeb1b3d8429cce319a))
+* **index:** add mount reset tests for back-button fix ([#51](https://github.com/JeremieLitzler/SocialMediaPublisherApp/issues/51)) ([316e9cf](https://github.com/JeremieLitzler/SocialMediaPublisherApp/commit/316e9cf808acd5b5c04fa96b1b6059b0a358f036))
+* **pipeline:** integrate RTK token killer into agentic pipeline ([9f5144c](https://github.com/JeremieLitzler/SocialMediaPublisherApp/commit/9f5144c46129fc6ef496ccd439b7ab5d523ecb8f))
+* **pipeline:** shorten rtk path via /usr/local/bin symlink ([a0f0b9d](https://github.com/JeremieLitzler/SocialMediaPublisherApp/commit/a0f0b9d46b3331552205e8b8e7f53dc3490f67d4))
+* **security:** add security guidelines and update ADR-007 for [#75](https://github.com/JeremieLitzler/SocialMediaPublisherApp/issues/75) ([e5e5e20](https://github.com/JeremieLitzler/SocialMediaPublisherApp/commit/e5e5e20fc532ebd24d3bc580f479b904d4eae8fe))
+* **security:** add security guidelines for back button fix ([#51](https://github.com/JeremieLitzler/SocialMediaPublisherApp/issues/51)) ([5af8975](https://github.com/JeremieLitzler/SocialMediaPublisherApp/commit/5af8975e46517a319c0f70a3918cb3b85308d0cc))
+* **security:** add security guidelines for fenced code DOMPurify fix ([#80](https://github.com/JeremieLitzler/SocialMediaPublisherApp/issues/80)) ([5ac14cf](https://github.com/JeremieLitzler/SocialMediaPublisherApp/commit/5ac14cf3c98c0d882ff0481debf96c4d3a51c891))
+* **security:** add security guidelines for x content chunking fix ([#52](https://github.com/JeremieLitzler/SocialMediaPublisherApp/issues/52)) ([2088b6a](https://github.com/JeremieLitzler/SocialMediaPublisherApp/commit/2088b6a73483567d42c9ece94c4c5786584c270d))
+* set ADR 007 to accepted and implemented ([b27fe35](https://github.com/JeremieLitzler/SocialMediaPublisherApp/commit/b27fe35a871b8689565105cea7606a6374e29cdf))
+* **specs:** define specs for back button fix on index page ([#51](https://github.com/JeremieLitzler/SocialMediaPublisherApp/issues/51)) ([96edadf](https://github.com/JeremieLitzler/SocialMediaPublisherApp/commit/96edadf96efbad413ad1001b30c290ff57d1bae9))
+* **specs:** define specs for fenced code block parsing ([#75](https://github.com/JeremieLitzler/SocialMediaPublisherApp/issues/75)) ([f40eb98](https://github.com/JeremieLitzler/SocialMediaPublisherApp/commit/f40eb98f0093970b98e7f46db4a1e6b3e3b03283))
+* **specs:** define specs for fenced code DOMPurify fix ([#80](https://github.com/JeremieLitzler/SocialMediaPublisherApp/issues/80)) ([ec7c2e7](https://github.com/JeremieLitzler/SocialMediaPublisherApp/commit/ec7c2e753b2f4ae86632d3bc53ceca37d30aedc6))
+* **specs:** define specs for x content chunking fix ([#52](https://github.com/JeremieLitzler/SocialMediaPublisherApp/issues/52)) ([f6b1350](https://github.com/JeremieLitzler/SocialMediaPublisherApp/commit/f6b1350e6fe34127fad774adcd479f01b516685d))
+* update agent model prefs with TDD split and migration steps ([165dceb](https://github.com/JeremieLitzler/SocialMediaPublisherApp/commit/165dceb4178a0485f109193700824636c7686325))
+* update workspace-context current phase to reflect issue-driven pipeline ([80fc41e](https://github.com/JeremieLitzler/SocialMediaPublisherApp/commit/80fc41e020df3f49f58636d3c5e3f2d36c073102))
+* **x-content:** add paragraph-first chunking and oversized flag tests ([#52](https://github.com/JeremieLitzler/SocialMediaPublisherApp/issues/52)) ([3fc8258](https://github.com/JeremieLitzler/SocialMediaPublisherApp/commit/3fc82583ddb8d0200b405e21bfc9e235c7c3c87f))
+
 ## [1.1.0](https://github.com/JeremieLitzler/SocialMediaPublisherApp/compare/v1.0.0...v1.1.0) (2026-03-04)
 
 ### Features
