@@ -41,6 +41,25 @@ refactor!: drop support for Node 14
 docs: update API usage in README
 ```
 
+## RTK Token Optimization
+
+Use `rtk` for all supported git and gh commands — it compresses output and reduces token usage:
+
+| Raw command | RTK equivalent |
+|---|---|
+| `git status` | `/e/rtk/bin/rtk.exe git status` |
+| `git diff` | `/e/rtk/bin/rtk.exe git diff` |
+| `git log` | `/e/rtk/bin/rtk.exe git log` |
+| `git add <files>` | `/e/rtk/bin/rtk.exe git add <files>` |
+| `git commit -m "msg"` | `/e/rtk/bin/rtk.exe git commit -m "msg"` |
+| `git push` | `/e/rtk/bin/rtk.exe git push` |
+| `git pull` | `/e/rtk/bin/rtk.exe git pull` |
+| `gh pr list` | `/e/rtk/bin/rtk.exe gh pr list` |
+| `gh pr view <n>` | `/e/rtk/bin/rtk.exe gh pr view <n>` |
+| `gh run list` | `/e/rtk/bin/rtk.exe gh run list` |
+
+Commands without an rtk equivalent (`git worktree`, `git fetch`, `git remote`, `git branch`, `git worktree prune`) run as normal git commands.
+
 ## Tasks
 
 ### Task 1: Make Sure Local Repository Is Up-to-date

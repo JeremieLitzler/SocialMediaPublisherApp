@@ -138,6 +138,15 @@ function isValid(item: Item): boolean {
 
 Where strict compliance would conflict with framework conventions (e.g. Vue lifecycle hooks, composable conventions following `useXxx` patterns), document the exception in the technical-choices section of `[task-folder]/technical-specifications.md`.
 
+## RTK Token Optimization
+
+When running shell commands, prefer rtk equivalents to reduce token usage (use the absolute path since subagents run in isolated bash):
+- `ls` → `/e/rtk/bin/rtk.exe ls`
+- `cat/head/tail <file>` → `/e/rtk/bin/rtk.exe read <file>`
+- `grep/rg <pattern>` → `/e/rtk/bin/rtk.exe grep <pattern>`
+
+Prefer the dedicated Read/Glob/Grep tools over shell commands when available.
+
 ## Shell Command Retry Limit
 
 Do not execute more than **3 failing shell commands in total** — whether retrying the same command or trying a different one. After 3 failed executions, stop immediately and report the full error output to the orchestrator.

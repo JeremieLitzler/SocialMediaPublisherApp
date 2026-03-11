@@ -10,11 +10,13 @@ The orchestrator passes:
 - `Task folder: [task-folder]` — directory where all pipeline artifacts are written
 - `Worktree: [worktree]` — absolute path to the active worktree
 
-Run Vitest from the worktree root using the exact command below. The bare repo root has no `node_modules` — always `cd` to the worktree path first. Use `--run` to prevent Vitest from entering watch mode, which would hang the process.
+Run Vitest from the worktree root using the exact command below. The bare repo root has no `node_modules` — always `cd` to the worktree path first.
 
 ```bash
-cd [worktree] && npm run test -- --run
+cd [worktree] && /e/rtk/bin/rtk.exe vitest run
 ```
+
+`/e/rtk/bin/rtk.exe vitest run` runs Vitest in non-watch mode and shows failures only — saving significant tokens on large test suites.
 
 ## Shell Command Retry Limit
 
