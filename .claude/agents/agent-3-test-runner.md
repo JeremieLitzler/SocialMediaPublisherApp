@@ -13,10 +13,10 @@ The orchestrator passes:
 Run Vitest from the worktree root using the exact command below. The bare repo root has no `node_modules` — always `cd` to the worktree path first.
 
 ```bash
-cd [worktree] && /e/rtk/bin/rtk.exe vitest run
+cd [worktree] && rtk vitest run
 ```
 
-`/e/rtk/bin/rtk.exe vitest run` runs Vitest in non-watch mode and shows failures only — saving significant tokens on large test suites.
+`rtk vitest run` runs Vitest in non-watch mode and shows failures only — saving significant tokens on large test suites.
 
 ## Shell Command Retry Limit
 

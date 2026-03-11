@@ -43,18 +43,18 @@ npm run test:coverage    # Generate coverage report
 
 ## RTK Token Optimization
 
-[Rust Token Killer](https://github.com/RustTokenKiller/rtk) is installed at `/e/rtk/bin/rtk.exe`. Use it instead of raw commands to reduce token usage. Always use the absolute path — subagents run in isolated bash where PATH may not include rtk.
+[Rust Token Killer](https://github.com/RustTokenKiller/rtk) is symlinked at `/usr/local/bin/rtk` and available in all MINGW64 bash sessions including subagents. Use it instead of raw commands to reduce token usage.
 
 | Instead of | Use |
 |---|---|
-| `git status / diff / log` | `/e/rtk/bin/rtk.exe git status / diff / log` |
-| `git add / commit / push / pull` | `/e/rtk/bin/rtk.exe git add / commit / push / pull` |
-| `gh pr list / view / issue list / run list` | `/e/rtk/bin/rtk.exe gh ...` |
-| `npm run lint` | `/e/rtk/bin/rtk.exe lint` (run from worktree root) |
-| `npm run test -- --run` | `/e/rtk/bin/rtk.exe vitest run` (run from worktree root) |
-| `ls` | `/e/rtk/bin/rtk.exe ls` |
-| `cat / head / tail <file>` | `/e/rtk/bin/rtk.exe read <file>` |
-| `grep / rg <pattern>` | `/e/rtk/bin/rtk.exe grep <pattern>` |
+| `git status / diff / log` | `rtk git status / diff / log` |
+| `git add / commit / push / pull` | `rtk git add / commit / push / pull` |
+| `gh pr list / view / issue list / run list` | `rtk gh ...` |
+| `npm run lint` | `rtk lint` (run from worktree root) |
+| `npm run test -- --run` | `rtk vitest run` (run from worktree root) |
+| `ls` | `rtk ls` |
+| `cat / head / tail <file>` | `rtk read <file>` |
+| `grep / rg <pattern>` | `rtk grep <pattern>` |
 
 `npm run type-check` (vue-tsc) has no rtk equivalent — keep as-is.
 
