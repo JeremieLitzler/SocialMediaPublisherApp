@@ -18,7 +18,12 @@ The orchestrator passes:
 - `Task folder: [task-folder]` — directory where all pipeline artifacts are written
 - `Worktree: [worktree]` — absolute path to the active worktree
 
-Run **only** `npm run lint` and `npm run type-check` from the worktree root. The bare repo root has no `node_modules` — always `cd` to the worktree path before running any shell command. Include their full output in your findings.
+Run **only** the following two commands from the worktree root. The bare repo root has no `node_modules` — always `cd` to the worktree path before running any shell command. Include their output in your findings.
+
+```bash
+cd [worktree] && /e/rtk/bin/rtk.exe lint          # ESLint — grouped by rule/file, token-optimized
+cd [worktree] && npm run type-check # vue-tsc type check (no rtk equivalent for vue-tsc)
+```
 
 Do NOT run `npm run test` — that is the test-runner agent's exclusive responsibility.
 
