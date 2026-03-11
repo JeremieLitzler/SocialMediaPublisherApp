@@ -21,6 +21,7 @@ describe('htmlExtractor', () => {
   let englishNoCreditDoc: Document
   let frenchNoCreditDoc: Document
   let englishNoH2Doc: Document
+  let organizingSpecificationsDoc: Document
 
   beforeAll(() => {
     // Load real HTML fixtures
@@ -53,6 +54,12 @@ describe('htmlExtractor', () => {
     // Create a version without h2 for testing null return
     const htmlWithoutH2 = englishWithIntroHtml.replace(/<h2[^>]*>.*?<\/h2>/gs, '')
     englishNoH2Doc = new JSDOM(htmlWithoutH2).window.document
+
+    const organizingSpecificationsHtml = readFileSync(
+      join(fixturesPath, 'organizing-specifications-with-claude-code.html'),
+      'utf-8'
+    )
+    organizingSpecificationsDoc = new JSDOM(organizingSpecificationsHtml).window.document
   })
 
   describe('extractTitle', () => {
@@ -386,6 +393,28 @@ describe('htmlExtractor', () => {
     it('should default to english for unknown domains', () => {
       expect(detectBlog('https://example.com/article')).toBe('english')
       expect(detectBlog('https://other-domain.com')).toBe('english')
+    })
+  })
+
+  describe('non-regression — fenced code block extraction from live fixture — TC-07', () => {
+    it('extracts an introduction from the organizing-specifications article', () => {
+      const introduction = extractIntroduction(organizingSpecificationsDoc)
+      expect(introduction).not.toBeNull()
+    })
+
+    it('extracted introduction contains at least one fenced code block wrapper', () => {
+      const introduction = extractIntroduction(organizingSpecificationsDoc)
+      expect(introduction).toContain('class="highlight"')
+    })
+
+    it('extracted introduction contains fenced code block code text', () => {
+      const introduction = extractIntroduction(organizingSpecificationsDoc)
+      expect(introduction).toContain('suggest plan to record specifications')
+    })
+
+    it('extracted introduction contains paragraph text before the fenced block', () => {
+      const introduction = extractIntroduction(organizingSpecificationsDoc)
+      expect(introduction).toContain('<p>')
     })
   })
 })
