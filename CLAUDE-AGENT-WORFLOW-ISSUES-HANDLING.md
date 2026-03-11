@@ -33,12 +33,12 @@ git worktree add docs_<slug> -b docs/<slug>
 ```
 
 - `<slug>` must be ≤ 30 characters.
-- Use type `docs` for agent instruction files (`.agents-brain/`) and this file.
+- Use type `docs` for agent instruction files (`.claude/agents/`) and this file.
 - Use type `ci` for workflow or CI config files.
 
 ### 4. Spawn the Pipeline Maintainer Agent
 
-Read `.agents-brain/agent-7-pipeline-maintainer.md` and spawn a subagent using the Task tool with that prompt. Pass:
+Invoke agent-7-pipeline-maintainer using the Task tool. Pass:
 
 - `Issue: [description of the problem]`
 - `Worktree: [absolute path to the worktree]`
@@ -51,11 +51,11 @@ Claude Code may also suggest improvements beyond what the agent proposes — the
 
 ### 5. Commit via the Git Agent
 
-Read `.agents-brain/agent-4-git.md` and spawn a subagent using the Task tool with that prompt, instructing it to stage and commit the changed files. Pass `Worktree: [worktree]`.
+Invoke agent-4-git using the Task tool, instructing it to stage and commit the changed files. Pass `Worktree: [worktree]`.
 
 Commit rules:
 
-- Files under `.agents-brain/` use commit type and scope `ci(agent)`.
+- Files under `.claude/agents/` use commit type and scope `ci(agent)`.
 - Files under `docs/` or at the repo root (`CLAUDE*.md`) use commit type `docs`.
 - Stage only the affected files.
 
@@ -63,10 +63,10 @@ Confirm the commit message with the user before pushing.
 
 ### 6. Push and Open a PR
 
-Read `.agents-brain/agent-4-git.md` and spawn a subagent using the Task tool with that prompt, instructing it to perform **Task 6** (create PR) and wait for PR URL, then **Task 7** (merge PR) after user approval. Pass `Worktree: [worktree]`.
+Invoke agent-4-git using the Task tool, instructing it to perform **Task 6** (create PR) and wait for PR URL, then **Task 7** (merge PR) after user approval. Pass `Worktree: [worktree]`.
 
 Target branch: `develop`.
 
 ### 7. Post-Merge Cleanup
 
-Read `.agents-brain/agent-4-git.md` and spawn a subagent using the Task tool with that prompt, instructing it to perform **Task 8** (remove worktree and update develop). Pass `Worktree: [worktree]`.
+Invoke agent-4-git using the Task tool, instructing it to perform **Task 8** (remove worktree and update develop). Pass `Worktree: [worktree]`.

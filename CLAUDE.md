@@ -119,7 +119,7 @@ When the user reports a problem with an agent's behaviour or instructions, follo
 **When the user provides a feature request, bug fix, or any change, act as the orchestrator:**
 
 1. Save the request to `docs/prompts/tasks/issue-[id of issue]-[slug]/README.md`.
-2. Follow the pipeline in `.agents-brain/agent-0-orchestrator.md` step by step.
+2. Follow the pipeline in `.claude/agents/agent-0-orchestrator.md` step by step.
 
 The user never needs to run a command — just describe what they want and the pipeline starts.
 
@@ -133,23 +133,25 @@ docs/prompts/tasks/
     README.md                    ← user request (input)
     business-specifications.md   ← specs agent output
     security-guidelines.md       ← security agent output
+    test-cases.md                ← test-writer agent output (pass 1)
     technical-specifications.md  ← coder agent output
     review-results.md            ← reviewer agent output
-    test-results.md              ← tester agent output
+    test-results.md              ← test-runner agent output
 ```
 
 `docs/prompts/tasks/` is a co-authored AI-human artifact space: humans provide the request, agents generate and validate the specs and implementation notes. This is distinct from `docs/specs/` (requirements) and `docs/decisions/` (ADRs), which are maintained by humans.
 
 ### Agents and their prompt files
 
-| Agent         | Prompt                               | Reads                                                                                                          | Writes                                          |
-| ------------- | ------------------------------------ | -------------------------------------------------------------------------------------------------------------- | ----------------------------------------------- |
-| Specification | `.agents-brain/agent-1-specs.md`     | `[task-folder]/README.md`                                                                                      | `[task-folder]/business-specifications.md`      |
-| Security      | `.agents-brain/agent-5-security.md`  | `[task-folder]/business-specifications.md`                                                                     | `[task-folder]/security-guidelines.md`          |
-| Coder         | `.agents-brain/agent-2-coder.md`     | `[task-folder]/business-specifications.md`, `[task-folder]/security-guidelines.md`                            | `[task-folder]/technical-specifications.md`     |
-| Reviewer      | `.agents-brain/agent-6-reviewer.md`  | `[task-folder]/technical-specifications.md`, `[task-folder]/security-guidelines.md`, `[task-folder]/business-specifications.md` | `[task-folder]/review-results.md` |
-| Tester        | `.agents-brain/agent-3-tester.md`    | `[task-folder]/business-specifications.md`, `[task-folder]/technical-specifications.md`                       | `[task-folder]/test-results.md`                 |
-| Versioning    | `.agents-brain/agent-4-git.md`       | `[task-folder]/business-specifications.md`, `[task-folder]/test-results.md`                                   | git history                                     |
+| Agent         | Prompt                                    | Reads                                                                                                          | Writes                                          |
+| ------------- | ----------------------------------------- | -------------------------------------------------------------------------------------------------------------- | ----------------------------------------------- |
+| Specification | `.claude/agents/agent-1-specs.md`         | `[task-folder]/README.md`                                                                                      | `[task-folder]/business-specifications.md`      |
+| Security      | `.claude/agents/agent-5-security.md`      | `[task-folder]/business-specifications.md`                                                                     | `[task-folder]/security-guidelines.md`          |
+| Test Writer   | `.claude/agents/agent-3-test-writer.md`   | `[task-folder]/business-specifications.md`, `[task-folder]/security-guidelines.md` (pass 1); `[task-folder]/test-cases.md`, `[task-folder]/technical-specifications.md` (pass 2) | `[task-folder]/test-cases.md` (pass 1); `.spec.ts` files (pass 2) |
+| Coder         | `.claude/agents/agent-2-coder.md`         | `[task-folder]/business-specifications.md`, `[task-folder]/security-guidelines.md`, `[task-folder]/test-cases.md` | `[task-folder]/technical-specifications.md`  |
+| Reviewer      | `.claude/agents/agent-6-reviewer.md`      | `[task-folder]/technical-specifications.md`, `[task-folder]/security-guidelines.md`, `[task-folder]/business-specifications.md` | `[task-folder]/review-results.md` |
+| Test Runner   | `.claude/agents/agent-3-test-runner.md`   | `[task-folder]/technical-specifications.md`                                                                    | `[task-folder]/test-results.md`                 |
+| Versioning    | `.claude/agents/agent-4-git.md`           | `[task-folder]/business-specifications.md`, `[task-folder]/test-results.md`                                   | git history                                     |
 
 ### Pipeline flow
 
@@ -164,7 +166,9 @@ flowchart TD
     versioningCommitSpecs --> securityAgent[Security agent<br />writes security-guidelines.md]
     securityAgent -->|ADR Required → human approves| securityAgent
     securityAgent --> versioningCommitSecurity[Versioning agent<br />Task 3.5: commit security-guidelines.md]
-    versioningCommitSecurity --> coderAgent[Coder agent<br />writes technical-specifications.md]
+    versioningCommitSecurity --> testWriterPass1[Test Writer agent (pass 1)<br />writes test-cases.md]
+    testWriterPass1 --> versioningCommitTestCases[Versioning agent<br />Task 3.7: commit test-cases.md]
+    versioningCommitTestCases --> coderAgent[Coder agent<br />writes technical-specifications.md]
     coderAgent -->|status: review specs → loop back| specsAgent
     coderAgent --> reviewerAgent[Reviewer agent<br />runs lint + type-check + writes review-results.md]
     reviewerAgent -->|status: changes requested → loop back| coderAgent
@@ -172,9 +176,10 @@ flowchart TD
     reviewerAgent --> approveTechnicalSpecs{Human approves<br />technical specs?}
     approveTechnicalSpecs -->|Rejected| stoppedAfterReview([Pipeline stopped])
     approveTechnicalSpecs -->|Approved| versioningCommitCode[Versioning agent<br />Task 4: commit source files + review-results.md]
-    versioningCommitCode --> testerAgent[Tester agent<br />runs npm test + writes test-results.md]
-    testerAgent -->|status: failed → loop back| coderAgent
-    testerAgent --> versioningCommitTests[Versioning agent<br />Task 5: commit test files + push branch]
+    versioningCommitCode --> testWriterPass2[Test Writer agent (pass 2)<br />writes .spec.ts files]
+    testWriterPass2 --> testRunnerAgent[Test Runner agent<br />runs npm test + writes test-results.md]
+    testRunnerAgent -->|status: failed → loop back| coderAgent
+    testRunnerAgent --> versioningCommitTests[Versioning agent<br />Task 5: commit test files + push branch]
     versioningCommitTests --> approvePR{Human approves<br />PR creation?}
     approvePR -->|Rejected| stoppedBeforePR([Pipeline stopped])
     approvePR -->|Approved| createPR[gh pr create]

@@ -168,7 +168,7 @@ git worktree prune
 
 ## Agent Definition Updates Required
 
-The table below lists every `.agents-brain` file that needs changes to support the worktree workflow, what must change, and why.
+The table below lists every `.claude/agents` file that needs changes to support the worktree workflow, what must change, and why.
 
 ### agent-0-orchestrator.md — High impact
 
