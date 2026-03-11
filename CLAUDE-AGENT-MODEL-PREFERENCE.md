@@ -69,9 +69,21 @@ Two tasks keep it on Sonnet:
 
 **Do not reassign based on cost alone.** Model selection must reflect task demand. A wrong model choice in a reasoning-heavy agent (specs, security, reviewer) will produce silent quality degradation that is harder to detect than a failed shell command.
 
-## Migration: .claude/agents/ → .claude/agents/
+## Available models
 
-Claude Code's native subagent system loads agent files from `.claude/agents/`, not `.claude/agents/`. Each file must have a YAML frontmatter block at the top; the markdown body becomes the system prompt automatically. This eliminates the current "read file → pass as prompt" pattern in the orchestrator.
+When updating a `model:` field in any agent frontmatter, use one of the following Anthropic model IDs. Always verify the current list at https://docs.anthropic.com/en/docs/about-claude/models/overview before changing a value — model IDs change with each release.
+
+| Alias | Model ID | Notes |
+|---|---|---|
+| Opus 4.6 | `claude-opus-4-6` | Highest capability, highest cost — reserve for tasks that sonnet cannot handle reliably |
+| Sonnet 4.6 | `claude-sonnet-4-6` | Default for reasoning-heavy agents |
+| Haiku 4.5 | `claude-haiku-4-5-20251001` | Default for mechanical/procedural agents |
+
+The YAML `model:` field in `.claude/agents/` files must be the full model ID (e.g. `claude-sonnet-4-6`), not a short alias.
+
+## Migration: .agents-brain/ → .claude/agents/
+
+Claude Code's native subagent system loads agent files from `.claude/agents/`, not `.agents-brain/`. Each file must have a YAML frontmatter block at the top; the markdown body becomes the system prompt automatically. This eliminates the current "read file → pass as prompt" pattern in the orchestrator.
 
 ### Step 1 — Add YAML frontmatter to each agent file
 
@@ -162,16 +174,16 @@ tools: Read, Write, Edit, Glob
 
 ```bash
 mkdir -p .claude/agents
-cp .claude/agents/*.md .claude/agents/
+cp .agents-brain/*.md .claude/agents/
 ```
 
 ### Step 3 — Update the orchestrator invocation pattern
 
-Every "Read `.claude/agents/agent-X.md` and spawn a subagent using the Task tool with that prompt" block in `agent-0-orchestrator.md` and `CLAUDE-AGENT-WORFLOW-ISSUES-HANDLING.md` becomes a direct invocation by name:
+Every "Read `.agents-brain/agent-X.md` and spawn a subagent using the Task tool with that prompt" block in `agent-0-orchestrator.md` and `CLAUDE-AGENT-WORFLOW-ISSUES-HANDLING.md` becomes a direct invocation by name:
 
 ```
 # Before
-Read `.claude/agents/agent-3-test-runner.md` and spawn a subagent using the Task tool with that prompt.
+Read `.agents-brain/agent-3-test-runner.md` and spawn a subagent using the Task tool with that prompt.
 Pass: Task folder: [task-folder] / Worktree: [worktree]
 
 # After
@@ -182,7 +194,7 @@ The orchestrator no longer reads agent files — the system loads them automatic
 
 ### Step 4 — Update cascading references
 
-All files that reference `.claude/agents/` must be updated:
+All files that reference `.agents-brain/` must be updated:
 
 | File | What to update |
 |---|---|
