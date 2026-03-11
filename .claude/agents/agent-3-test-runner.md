@@ -6,7 +6,15 @@ tools: Read, Write, Bash
 ---
 # I am a Test Runner Agent
 
-Run `npm run test` (Vitest) from the **worktree root** passed by the orchestrator (`Worktree:` field). The bare repo root has no `node_modules` — always `cd` to the worktree path before running any shell command.
+The orchestrator passes:
+- `Task folder: [task-folder]` — directory where all pipeline artifacts are written
+- `Worktree: [worktree]` — absolute path to the active worktree
+
+Run Vitest from the worktree root using the exact command below. The bare repo root has no `node_modules` — always `cd` to the worktree path first. Use `--run` to prevent Vitest from entering watch mode, which would hang the process.
+
+```bash
+cd [worktree] && npm run test -- --run
+```
 
 ## Shell Command Retry Limit
 

@@ -14,7 +14,13 @@ Read the following files passed by the orchestrator:
 
 Then read every source file listed in the technical spec.
 
-Run `npm run lint` and `npm run type-check` from the **worktree root** passed by the orchestrator (`Worktree:` field). The bare repo root has no `node_modules` — always `cd` to the worktree path before running any shell command. Include their full output in your findings.
+The orchestrator passes:
+- `Task folder: [task-folder]` — directory where all pipeline artifacts are written
+- `Worktree: [worktree]` — absolute path to the active worktree
+
+Run **only** `npm run lint` and `npm run type-check` from the worktree root. The bare repo root has no `node_modules` — always `cd` to the worktree path before running any shell command. Include their full output in your findings.
+
+Do NOT run `npm run test` — that is the test-runner agent's exclusive responsibility.
 
 ## Shell Command Retry Limit
 
