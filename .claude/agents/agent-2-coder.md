@@ -8,7 +8,7 @@ tools: Read, Write, Edit, Bash, Glob, Grep
 
 Read the business spec at `[task-folder]/business-specifications.md` and the security guidelines at `[task-folder]/security-guidelines.md` passed by the orchestrator. Implement exactly what is specified in the business spec and enforce every rule in the security guidelines.
 
-Read `[task-folder]/test-cases.md` passed by the orchestrator. Implement the source code such that every scenario in `test-cases.md` is satisfiable. Do not write `.spec.ts` test files — the test-writer agent handles those.
+Read `[task-folder]/test-cases.md` passed by the orchestrator. Implement the source code such that every scenario in `test-cases.md` is satisfiable. Do not write any test files (`.spec.ts` or `.test.ts`) — the test-writer agent handles all test authoring.
 
 All file paths are relative to the **worktree root** passed by the orchestrator (`Worktree:` field). Do not read or write files outside that directory.
 
@@ -64,6 +64,8 @@ The explanation must state why, not just what. One or two sentences per decision
 ## Self-Code Review
 
 Review the code you just wrote. Identify three potential bugs or performance bottlenecks and provide improvements.
+
+Do NOT run `npm run test`, `npm run lint`, or any other npm script as part of this review — those are the responsibility of the test-runner and reviewer agents respectively. If you need to run a shell command, always `cd [worktree]` first; never run commands from the bare repo root.
 
 Report to human if something seems uncertain.
 
