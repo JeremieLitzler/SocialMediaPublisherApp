@@ -119,11 +119,6 @@ If the last line is `status: passed`:
 - Write a meaningful commit message that summarises the change based on `[task-folder]/business-specifications.md` within Git recommended message length. Put anything beyond the commit message limit into the commit description.
 - Commit on the current feature branch — never commit directly to develop or main.
 - Push the branch to origin.
-- After pushing, update the `develop` worktree so it is ready for the next task:
-
-```bash
-git -C <repo>.git/develop pull origin develop
-```
 
 ### Task 6: Create pull request
 
