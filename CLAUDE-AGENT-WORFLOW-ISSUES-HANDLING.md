@@ -38,10 +38,22 @@ git worktree add docs_<slug> -b docs/<slug>
 
 ### 4. Spawn the Pipeline Maintainer Agent
 
-Invoke agent-7-pipeline-maintainer using the Task tool. Pass:
+**From a native `.claude/agents/` agent (e.g. agent-0-orchestrator):** Use the Task tool with `subagent_type="agent-7-pipeline-maintainer"`. Pass:
 
 - `Issue: [description of the problem]`
 - `Worktree: [absolute path to the worktree]`
+
+**From the main conversation or a general-purpose subagent:** Custom `subagent_type` names are not resolvable. Read the agent file first, then call the `Agent` tool with `subagent_type="general-purpose"`, passing the file content plus the issue details as the prompt:
+
+```
+Read [worktree]/.claude/agents/agent-7-pipeline-maintainer.md
+→ Agent(
+    subagent_type="general-purpose",
+    prompt="<file content>\n\nIssue: <description>\nWorktree: <absolute path to worktree>"
+  )
+```
+
+See `CLAUDE-ISSUE-TRIGGERING-PIPELINE-MAINTAINER-FROM-MAIN-CONVERSATION.md` for the full step-by-step procedure.
 
 The agent will identify all files that need updating, apply the minimal fix, and report back a summary of changes with `status: ready`.
 
@@ -51,7 +63,17 @@ Claude Code may also suggest improvements beyond what the agent proposes — the
 
 ### 5. Commit via the Git Agent
 
-Invoke agent-4-git using the Task tool, instructing it to stage and commit the changed files. Pass `Worktree: [worktree]`.
+**From a native `.claude/agents/` agent:** Use the Task tool with `subagent_type="agent-4-git"`, instructing it to stage and commit the changed files. Pass `Worktree: [worktree]`.
+
+**From the main conversation or a general-purpose subagent:** Read the git agent file first, then call:
+
+```
+Read [worktree]/.claude/agents/agent-4-git.md
+→ Agent(
+    subagent_type="general-purpose",
+    prompt="<file content>\n\nTask: Task 3 only (commit changed files)\nWorktree: <worktree>"
+  )
+```
 
 Commit rules:
 
@@ -63,10 +85,14 @@ Confirm the commit message with the user before pushing.
 
 ### 6. Push and Open a PR
 
-Invoke agent-4-git using the Task tool, instructing it to perform **Task 6** (create PR) and wait for PR URL, then **Task 7** (merge PR) after user approval. Pass `Worktree: [worktree]`.
+**From a native `.claude/agents/` agent:** Use the Task tool with `subagent_type="agent-4-git"`, instructing it to perform **Task 6** (create PR) and wait for PR URL, then **Task 7** (merge PR) after user approval. Pass `Worktree: [worktree]`.
+
+**From the main conversation or a general-purpose subagent:** Read the git agent file and use `Agent(subagent_type="general-purpose")` for each of Task 6, Task 7, and Task 8 separately — same pattern as Step 5.
 
 Target branch: `develop`.
 
 ### 7. Post-Merge Cleanup
 
-Invoke agent-4-git using the Task tool, instructing it to perform **Task 8** (remove worktree and update develop). Pass `Worktree: [worktree]`.
+**From a native `.claude/agents/` agent:** Use the Task tool with `subagent_type="agent-4-git"`, instructing it to perform **Task 8** (remove worktree and update develop). Pass `Worktree: [worktree]`.
+
+**From the main conversation or a general-purpose subagent:** Read the git agent file and call `Agent(subagent_type="general-purpose")` with Task 8 as the prompt, same pattern as Step 5.
