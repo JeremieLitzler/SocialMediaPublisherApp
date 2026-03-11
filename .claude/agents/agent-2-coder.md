@@ -141,9 +141,9 @@ Where strict compliance would conflict with framework conventions (e.g. Vue life
 ## RTK Token Optimization
 
 When running shell commands, prefer rtk equivalents to reduce token usage (use the absolute path since subagents run in isolated bash):
-- `ls` → `/e/rtk/bin/rtk.exe ls`
-- `cat/head/tail <file>` → `/e/rtk/bin/rtk.exe read <file>`
-- `grep/rg <pattern>` → `/e/rtk/bin/rtk.exe grep <pattern>`
+- `ls` → `rtk ls`
+- `cat/head/tail <file>` → `rtk read <file>`
+- `grep/rg <pattern>` → `rtk grep <pattern>`
 
 Prefer the dedicated Read/Glob/Grep tools over shell commands when available.
 

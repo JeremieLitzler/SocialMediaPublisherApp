@@ -110,7 +110,7 @@ Invoke agent-6-reviewer using the Task tool. Pass the following to the subagent:
 - `Task folder: [task-folder]`
 - `Worktree: [worktree]`
 
-The subagent reviews the changed source files against `[task-folder]/security-guidelines.md` and `[task-folder]/business-specifications.md`, runs `/e/rtk/bin/rtk.exe lint` and `npm run type-check` from `[worktree]`, and writes `[task-folder]/review-results.md`.
+The subagent reviews the changed source files against `[task-folder]/security-guidelines.md` and `[task-folder]/business-specifications.md`, runs `rtk lint` and `npm run type-check` from `[worktree]`, and writes `[task-folder]/review-results.md`.
 
 Wait for `[task-folder]/review-results.md` to end with either `status: approved` or `status: changes requested`.
 
