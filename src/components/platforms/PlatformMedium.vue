@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { computed, ref, watch, watchEffect } from 'vue'
 import { useRouter } from 'vue-router'
-import DOMPurify from 'dompurify'
 import { useArticleState } from '@/composables/useArticleState'
 import { generateMediumContent } from '@/utils/mediumContentGenerator'
+import { sanitizeBodyHtml } from '@/utils/sanitize'
 
 const router = useRouter()
 const { extractionState, resetState } = useArticleState()
@@ -27,7 +27,7 @@ watch(
   { immediate: true },
 )
 
-const sanitizedBodyHtml = computed(() => DOMPurify.sanitize(rawBodyHtml.value))
+const sanitizedBodyHtml = computed(() => sanitizeBodyHtml(rawBodyHtml.value))
 
 const renderedCopied = ref(false)
 

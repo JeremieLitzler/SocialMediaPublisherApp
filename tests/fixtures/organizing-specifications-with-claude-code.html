@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head><meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" /><meta
+  name="description"
+  content="Agentic coding has grown big in 2025 and to make sure I could stay up to speed, I tried Claude Code last month. " />
+<title>Organizing Specifications with Claude Code</title>
+
+
+
+<link rel="canonical" href="https://iamjeremie.me/post/2026-03/organizing-specifications-with-claude-code/" itemprop="url" />
+
+
+<link rel="stylesheet" href="/scss/style.min.9027be8b7574674b7d3e668a8622511e11d535965eeb9de40dcb7989e1aa2b45.css"><meta property='og:title' content="Organizing Specifications with Claude Code">
+<meta property='og:description' content="Agentic coding has grown big in 2025 and to make sure I could stay up to speed, I tried Claude Code last month. ">
+<meta property='og:url' content='https://iamjeremie.me/post/2026-03/organizing-specifications-with-claude-code/'>
+<meta property='og:site_name' content='Blog of Jérémie Litzler'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='Claude Code' /><meta property='article:published_time' content='2026-03-09T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2026-03-09T00:00:00&#43;00:00'/><meta property='og:image' content='https://iamjeremie.me/post/2026-03/organizing-specifications-with-claude-code/2026-03-09-white-robot-looking-at-the-camera.jpg' />
+<meta name="twitter:title" content="Organizing Specifications with Claude Code">
+<meta name="twitter:description" content="Agentic coding has grown big in 2025 and to make sure I could stay up to speed, I tried Claude Code last month. "><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://iamjeremie.me/post/2026-03/organizing-specifications-with-claude-code/2026-03-09-white-robot-looking-at-the-camera.jpg' />
+  <link rel="shortcut icon" href="/favicon.ico" />
+
+
+
+
+<link rel="stylesheet" href="https://iamjeremie.me/css/custom-style.css" />
+
+
+<meta name="author" content="Jérémie Litzler" />
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/profilepic-400w_hu_63da95539758f437.jpg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+		    
+            
+            <p class="site-name"><a href="/">Blog of Jérémie Litzler</a></p>
+            <p class="site-description">I share my notes and experiences that can be useful to one of you. Enjoy the read!</p>
+            
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://www.google.com/search?q=linkedin&#43;jeremie&#43;litzler'
+                        target="_blank"
+                        title="LinkedIn"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-linkedin" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 4m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z" /><path d="M8 11l0 5" /><path d="M8 8l0 .01" /><path d="M12 16l0 -5" /><path d="M16 16v-3a2 2 0 0 0 -4 0" /></svg>
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://github.com/JeremieLitzler'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com/LitzlerJeremie'
+                        target="_blank"
+                        title="X"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-x" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 4l11.733 16h4.267l-11.733 -16z" /><path d="M4 20l6.768 -6.768m2.46 -2.46l6.772 -6.772" /></svg>
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://jeremielitzler.fr'
+                        target="_blank"
+                        title="Site français"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-language"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 5h7" /><path d="M9 3v2c0 4.418 -2.239 8 -5 8" /><path d="M5 9c0 2.144 2.952 3.908 6.7 4" /><path d="M12 20l4 -9l4 9" /><path d="M19.1 18h-6.2" /></svg>
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>Who am I?</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/sponsor-me/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-heart-handshake" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="#707070" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+    <path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" />
+    <path d="M12 6l-3.293 3.293a1 1 0 0 0 0 1.414l.543 .543c.69 .69 1.81 .69 2.5 0l1 -1a3.182 3.182 0 0 1 4.5 0l2.25 2.25" />
+    <path d="M12.5 15.5l2 2" />
+    <path d="M15 13l2 2" />
+</svg>
+                
+                <span>Support my work</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/contact-me/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-message-chatbot" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="#707070" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+    <path d="M4 21v-13a3 3 0 0 1 3 -3h10a3 3 0 0 1 3 3v6a3 3 0 0 1 -3 3h-9l-4 4" />
+    <path d="M9.5 9h.01" />
+    <path d="M14.5 9h.01" />
+    <path d="M9.5 13a3.5 3.5 0 0 0 5 0" />
+</svg>
+                
+                <span>Let&#39;s talk</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>Dark Mode</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">Table of contents</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#building-the-specifications-adr-and-task-list">Building the Specifications, ADR and Task List</a></li>
+    <li><a href="#install-claude-code-usage-extension">Install Claude Code Usage Extension</a></li>
+    <li><a href="#install-claude-code">Install Claude Code</a></li>
+    <li><a href="#first-login-in-visual-studio-code">First Login in Visual Studio Code</a></li>
+    <li><a href="#init-claudemd">Init CLAUDE.md</a></li>
+    <li><a href="#completing-first-task-with-claude-code">Completing First Task With Claude Code</a></li>
+    <li><a href="#moving-on-to-the-task-execution">Moving On to the Task Execution</a></li>
+    <li><a href="#claude-isnt-always-correct">Claude Isn’t Always Correct</a></li>
+    <li><a href="#about-using-claude-code-with-api-credits">About Using Claude Code With API Credits</a></li>
+    <li><a href="#using-claude-code-with-claude-pro">Using Claude Code With Claude Pro</a></li>
+    <li><a href="#token-optimization">Token Optimization</a>
+      <ol>
+        <li><a href="#the-basics">The Basics</a></li>
+        <li><a href="#tip1-clear-command">Tip #1: Clear Command</a></li>
+        <li><a href="#tip2-be-precise-with-your-scope">Tip #2: Be Precise With Your Scope</a></li>
+        <li><a href="#tip3-use-the-5-hour-sessions-as-a-sprint">Tip #3: Use the 5-hour Sessions As a Sprint</a></li>
+        <li><a href="#tip4-switch-model-strategically">Tip #4: Switch Model Strategically</a></li>
+        <li><a href="#tip5-use-mcp-wisely">Tip #5: Use MCP Wisely</a></li>
+      </ol>
+    </li>
+    <li><a href="#conclusion">Conclusion</a></li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="has-image main-article">
+    <header class="article-header">
+    <div class="article-image">
+      <a href="/post/2026-03/organizing-specifications-with-claude-code/">
+        
+          <img
+            src="/post/2026-03/organizing-specifications-with-claude-code/2026-03-09-white-robot-looking-at-the-camera_hu_6e64e3f7eef651c5.jpg"
+            srcset="/post/2026-03/organizing-specifications-with-claude-code/2026-03-09-white-robot-looking-at-the-camera_hu_ebaaab9cbcaa5bed.jpg 360w, /post/2026-03/organizing-specifications-with-claude-code/2026-03-09-white-robot-looking-at-the-camera_hu_6e64e3f7eef651c5.jpg 600w, /post/2026-03/organizing-specifications-with-claude-code/2026-03-09-white-robot-looking-at-the-camera_hu_27d1bf447d46ef46.jpg 1024w"
+            width="600"
+            height="400"
+            alt="White robot looking at the camera"
+            title="White robot looking at the camera" />
+        
+      </a>
+    </div>
+  
+  
+  
+  
+  <div class="article-details">
+    
+    <header class="article-category">
+        
+            
+            
+            
+            <a href="/categories/artificial-intelligence/" style="background-color: hsl(240, 60%, 84%); color: hsl(240, 60%, 15%);">
+                Artificial Intelligence
+            </a>
+        
+    </header>
+    
+
+  <div class="article-title-wrapper">
+  
+    <h1 class="article-title">
+      <a href="/post/2026-03/organizing-specifications-with-claude-code/">Organizing Specifications with Claude Code</a>
+    </h1>
+    
+    <h2 class="article-subtitle">Agentic coding has grown big in 2025 and to make sure I could stay up to speed, I tried Claude Code last month. </h2>
+     
+  </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published" datetime='2026-03-09T00:00:00Z'>Mar 09, 2026</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    11 minute read
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+
+    <section class="article-content">
+    
+    
+    <p>For a few months now, I wanted to start using AI at another level. I’ve been using AI chatbots, mainly Claude.ai for more than 2 years, and I felt it was limiting.</p>
+<p>I had an application idea for improving the time spent sharing blog posts, like this one, on social media.</p>
+<p>I also wanted to learn how to use agentic coding through specification-driven development for the purpose of staying up to date with what I could be asked in my work in the near future.</p>
+<p>Indeed, AI might not replace me, but the way we build things will and it will involve more and more AI, especially through agents, autonomous or not.</p>
+<p>So I started by giving <a href="http://Claude.ai">Claude.ai</a> chatbot my idea and requested:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">suggest plan to record specifications when building an app with claude code.
+</span></span><span class="line"><span class="cl">all specs should be markdown and store logically.
+</span></span><span class="line"><span class="cl">suggest how to start if user has draft of specs
+</span></span><span class="line"><span class="cl">need to preserve the decisions, the architecture.
+</span></span><span class="line"><span class="cl">need a good system prompt and workspace prompt(s) to enrich the task prompts as project grows.
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>It gave me this initial plan:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-jsx" data-lang="jsx"><span class="line"><span class="cl"><span class="nx">project</span><span class="o">-</span><span class="nx">root</span><span class="o">/</span>
+</span></span><span class="line"><span class="cl"><span class="err">├──</span> <span class="nx">docs</span><span class="o">/</span>
+</span></span><span class="line"><span class="cl"><span class="err">│</span>   <span class="err">├──</span> <span class="nx">specs</span><span class="o">/</span>
+</span></span><span class="line"><span class="cl"><span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="mi">00</span><span class="o">-</span><span class="nx">overview</span><span class="p">.</span><span class="nx">md</span>          <span class="err">#</span> <span class="nx">Project</span> <span class="nx">vision</span><span class="p">,</span> <span class="nx">goals</span><span class="p">,</span> <span class="nx">target</span> <span class="nx">users</span>
+</span></span><span class="line"><span class="cl"><span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="mi">01</span><span class="o">-</span><span class="nx">requirements</span><span class="p">.</span><span class="nx">md</span>      <span class="err">#</span> <span class="nx">Functional</span> <span class="o">&amp;</span> <span class="nx">non</span><span class="o">-</span><span class="nx">functional</span> <span class="nx">requirements</span>
+</span></span><span class="line"><span class="cl"><span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="mi">02</span><span class="o">-</span><span class="nx">architecture</span><span class="p">.</span><span class="nx">md</span>      <span class="err">#</span> <span class="nx">System</span> <span class="nx">design</span><span class="p">,</span> <span class="nx">tech</span> <span class="nx">stack</span><span class="p">,</span> <span class="nx">patterns</span>
+</span></span><span class="line"><span class="cl"><span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="mi">03</span><span class="o">-</span><span class="nx">data</span><span class="o">-</span><span class="nx">models</span><span class="p">.</span><span class="nx">md</span>       <span class="err">#</span> <span class="nx">Database</span> <span class="nx">schemas</span><span class="p">,</span> <span class="nx">API</span> <span class="nx">contracts</span>
+</span></span><span class="line"><span class="cl"><span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="mi">04</span><span class="o">-</span><span class="nx">ui</span><span class="o">-</span><span class="nx">ux</span><span class="p">.</span><span class="nx">md</span>            <span class="err">#</span> <span class="nx">User</span> <span class="nx">flows</span><span class="p">,</span> <span class="nx">wireframes</span><span class="p">,</span> <span class="nx">design</span> <span class="nx">system</span>
+</span></span><span class="line"><span class="cl"><span class="err">│</span>   <span class="err">│</span>   <span class="err">└──</span> <span class="mi">05</span><span class="o">-</span><span class="nx">features</span><span class="o">/</span>           <span class="err">#</span> <span class="nx">Per</span><span class="o">-</span><span class="nx">feature</span> <span class="nx">detailed</span> <span class="nx">specs</span>
+</span></span><span class="line"><span class="cl"><span class="err">│</span>   <span class="err">│</span>       <span class="err">├──</span> <span class="nx">auth</span><span class="p">.</span><span class="nx">md</span>
+</span></span><span class="line"><span class="cl"><span class="err">│</span>   <span class="err">│</span>       <span class="err">├──</span> <span class="nx">dashboard</span><span class="p">.</span><span class="nx">md</span>
+</span></span><span class="line"><span class="cl"><span class="err">│</span>   <span class="err">│</span>       <span class="err">└──</span> <span class="p">...</span>
+</span></span><span class="line"><span class="cl"><span class="err">│</span>   <span class="err">├──</span> <span class="nx">decisions</span><span class="o">/</span>
+</span></span><span class="line"><span class="cl"><span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="nx">ADR</span><span class="o">-</span><span class="mi">001</span><span class="o">-</span><span class="nx">framework</span><span class="o">-</span><span class="nx">choice</span><span class="p">.</span><span class="nx">md</span>
+</span></span><span class="line"><span class="cl"><span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="nx">ADR</span><span class="o">-</span><span class="mi">002</span><span class="o">-</span><span class="nx">state</span><span class="o">-</span><span class="nx">management</span><span class="p">.</span><span class="nx">md</span>
+</span></span><span class="line"><span class="cl"><span class="err">│</span>   <span class="err">│</span>   <span class="err">└──</span> <span class="nx">README</span><span class="p">.</span><span class="nx">md</span>              <span class="err">#</span> <span class="nx">ADR</span> <span class="nx">index</span>
+</span></span><span class="line"><span class="cl"><span class="err">│</span>   <span class="err">└──</span> <span class="nx">prompts</span><span class="o">/</span>
+</span></span><span class="line"><span class="cl"><span class="err">│</span>       <span class="err">├──</span> <span class="nx">system</span><span class="o">-</span><span class="nx">prompt</span><span class="p">.</span><span class="nx">md</span>
+</span></span><span class="line"><span class="cl"><span class="err">│</span>       <span class="err">└──</span> <span class="nx">workspace</span><span class="o">-</span><span class="nx">context</span><span class="p">.</span><span class="nx">md</span>
+</span></span><span class="line"><span class="cl"><span class="err">│</span>       <span class="err">└──</span> <span class="nx">tasks</span>
+</span></span><span class="line"><span class="cl"><span class="err">│</span>           <span class="err">└──</span> <span class="nx">task</span><span class="o">-</span><span class="mf">001.</span><span class="nx">md</span>
+</span></span><span class="line"><span class="cl"><span class="err">│</span>           <span class="err">└──</span> <span class="nx">task</span><span class="o">-</span><span class="mf">002.</span><span class="nx">md</span>
+</span></span><span class="line"><span class="cl"><span class="err">│</span>           <span class="p">...</span>
+</span></span><span class="line"><span class="cl"><span class="err">│</span>           <span class="err">└──</span> <span class="nx">task</span><span class="o">-</span><span class="nx">NNN</span><span class="p">.</span><span class="nx">md</span>
+</span></span><span class="line"><span class="cl"><span class="err">│</span>           <span class="err">└──</span> <span class="nx">task</span><span class="o">-</span><span class="nx">template</span><span class="p">.</span><span class="nx">md</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="building-the-specifications-adr-and-task-list">Building the Specifications, ADR and Task List
+</h2><p>I followed up with:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">guide me to implement this on a new project.
+</span></span><span class="line"><span class="cl">I have a starting point for the specs in a README file
+</span></span><span class="line"><span class="cl">let&#39;s do one step at a time.
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>Still using <a href="http://Claude.ai">Claude.ai</a> for now, because I needed to grasp the logic above, I followed step-by-step the creation of each file, challenging and adjusting the content and the organization of the files.</p>
+<p>As I progressed in the building of the application, I made sure Claude would follow the development workflow and suggest a new ADR at the appropriate moment. I also adjusted the system and workspace prompts when I saw a gap that needed to be recorded in its memory.</p>
+<p><a href="https://github.com/JeremieLitzler/SocialMediaPublisherApp/tree/b4d7a11f5b6d4f38e3d3bafd112b905c29d74698/docs">This commit</a> shows you what the <code>docs</code> folder looked like when I was ready to launch the coding phase. For this point, I simply needed to set up Claude and get it started.</p>
+<h2 id="install-claude-code-usage-extension">Install Claude Code Usage Extension
+</h2><p>At first, knowing the cost of using Claude Code seemed key to me to keep spending under control.</p>
+<p>In fact, I decided to try Claude Code through API credits at first simply because I wanted to confirm with actual metrics from my usage and confirm that the API credits method wasn’t cost-efficient.</p>
+<p>Following <a href="https://dev.to/suzuki0430/prevent-unexpected-claude-code-costs-with-this-vscodecursor-extension-nlb">this post</a> from <a href="https://dev.to/suzuki0430">Atsushi Suzuki</a>, I downloaded and installed the code to add a Visual Studio Code extension to count the cost of using Claude.</p>
+<p>The setup explained in the article is sufficient. However, as we’ll see further down, accuracy isn’t great.</p>
+<h2 id="install-claude-code">Install Claude Code
+</h2><p>I used the <a href="https://code.claude.com/docs/en/quickstart">official documentation</a>. Using the <strong>Windows PowerShell</strong> option, I installed Claude Code application.</p>
+<p>I also needed to add the <code>C:\Users\[your_username]\.local\bin</code> path to my <code>PATH</code> environment variable, as prompted at the end of the install.</p>
+<p>I finished with a restart.</p>
+<h2 id="first-login-in-visual-studio-code">First Login in Visual Studio Code
+</h2><p>I wanted to use the Claude Code official extension, but for some reason, I couldn’t stay logged in. It seemed to log me in successfully, since I got redirected to <code>https://platform.claude.com</code>, but as soon as I would type “Claude, are you ready”, the extension would tell me to login again…</p>
+<p>So I decided to use the built-in terminal of VSCode and run <code>claude</code> command.</p>
+<p>Before that, I needed to add the environment variable, since I’m using a custom Git installation with <a href="http://scoop.sh">scoop.sh</a>.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">CLAUDE_CODE_GIT_BASH_PATH=/path_to_scoop/apps/git/bin/bash.exe
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>After another restart, I was finally ready…</p>
+<h2 id="init-claudemd">Init CLAUDE.md
+</h2><p>If you have a good starting point succinctly describing your project in a <code>README</code> file like I did, it will generate a <code>CLAUDE.md</code> that has the most important information about the project to build.</p>
+<p>As always, make sure to read <strong>all</strong> what Claude Code generated for you and <strong>make sure it fits you</strong>.</p>
+<p>For example, I added myself:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-markdown" data-lang="markdown"><span class="line"><span class="cl"><span class="gu">## Who Is Claude Code
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">It is a senior engineer following Git Flow strategy, suggesting performant, secure and clean solutions.
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">It must create:
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">-</span> a feature branch when adding functionnality,
+</span></span><span class="line"><span class="cl"><span class="k">-</span> a fix branch when resolving an issue,
+</span></span><span class="line"><span class="cl"><span class="k">-</span> a docs branch when updating Markdown files only.
+</span></span><span class="line"><span class="cl"><span class="k">-</span> a new branch when a file is modified and it doesn&#39;t fall in the three previous scenarii. Follow conventional commit and Git Flow rules when naming branches.
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">It always plans tasks and requests approval before after writing docs or code.
+</span></span><span class="line"><span class="cl">No need to confirm file creation or modification, but confirm content is OK with Claude code&#39;s user.
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">No need to congratulate or use language that use unnecessary output tokens. Go to the point.
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>On the initialization, this is when Claude looks at files in your project. For example, I was using the Vue and Supabase Boilerplate I built myself and I gave Claude extra information about the template and what I need to keep or remove.</p>
+<h2 id="completing-first-task-with-claude-code">Completing First Task With Claude Code
+</h2><p>This was the moment I was looking forward to. I began with the task <code>**TR-1: Codebase Cleanup**</code> Claude Code planned in the requirements file to make sure the leftover code from the Vue and Supabase template I used didn’t clutter the context of Claude Code.</p>
+<p>It used <strong>457,657 input tokens</strong> and <strong>8,698</strong> output tokens worth $1.08 (source: <code>https://platform.claude.com/usage</code>) to complete the task.</p>
+<p>But the extension supposed to calculate the cost was quite off…</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">│ Date       │ Input │ Output │ Cache Create │ Cache Read │ Total Tokens │ Cost (USD) │
+</span></span><span class="line"><span class="cl">├────────────┼───────┼────────┼──────────────┼────────────┼──────────────┼────────────┤
+</span></span><span class="line"><span class="cl">│ 2026-02-12 │ 1,224 │ 9,913  │ 489,119      │ 5,845,326  │ 6,345,582    │ $18.70     │
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>So instead, I try the <a href="https://www.npmjs.com/package/ccusage">CLI <code>ccusage</code></a> by running the install command:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">npx ccusage@latest
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>Then running <code>ccusage</code>, I had something more consistent with the Claude Console usage.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">┌────────────┬───────────────┬───────────┬───────────┬───────────────┬─────────────┬───────────────┬─────────────┐
+</span></span><span class="line"><span class="cl">│ Date       │ Models        │     Input │    Output │  Cache Create │  Cache Read │  Total Tokens │  Cost (USD) │
+</span></span><span class="line"><span class="cl">├────────────┼───────────────┼───────────┼───────────┼───────────────┼─────────────┼───────────────┼─────────────┤
+</span></span><span class="line"><span class="cl">│ 2026-02-12 │ - sonnet-4-5  │       256 │       117 │        88,764 │   1,288,053 │     1,377,190 │       $0.72 │
+</span></span><span class="line"><span class="cl">└────────────┴───────────────┴───────────┴───────────┴───────────────┴─────────────┴───────────────┴─────────────┘
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>Still, it’s off by more than 30%, but it’s definitely closer to the Claude Console statistics than the extension.</p>
+<p>After tasks 2 to 8, I reached $13.80 while <code>ccusage</code> CLI told me I spent $10.44, making a 32% difference. I’ll likely report this to <code>ccusage</code> team.</p>
+<p>But after reading a few issues on the repository, I can sense that calculating an accurate figure is very tricky and Anthropic can change rules without anyone really knowing when and how exactly.</p>
+<h2 id="moving-on-to-the-task-execution">Moving On to the Task Execution
+</h2><p>I thought that the workflow <a href="http://Claude.ai">Claude.ai</a> suggested to me wasn’t ideal. I needed to create a file per task and write down the task myself.</p>
+<p>But what if I could simply let Claude Code figure out the tasks from the requirements, ask me to review the plan it’d follow and then lunch it to complete the task? Remember: I was getting started with Claude and I didn’t know about the <code>plan mode</code> yet…</p>
+<p>For that, I needed to give the workflow to follow in the system prompt file. I added to the system prompt that Claude Code should follow the Git Flow approach and create tasks itself.</p>
+<p>As I progress with the implementation,</p>
+<ul>
+<li>I reviewed the code and the logic was implemented.</li>
+<li>I suggested adding tests to the project before Claude would code anything, creating a new ADR with the framework I preferred.</li>
+<li>I suggested improvements to the system prompt along the way, making sure Claude would really follow Git Flow (which it didn’t at first) when creating branches and making commits. You have to be specific and not assume that the AI knows everything.</li>
+<li>I left to myself the branch push and PR review.</li>
+<li>Once, after adding tests for the Vue Components, I noticed an issue that Claude didn’t see. You definitely need to review the output of tests, even if they pass. In that case, the component testing was failing on <code>fetch</code> calls, which didn’t impact the actual test results, but polluted the output in the GitHub action.</li>
+</ul>
+<h2 id="claude-isnt-always-correct">Claude Isn’t Always Correct
+</h2><p>Yes, that’s what the small prints tell you when you launch Claude Code or use any chatbot.</p>
+<p>It told me that a SPA would be fine and there would be no CORS issue to fetch HTML content from the provided URL, which we serve on a different domain.</p>
+<p>I knew it wouldn’t work, but I went ahead to see if Claude would notice. It did add tests for the CORS issue, which is funny considering it first told me there wouldn’t be this kind of issue.</p>
+<p>That’s when I explicitly asked about this and it suggested the <a href="https://github.com/JeremieLitzler/SocialMediaPublisherApp/blob/develop/docs/decisions/ADR-006-netlify-functions-for-cors-proxy.md">ADR 6</a> about using Netlify serverless functions as a proxy backend. That worked really well.</p>
+<h2 id="about-using-claude-code-with-api-credits">About Using Claude Code With API Credits
+</h2><p><strong>Claude Code will keep going even if you run out of credits during a prompt.</strong></p>
+<p>I didn’t find something cut it off at a certain remaining balance… So I had to buy $6 of extra credits to cover the negative $0.57 balance. I hadn’t actived autoreload, because I knew it’d charge me mindlessly…</p>
+<p>Second, while searching for a setting to cut it off as soon as credits ran out, I saw this option on <code>https://platform.claude.com</code>:</p>
+<p>
+
+	<img src="/post/2026-03/organizing-specifications-with-claude-code/fast-mode-claude-platform.png"
+	width="931"
+	height="230"
+	srcset="/post/2026-03/organizing-specifications-with-claude-code/fast-mode-claude-platform_hu_a2433430389ce65c.png 360w, /post/2026-03/organizing-specifications-with-claude-code/fast-mode-claude-platform_hu_7c3db8ada51d6813.png 600w, /post/2026-03/organizing-specifications-with-claude-code/fast-mode-claude-platform_hu_706498410fcf0f9d.png 1024w"
+	loading="lazy"
+	
+		alt="Fast Mode on https://platform.claude.com"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="404"
+		data-flex-basis="971px"
+		
+		>
+</p>
+<p>I wonder if my credits ran out more quickly because of this and how much more credits does <em>fast mode</em> really uses… Perhaps that&rsquo;s where the 30% difference comes from? In the meantime, <a href="https://www.google.com/search?q=claude&#43;code&#43;fast&#43;mode&#43;vs&#43;no&#43;fast&#43;mode">a Google Search</a> could help us get started with finding out the answer.</p>
+<p>From that point on, I switched to Claude Pro subscription.</p>
+<h2 id="using-claude-code-with-claude-pro">Using Claude Code With Claude Pro
+</h2><p>Even if the application I’m building was small, the 5-hour session window can reach 100% really quickly (for less than 2 hours).</p>
+<p>That’s when good management of context is key.</p>
+<h2 id="token-optimization">Token Optimization
+</h2><h3 id="the-basics">The Basics
+</h3><p>Anytime you use Claude Code, what you provide, whether it’s a text prompt, code files and others, Anthropic counts that as your input tokens. Anything that LLM will reply with or any action it’ll take on your code base goes into the output tokens counter.</p>
+<p>And no matter your method of billing, subscription or API credits, we spend tokens. API credits give a clear view of the spent tokens, but <a href="https://support.claude.com/en/articles/11647753-understanding-usage-and-length-limits">subscription limits aren’t so clear</a>.</p>
+<p>Even though LLMs are stateless, the entire current conversation is kept “in memory” and each time you prompt Claude Code in your IDE, the entire conversation counts towards your limit…</p>
+<h3 id="tip1-clear-command">Tip #1: Clear Command
+</h3><p>When you completed a task, use the <code>/clear</code> command to start with a clean slate.</p>
+<p>If something in the previous conversation may be useful, then using <code>/compact</code> command can help reduce token usage while keeping relevant context.</p>
+<h3 id="tip2-be-precise-with-your-scope">Tip #2: Be Precise With Your Scope
+</h3><p>Letting Claude Code wander freely in your code base will use tokens faster than you can think.</p>
+<p>And sometimes, Claude doesn’t need to read every file each task it works on. If you prepared your tasks into small functional units, independent from one another, then the context for each task will be small.</p>
+<p>Similarly, when a bug occurs, investigate it yourself first, narrowing the scope of where the guilty code resides and Claude Code will look into that.</p>
+<h3 id="tip3-use-the-5-hour-sessions-as-a-sprint">Tip #3: Use the 5-hour Sessions As a Sprint
+</h3><p>That’s something that I’ve not applied yet, but it’s something I came aware of in my experience of a multi-agent workflow (that I’ll share in a later article).</p>
+<p>A sprint is a backlog of tasks, clearly defined and that a team needs to complete in a certain time span, usually a few weeks. Here, Claude Code has a 5-hour window to use a certain number of tokens and complete the tasks. I’ve experienced that, from a task to another, the available tokens run out smaller or faster without pinning down exactly what did make a difference to go in either direction.</p>
+<h3 id="tip4-switch-model-strategically">Tip #4: Switch Model Strategically
+</h3><p>Opus model is great for planning or deep debugging, but will burn down your token when coding or testing.</p>
+<p>Sonnet model will work great to execute the plan.</p>
+<h3 id="tip5-use-mcp-wisely">Tip #5: Use MCP Wisely
+</h3><p>MCP can boost the LLM, but sometimes, using too many MCP will bloat your context window.</p>
+<p>The idea is to target MCP based on the task and limit which tools the LLM will use for a given task.</p>
+<p>That’ll be a topic for a future article.</p>
+<h2 id="conclusion">Conclusion
+</h2><p>Claude Code is great. I have built two full applications (including <a href="http://share.madebyjeremie.fr/">the social sharing app</a>) with it and it runs really well. I’ve already implemented several new features compared to the initial idea.</p>
+<p>I feel I can focus on idealization and adding features to my application rather quickly.</p>
+<p>I also learned new concepts, like BFS, e.g., <a href="https://en.wikipedia.org/wiki/Breadth-first_search">Breadth-First Search</a>.</p>
+<p>The Pro subscription is enough for me right now, but I’ll soon share, in the next article, that having a team of agents works better to complete tasks.</p>
+<p>Stay tuned.</p>
+<div class="jli-notice jli-notice-tip"  id="Follow me" >
+    <p class="jli-notice-title">Follow me</p><p>Thanks for reading this article. Make sure to <a href="https://x.com/LitzlerJeremie">follow me on X</a>, <a href="https://iamjeremie.substack.com/">subscribe to my Substack publication</a> and bookmark my blog to read more in the future.</p></div>
+<p><em>Photo by Alex Knight on Pexels.</em></p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/claude-code/">Claude Code</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2018 - 
+        
+        2026 Blog of Jérémie Litzler
+    </section>
+    
+    <section class="powerby">
+        
+            License GPLv3 | <a href="https://iamjeremie.me/page/terms/" title="Read terms and conditions of this website">Terms</a> <br/>
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.34.1">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="/js/photoswipe.4.1.3.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="/js/photoswipe-ui-default.4.1.3.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="/css/photoswipe-default-skin.4.1.3.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="/css/photoswipe.4.1.3.min.css"crossorigin="anonymous"
+            >
+    
+
+
+
+
+            </main>
+        </div>
+        <script 
+                src="/js/vibrant.3.1.6.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.c922af694cc257bf1ecc41c0dd7b0430f9114ec280ccf67cd2c6ad55f5316c4e.js" defer></script>
+
+
+
+
+    <script data-collect-dnt="true" async defer src="https://scripts.simpleanalyticscdn.com/latest.js"></script>
+<noscript><img aria-hidden="true" src="https://queue.simpleanalyticscdn.com/hello.gif" alt="One pixel gif image is used to collect page views. Visit https://docs.simpleanalytics.com/without-javascript for more details." referrerpolicy="no-referrer-when-downgrade" /></noscript></body>
+</html>
