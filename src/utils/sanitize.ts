@@ -15,7 +15,7 @@
  * components (security-guidelines.md rule 5).
  */
 
-import DOMPurify from 'dompurify'
+import DOMPurify, { type Config } from 'dompurify'
 
 /**
  * HTML element tags required by the blog fenced-code-block structure
@@ -74,7 +74,7 @@ const BLOCKED_TAGS: readonly string[] = ['form']
  */
 const BLOCKED_ATTRS: readonly string[] = ['style']
 
-const SANITIZE_CONFIG: DOMPurify.Config = {
+const SANITIZE_CONFIG: Config & { RETURN_DOM?: false; RETURN_DOM_FRAGMENT?: false } = {
   ADD_TAGS: [...FENCED_CODE_EXTRA_TAGS],
   ADD_ATTR: [...FENCED_CODE_EXTRA_ATTRS],
   FORBID_TAGS: [...BLOCKED_TAGS],
