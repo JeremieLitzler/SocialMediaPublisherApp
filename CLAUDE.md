@@ -2,6 +2,107 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Project Overview
+
+A Social Media Sharing Assistant that automates content extraction from blog articles and generates platform-specific posts for X, LinkedIn, Medium, and Substack.
+
+**Workflow:** URL input → Netlify Function fetches HTML (CORS proxy) → HTML parsed and article data extracted → Platform-specific content generated → User copies content per platform.
+
+## Architecture
+
+### Project-specific
+
+#### Key Constraints
+
+The Netlify Function (`netlify/functions/fetch-article.ts`) only whitelists two domains: `iamjeremie.me` and `jeremielitzler.fr`. All other URLs are rejected. This is by design.
+
+#### State Management
+
+State is managed via a **module-level singleton composable** (`src/composables/useArticleState.ts`) — not Pinia. A module-level `ref` is shared across all components that import the composable. See ADR-002 for rationale.
+
+`ExtractionState` tracks `status` as one of: `'idle' | 'loading' | 'missing-introduction' | 'success' | 'error'`. The `missing-introduction` status triggers a manual input fallback UI (`ManualIntroduction.vue`).
+
+#### Data Flow
+
+1. `ArticleInput.vue` → triggers `useArticleExtractor.ts`
+2. `useArticleExtractor.ts` → calls `/.netlify/functions/fetch-article?url=...` → parses HTML via `DOMParser` → calls pure functions in `htmlExtractor.ts` → updates shared state via `useArticleState.ts`
+3. `src/pages/index.vue` → reads state and conditionally renders input, manual intro fallback, or success/platform content
+
+#### HTML Extraction Selectors (`src/utils/htmlExtractor.ts`)
+
+Pure functions targeting these CSS selectors on the fetched blog HTML:
+
+- Title: `.article-title a`
+- Description: `.article-subtitle`
+- Image URL: `meta[name="twitter:image"]` content attribute (full absolute URL)
+- Image alt: `.article-header .article-image a img` alt attribute
+- Introduction: All `<p>`, `<pre>`, `<ul>`, and `<blockquote>` tags before the first `<h2>` in `.article-content`, preserved in source order
+- Categories: `<header class="article-category"> a`
+- Tags: `<section class="article-tags"> a`
+- Follow-me snippet: second-to-last child of `.article-content`; if it is a `div.jli-notice.jli-notice-tip`, the inner `<p class="jli-notice-title">` is replaced with `<h2 class="jli-notice-title">`
+- Image credit: Last `<p>` starting with "Photo by" / "Photo de"
+- Blog detection: Derived from URL domain
+
+#### Platform Content Types (`src/types/article.ts`)
+
+`Platform` = `'X' | 'LinkedIn' | 'Medium' | 'Substack'`
+
+Each platform has its own content interface: `XContent`, `LinkedInContent`, `MediumContent`, `SubstackContent`.
+
+#### UTM Links
+
+`src/utils/utm.ts` exports `generateUTMLink(url, platform)` — adds `utm_medium=social` and `utm_source={platform}` query params. Used when generating platform content links.
+
+### Common
+
+#### Stack
+
+- Vue 3 Composition API with `<script setup lang="ts">` always
+- File-based routing via `unplugin-vue-router`. Pages live in `src/pages/`
+- Vue Composition API functions (`ref`, `computed`, `watch`, etc.), Vue Router hooks, and all components under `src/components/**` are auto-imported — no explicit import statements needed in `.vue` files. Configured in `vite.config.ts`
+- shadcn-vue components live in `src/components/ui/`. These are copied (not npm-installed) and can be customized directly
+
+#### Code Conventions
+
+- Composables in `src/composables/` prefixed with `use`
+- Utility functions in `src/utils/` — pure functions, no Vue dependencies
+- **Styling**: always use Tailwind CSS utility classes. Write custom CSS (inline `style` attributes, `<style>` blocks, or `.css` files) only when no Tailwind utility class covers the need — and add a comment explaining why
+
+#### Naming Conventions
+
+- Components: PascalCase (`ArticleInput.vue`)
+- Composables: camelCase with `use` prefix (`useArticleState.ts`)
+- Types/Interfaces: PascalCase (`Platform`, `XContent`)
+- Utils: camelCase (`htmlExtractor.ts`, `utm.ts`)
+- Constants: UPPER_SNAKE_CASE
+- Test files: `*.spec.ts` suffix
+
+#### Testing Conventions
+
+- Use Vitest + @vue/test-utils
+- Co-locate test files next to source files or in `src/__tests__/`
+- Naming: `*.spec.ts` for all tests
+- Coverage targets:
+  - Composables: 100% (critical state management)
+  - Utils: 100% (pure functions, easy to test)
+  - Components: 80%+ (focus on logic, not styling)
+- All tests must pass before merging
+
+When saving HTML files for test fixtures, always clean them up to prevent happy-dom from fetching external resources during tests (ECONNREFUSED in CI):
+
+```bash
+cd tests/fixtures && for file in *.html; do
+  sed -i '/<link rel="stylesheet"/d' "$file"
+  sed -i '/<script/d; /<\/script>/d' "$file"
+done
+```
+
+## Documentation
+
+- `docs/specs/` — Project specifications and requirements (FR-1 through FR-6)
+- `docs/decisions/` — Architecture Decision Records (ADR-001 through ADR-006)
+- `docs/prompts/` — Pipeline artifacts per issue; see `docs/prompts/README.md` for the full pipeline reference
+
 ## Who Is Claude Code
 
 It is a senior engineer following Git Flow strategy, suggesting performant, secure and clean solutions.
@@ -18,7 +119,60 @@ No need to confirm file creation or modification, but confirm content is OK with
 
 No need to congratulate or use language that use unnecessary output tokens. Go to the point.
 
-## Commands
+## Critical Rules
+
+1. **Pipeline-first**: When asked to tackle/work on/implement/fix a GitHub issue, always use the `/tackle` skill. Never do git operations (branch, checkout, worktree) directly from the main conversation. All code changes go through the pipeline in a worktree.
+2. **No hardcoded paths**: Never hardcode absolute paths or worktree-specific paths (e.g. `develop/`, `feat_foo/`) in any `.md` file under `.claude/`. Absolute paths break portability across machines; worktree paths are runtime values passed by the orchestrator, not constants. Always use placeholders (`[worktree]`, `[task-folder]`) or derive paths at runtime.
+3. **Spec-first**: Before implementing anything, read the relevant spec files.
+4. **ADR-first**: Before making any architectural decision, provide brief context why an ADR is needed before suggesting the full ADR. Once confirmed, create it in `docs/decisions/` and always update the index at `docs/decisions/README.md`.
+5. **Type-first**: Define or update types in `src/types/` before implementing logic that uses them.
+
+## Setup
+
+Claude Code must be opened from the `develop/` worktree, not the bare repo root. If you detect the working directory is the bare repo root (i.e. no `src/`, `package.json`, or `.claude/commands/` at the root), warn the user:
+
+> You appear to have opened Claude Code from the bare repo root. Skills and agents may not be discovered correctly. Please restart from the `develop/` directory:
+>
+> ```
+> cd develop && claude
+> ```
+
+## Context to Read
+
+Always read before starting any task:
+
+- `docs/prompts/workspace-context.md` — current phase, completed work, open decisions
+
+Read when relevant:
+
+- ADRs in `docs/decisions/` — before touching a decided area
+
+## When You Are Unsure
+
+- Flag it explicitly rather than assuming
+- Propose two options with trade-offs and ask for a decision
+- If a spec is ambiguous, quote the ambiguous part and ask for clarification
+- Never silently make a decision that affects architecture or data shape
+
+## Development commands
+
+### Prerequisites 
+
+```bash
+# Install dependencies
+npm install
+
+# Start local dev server (Netlify Dev handles both frontend and functions)
+npx netlify dev
+
+# Build for production
+npx netlify build
+
+# Run tests
+npm test
+```
+
+### While developping
 
 ```bash
 # Development
@@ -35,174 +189,73 @@ npm run type-check   # Run vue-tsc type checking
 npm run lint         # Run ESLint with auto-fix
 npm run format       # Run Prettier formatting
 
-# Testing
+# Run tests
 npm run test             # Run all Vitest unit tests
 npm run test:ui          # Run tests with browser UI dashboard
 npm run test:coverage    # Generate coverage report
 ```
 
-## RTK Token Optimization
+Use `netlify dev` (not `npm run dev`) during development to enable the `/api/fetch-article` backend proxy — without it, article fetching will fail due to CORS.
 
-[Rust Token Killer](https://github.com/RustTokenKiller/rtk) is symlinked at `/usr/local/bin/rtk` and available in all MINGW64 bash sessions including subagents. Use it instead of raw commands to reduce token usage.
+## Shell commands — use `rtk` wrappers
 
-| Instead of | Use |
-|---|---|
-| `git status / diff / log` | `rtk git status / diff / log` |
-| `git add / commit / push / pull` | `rtk git add / commit / push / pull` |
-| `gh pr list / view / issue list / run list` | `rtk gh ...` |
-| `npm run lint` | `rtk lint` (run from worktree root) |
-| `npm run test -- --run` | `rtk vitest run` (run from worktree root) |
-| `ls` | `rtk ls` |
-| `cat / head / tail <file>` | `rtk read <file>` |
-| `grep / rg <pattern>` | `rtk grep <pattern>` |
+**Always** use `rtk` for the commands listed below — never the bare equivalent. These are the commands auto-approved in `.claude/settings.local.json`; running them without `rtk` will trigger a permission prompt on every call.
+
+### Git
+
+```bash
+rtk git status          # compact status
+rtk git log -n 10       # one-line commits
+rtk git diff            # condensed diff
+rtk git add             # -> "ok"
+rtk git commit -m "msg" # -> "ok abc1234"
+rtk git push            # -> "ok main"
+rtk git pull            # -> "ok 3 files +10 -2"
+```
+
+### GitHub CLI
+
+```bash
+rtk gh pr list          # compact PR listing
+rtk gh pr view 42       # PR details + checks
+rtk gh issue list       # compact issue listing
+rtk gh run list         # workflow run status
+```
+
+### Build & lint
+
+```bash
+rtk tsc                 # TypeScript errors grouped by file
+rtk lint                # ESLint grouped by rule/file
+rtk err npm run build   # errors/warnings only
+rtk vitest run          # failures only
+```
 
 `npm run type-check` (vue-tsc) has no rtk equivalent — keep as-is.
 
-Use `netlify dev` (not `npm run dev`) during development to enable the `/api/fetch-article` backend proxy — without it, article fetching will fail due to CORS.
+### Files & search
 
-## Architecture
+```bash
+rtk ls .                # token-optimized directory tree
+rtk read file.ts        # smart file reading
+rtk find "*.ts" .       # compact find results
+rtk grep "pattern" .    # grouped search results
+rtk diff file1 file2    # condensed diff
+```
 
-### Purpose
+### Package managers
 
-A Social Media Sharing Assistant that automates content extraction from blog articles and generates platform-specific posts for X, LinkedIn, Medium, and Substack.
+```bash
+rtk pnpm list           # compact dependency tree
+```
 
-**Workflow:** URL input → Netlify Function fetches HTML (CORS proxy) → HTML parsed and article data extracted → Platform-specific content generated → User copies content per platform.
+### Token savings
 
-### Key Constraints
-
-The Netlify Function (`netlify/functions/fetch-article.ts`) only whitelists two domains: `iamjeremie.me` and `jeremielitzler.fr`. All other URLs are rejected. This is by design.
-
-### State Management
-
-State is managed via a **module-level singleton composable** (`src/composables/useArticleState.ts`) — not Pinia. A module-level `ref` is shared across all components that import the composable. See ADR-002 for rationale.
-
-`ExtractionState` tracks `status` as one of: `'idle' | 'loading' | 'missing-introduction' | 'success' | 'error'`. The `missing-introduction` status triggers a manual input fallback UI (`ManualIntroduction.vue`).
-
-### Data Flow
-
-1. `ArticleInput.vue` → triggers `useArticleExtractor.ts`
-2. `useArticleExtractor.ts` → calls `/.netlify/functions/fetch-article?url=...` → parses HTML via `DOMParser` → calls pure functions in `htmlExtractor.ts` → updates shared state via `useArticleState.ts`
-3. `src/pages/index.vue` → reads state and conditionally renders input, manual intro fallback, or success/platform content
-
-### HTML Extraction Selectors (`src/utils/htmlExtractor.ts`)
-
-Pure functions targeting these CSS selectors on the fetched blog HTML:
-
-- Title: `.article-title a`
-- Description: `.article-subtitle`
-- Image URL: `meta[name="twitter:image"]` content attribute (full absolute URL)
-- Image alt: `.article-header .article-image a img` alt attribute
-- Introduction: All `<p>`, `<pre>`, `<ul>`, and `<blockquote>` tags before the first `<h2>` in `.article-content`, preserved in source order
-- Categories: `<header class="article-category"> a`
-- Tags: `<section class="article-tags"> a`
-- Follow-me snippet: second-to-last child of `.article-content`; if it is a `div.jli-notice.jli-notice-tip`, the inner `<p class="jli-notice-title">` is replaced with `<h2 class="jli-notice-title">`
-- Image credit: Last `<p>` starting with "Photo by" / "Photo de"
-- Blog detection: Derived from URL domain
-
-### Platform Content Types (`src/types/article.ts`)
-
-`Platform` = `'X' | 'LinkedIn' | 'Medium' | 'Substack'`
-
-Each platform has its own content interface: `XContent`, `LinkedInContent`, `MediumContent`, `SubstackContent`.
-
-### Routing
-
-File-based routing via `unplugin-vue-router`. Pages live in `src/pages/`. Currently only `index.vue` exists.
-
-### Auto-imports
-
-Vue Composition API functions (`ref`, `computed`, `watch`, etc.), Vue Router hooks, and all components under `src/components/**` are auto-imported — no explicit import statements needed in `.vue` files. Configured in `vite.config.ts`.
-
-### UI Components
-
-shadcn-vue components live in `src/components/ui/`. These are copied (not npm-installed) and can be customized directly.
-
-### UTM Links
-
-`src/utils/utm.ts` exports `generateUTMLink(url, platform)` — adds `utm_medium=social` and `utm_source={platform}` query params. Used when generating platform content links.
-
-## Documentation
-
-- `docs/specs/` — Project specifications and requirements (FR-1 through FR-6)
-- `docs/decisions/` — Architecture Decision Records (ADR-001 through ADR-006)
-- `docs/prompts/` — Pipeline artifacts per issue (`issue-[id]-[slug]/`): README, specs, technical notes, test results
+```bash
+rtk gain                # summary stats
+rtk discover            # find missed savings opportunities
+```
 
 ## Agent Pipeline Issue Handling
 
-When the user reports a problem with an agent's behaviour or instructions, follow `CLAUDE-AGENT-WORFLOW-ISSUES-HANDLING.md` — never modify `develop` directly.
-
-## Multi-Agent Pipeline
-
-**When the user provides a feature request, bug fix, or any change, act as the orchestrator:**
-
-1. Save the request to `docs/prompts/tasks/issue-[id of issue]-[slug]/README.md`.
-2. Follow the pipeline in `.claude/agents/agent-0-orchestrator.md` step by step.
-
-The user never needs to run a command — just describe what they want and the pipeline starts.
-
-### Task folder structure
-
-All pipeline artifacts for a given task live in one folder:
-
-```
-docs/prompts/tasks/
-  issue-[id of issue]-[slug]/
-    README.md                    ← user request (input)
-    business-specifications.md   ← specs agent output
-    security-guidelines.md       ← security agent output
-    test-cases.md                ← test-writer agent output (pass 1)
-    technical-specifications.md  ← coder agent output
-    review-results.md            ← reviewer agent output
-    test-results.md              ← test-runner agent output
-```
-
-`docs/prompts/tasks/` is a co-authored AI-human artifact space: humans provide the request, agents generate and validate the specs and implementation notes. This is distinct from `docs/specs/` (requirements) and `docs/decisions/` (ADRs), which are maintained by humans.
-
-### Agents and their prompt files
-
-| Agent         | Prompt                                    | Reads                                                                                                          | Writes                                          |
-| ------------- | ----------------------------------------- | -------------------------------------------------------------------------------------------------------------- | ----------------------------------------------- |
-| Specification | `.claude/agents/agent-1-specs.md`         | `[task-folder]/README.md`                                                                                      | `[task-folder]/business-specifications.md`      |
-| Security      | `.claude/agents/agent-5-security.md`      | `[task-folder]/business-specifications.md`                                                                     | `[task-folder]/security-guidelines.md`          |
-| Test Writer   | `.claude/agents/agent-3-test-writer.md`   | `[task-folder]/business-specifications.md`, `[task-folder]/security-guidelines.md` (pass 1); `[task-folder]/test-cases.md`, `[task-folder]/technical-specifications.md` (pass 2) | `[task-folder]/test-cases.md` (pass 1); `.spec.ts` files (pass 2) |
-| Coder         | `.claude/agents/agent-2-coder.md`         | `[task-folder]/business-specifications.md`, `[task-folder]/security-guidelines.md`, `[task-folder]/test-cases.md` | `[task-folder]/technical-specifications.md`  |
-| Reviewer      | `.claude/agents/agent-6-reviewer.md`      | `[task-folder]/technical-specifications.md`, `[task-folder]/security-guidelines.md`, `[task-folder]/business-specifications.md` | `[task-folder]/review-results.md` |
-| Test Runner   | `.claude/agents/agent-3-test-runner.md`   | `[task-folder]/technical-specifications.md`                                                                    | `[task-folder]/test-results.md`                 |
-| Versioning    | `.claude/agents/agent-4-git.md`           | `[task-folder]/business-specifications.md`, `[task-folder]/test-results.md`                                   | git history                                     |
-
-### Pipeline flow
-
-```mermaid
-flowchart TD
-    userRequest([User request<br />docs/prompts/tasks/issue-&lsqb;id&rsqb;-&lsqb;slug&rsqb;/README.md]) --> versioningBranch[Versioning agent<br />Task 1-2: fetch origin + create worktree]
-    versioningBranch --> specsAgent[Specs agent<br />writes business-specifications.md]
-    specsAgent -->|ADR Required → human approves| specsAgent
-    specsAgent --> approveSpecs{Human approves<br />business specs?}
-    approveSpecs -->|Rejected| stoppedAfterSpecs([Pipeline stopped])
-    approveSpecs -->|Approved| versioningCommitSpecs[Versioning agent<br />Task 3: commit business-specifications.md]
-    versioningCommitSpecs --> securityAgent[Security agent<br />writes security-guidelines.md]
-    securityAgent -->|ADR Required → human approves| securityAgent
-    securityAgent --> versioningCommitSecurity[Versioning agent<br />Task 3.5: commit security-guidelines.md]
-    versioningCommitSecurity --> testWriterPass1[Test Writer agent (pass 1)<br />writes test-cases.md]
-    testWriterPass1 --> versioningCommitTestCases[Versioning agent<br />Task 3.7: commit test-cases.md]
-    versioningCommitTestCases --> coderAgent[Coder agent<br />writes technical-specifications.md]
-    coderAgent -->|status: review specs → loop back| specsAgent
-    coderAgent --> reviewerAgent[Reviewer agent<br />runs lint + type-check + writes review-results.md]
-    reviewerAgent -->|status: changes requested → loop back| coderAgent
-    reviewerAgent -->|ADR Required → human approves| reviewerAgent
-    reviewerAgent --> approveTechnicalSpecs{Human approves<br />technical specs?}
-    approveTechnicalSpecs -->|Rejected| stoppedAfterReview([Pipeline stopped])
-    approveTechnicalSpecs -->|Approved| versioningCommitCode[Versioning agent<br />Task 4: commit source files + review-results.md]
-    versioningCommitCode --> testWriterPass2[Test Writer agent (pass 2)<br />writes .spec.ts files]
-    testWriterPass2 --> testRunnerAgent[Test Runner agent<br />runs npm test + writes test-results.md]
-    testRunnerAgent -->|status: failed → loop back| coderAgent
-    testRunnerAgent --> versioningCommitTests[Versioning agent<br />Task 5: commit test files + push branch]
-    versioningCommitTests --> approvePR{Human approves<br />PR creation?}
-    approvePR -->|Rejected| stoppedBeforePR([Pipeline stopped])
-    approvePR -->|Approved| createPR[gh pr create]
-    createPR --> approveMerge{Human approves<br />merge?}
-    approveMerge -->|Rejected| prRemainsOpen([PR remains open])
-    approveMerge -->|Approved| mergePR([gh pr merge + remove worktree])
-```
-
-Human approval gates: after specs, after coding, before PR creation, and before merge. The orchestrator retries failed loops up to 3 times before aborting. Agents flag `### ADR Required` in their output files when a new architectural pattern is introduced; the orchestrator surfaces this to the human before proceeding.
+When the user reports a problem with an agent's behaviour or instructions, use the `/fix-pipeline` skill.
