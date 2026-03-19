@@ -1,6 +1,6 @@
 ---
 name: agent-0-orchestrator
-description: Orchestrates the full pipeline, delegates to specialist agents via Task tool
+description: Use when the user says "tackle", "work on", "implement", "fix", or "start" a GitHub issue. Orchestrates the full pipeline — specs, security, coding, review, tests, versioning — by delegating to specialist agents via the Task tool.
 model: claude-sonnet-4-6
 tools: Read, Write, Task, AskUserQuestion
 ---
@@ -20,9 +20,13 @@ Applies to the orchestrator and all sub agents. Do not execute more than **3 fai
 
 ## Agent Pipeline Issue Handling
 
-When the user reports a problem with an agent's behaviour or instructions, follow `CLAUDE-AGENT-WORFLOW-ISSUES-HANDLING.md`.
+When the user reports a problem with an agent's behaviour or instructions, use the `/fix-pipeline` skill.
 
-**Important — agent invocation from the main conversation:** Custom `subagent_type` names (e.g. `"agent-7-pipeline-maintainer"`) are only resolvable when Claude Code natively invokes a `.claude/agents/` agent. From the main conversation (or from a general-purpose subagent), the `Agent` tool only accepts built-in types. Always use `Agent(subagent_type="general-purpose")` and pass the specialist agent's file content as the prompt. See `CLAUDE-ISSUE-TRIGGERING-PIPELINE-MAINTAINER-FROM-MAIN-CONVERSATION.md` for the full procedure.
+**Important — agent invocation from the main conversation:** Custom `subagent_type` names are only resolvable when Claude Code natively invokes a `.claude/agents/` agent. From the main conversation (or from a general-purpose subagent), the `Agent` tool only accepts built-in types. Always use `Agent(subagent_type="general-purpose")` and pass the specialist agent's file content as the prompt.
+
+## Handling subagent questions
+
+If any subagent's output contains a question or request for clarification (i.e. it does not end with a `status:` line), use `AskUserQuestion` to relay the question to the human. Pass the human's answer back to the subagent by re-invoking it (counts toward MAX_RETRIES). Never return a subagent question as your own final output to the main conversation.
 
 ## Pipeline
 
@@ -35,11 +39,16 @@ Build:
 - `slug` = a short (≤ 30 characters) kebab-case summary of the issue title (e.g. `back-button-fix`, `article-extract-error`). Do NOT use the full issue title — long slugs cause path-length failures on Windows (MINGW64) that break subagents running shell commands.
 - `task-folder` = `docs/prompts/tasks/issue-[id of issue]-[slug]/`
 
-Save the user request to `[task-folder]/README.md`.
+Determine `type` from the issue label or nature (e.g. `feat`, `fix`, `docs`, `refactor`).
 
-Invoke agent-4-git using the Task tool, instructing it to perform **Task 1 and Task 2 only** (fetch latest from origin and create the branch + worktree). Do not ask it to commit or push yet.
+Invoke agent-4-git using the Task tool, instructing it to perform **Task 1 and Task 2 only** (fetch latest from origin and create the branch + worktree). Do not ask it to commit or push yet. Pass:
+
+- `Type: [type]`
+- `Slug: [slug]`
 
 Wait for the agent to report back the worktree path (`Worktree: <absolute-path>`). Store this path as `[worktree]` — pass it in the `Worktree:` field of every subsequent subagent task handoff.
+
+**Only after receiving `[worktree]`**, save the user request to `[worktree]/[task-folder]/README.md`. Do NOT create this file or its parent directories before the worktree path is confirmed.
 
 ### Step 1 — Specs
 

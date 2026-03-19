@@ -18,7 +18,11 @@ The orchestrator passes:
 - `Task folder: [task-folder]` — directory where all pipeline artifacts are written
 - `Worktree: [worktree]` — absolute path to the active worktree
 
-Run **only** the following two commands from the worktree root. The bare repo root has no `node_modules` — always `cd` to the worktree path before running any shell command. Include their output in your findings.
+Run **only** the following two commands from the worktree root. The bare repo root has no `node_modules` — always `cd` to the worktree path before running any shell command. Include their output in your findings. Do NOT inspect `package.json` or verify scripts exist first — run them directly.
+
+The scripts are guaranteed to exist (from `package.json`):
+- `"lint": "eslint . --fix"`
+- `"type-check": "vue-tsc --build"`
 
 ```bash
 cd [worktree] && rtk lint          # ESLint — grouped by rule/file, token-optimized
@@ -36,7 +40,7 @@ Before reviewing Vue/TypeScript-specific issues, fetch the following reference p
 - `https://vuejs.org/guide/essentials/reactivity-fundamentals` — reactivity model
 - `https://vuejs.org/guide/reusability/composables` — composable conventions
 - `https://vuejs.org/guide/typescript/composition-api` — TypeScript + Vue patterns
-- `https://developer.mozilla.org/en-US/docs/Web/API/URL` — URL API (used in `utm.ts`)
+- `https://developer.mozilla.org/en-US/docs/Web/API/URL` — URL API (used for URL construction and validation)
 
 ## Review checklist
 
@@ -50,7 +54,7 @@ Before reviewing Vue/TypeScript-specific issues, fetch the following reference p
 - Vue/TypeScript-specific issues:
 
   Reactivity pitfalls:
-  - Destructuring a reactive object loses reactivity: `const { title } = useArticleState()` silently breaks; use `toRefs()` or access as `state.title`
+  - Destructuring a reactive object loses reactivity: `const { value } = useMyComposable()` silently breaks; use `toRefs()` or access as `state.value`
   - Watching a reactive property directly: `watch(state.count, ...)` never triggers; use a getter `watch(() => state.count, ...)`
   - Mutating a prop in-place instead of emitting an event
   - Calling `reactive()` on a primitive value
@@ -68,26 +72,53 @@ Before reviewing Vue/TypeScript-specific issues, fetch the following reference p
 
 ## Writing the review-results file
 
-Create `[task-folder]/review-results.md`.
+Create `[task-folder]/review-results.md` using this exact template:
 
-Include the full output of `npm run lint` and `npm run type-check`.
+```markdown
+# Review Results — Issue #[id]: [title]
 
-If findings exist, list every finding with:
+## Commands Run
 
-- File path and line reference
-- Which checklist rule it violates
-- A fix direction (no code)
+- `npm run lint` output
 
-End with:
+<if any lint errors in changed files, list them in a fenced code block>
 
-```plaintext
-status: changes requested
+```
+<content>
 ```
 
-If no findings remain, write a brief summary of what was reviewed. End with:
+<else>
+None of the changed files (see [technical specs](technical-specifications.md)) produced lint errors.
+<end-if>
 
-```plaintext
+### `npm run type-check` output
+
+<if any type errors, list them in a fenced code block>
+
+```
+<content>
+```
+
+<else>
+Type-check passes with zero errors.
+<end-if>
+
+## Checklist
+
+<if any checklist violation, list details per failing item>
+<else>
+- **Security guidelines:** ✓
+- **Object Calisthenics:** ✓
+- **Business spec compliance:** ✓
+- **Vue/TypeScript-specific issues:** ✓
+- **No dead code or unused imports:** ✓
+- **Naming clarity:** ✓
+<end-if>
+
 status: approved
 ```
 
-The status line must always be the last line of the file.
+Rules:
+- Do NOT add a summary section.
+- If findings exist, replace `status: approved` with `status: changes requested`.
+- The status line must always be the last line of the file.
