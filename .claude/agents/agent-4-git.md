@@ -60,52 +60,50 @@ Use `rtk` for all supported git and gh commands — it compresses output and red
 
 Commands without an rtk equivalent (`git worktree`, `git fetch`, `git remote`, `git branch`, `git worktree prune`) run as normal git commands.
 
+## Pipeline Scripts
+
+Three scripts under `scripts/pipeline/` encapsulate the git operations most prone to ordering mistakes or path-discovery errors. **Always prefer these scripts over constructing raw git/gh commands.**
+
+| Script                                                         | Purpose                                                                                                                    |
+| -------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| `scripts/pipeline/fetch-origin.sh [bare-repo]`                 | Ensure `origin` is configured + full refspec, then fetch. Always run first (Task 1).                                       |
+| `scripts/pipeline/worktree-create.sh <type> <slug>`            | Create branch + worktree, install npm deps. Prints `Worktree: <path>`. Requires fetch-origin.sh to have run first.        |
+| `scripts/pipeline/pr-create.sh <worktree> <title> <body-file>` | Push branch, open PR against `develop`. Prints `PR: <url>`.                                                                |
+| `scripts/pipeline/pr-complete.sh <pr-url>`                     | Merge open PR (rebase + delete remote branch). Skips gracefully if already merged/closed.                                  |
+| `scripts/pipeline/worktree-cleanup.sh <worktree>`              | Remove worktree directory, prune stale entries, delete local branch.                                                       |
+| `scripts/pipeline/refresh-develop.sh`                          | Fetch origin and fast-forward the `develop` worktree. Closes the pipeline cycle.                                           |
+
+Call them with `bash scripts/pipeline/<script>.sh` from the `develop/` worktree (the scripts resolve the bare repo root automatically).
+
 ## Tasks
 
 ### Task 1: Make Sure Local Repository Is Up-to-date
 
-The session runs from the `develop/` worktree. The bare repo root is `..` relative to the CWD.
-
-First verify the bare repo has `origin` configured:
+**Always run this first — never skip it.**
 
 ```bash
-git -C .. remote -v
+bash scripts/pipeline/fetch-origin.sh
 ```
 
-If `origin` is missing, add it before fetching:
-
-```bash
-git -C .. remote add origin https://github.com/<owner>/<repo>.git
-```
-
-Then fetch to update all remote refs. The bare repo has no working tree to pull into — do **not** use `git pull`.
-
-First ensure the fetch refspec is configured (bare repos often lack it, causing `fetch` to update only `FETCH_HEAD` and leaving `refs/remotes/origin/*` stale):
-
-```bash
-git -C .. config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
-git -C .. fetch origin
-```
+Ensures `origin` is configured (adds it if missing, inferring the URL from `develop/`), sets the full fetch refspec, and fetches all remote refs.
 
 ### Task 2: Create new branch and worktree
 
-The orchestrator passes `Type: <type>` and `Slug: <slug>` directly — use these values. Do NOT read any file or create any directory to determine them.
+The orchestrator passes `Type: <type>` and `Slug: <slug>` directly — use these values.
 
-Run from the `develop/` worktree (bare repo root is `..`):
-
-```bash
-git -C .. worktree add <type>_<slug> -b <type>/<slug> origin/develop
-```
-
-The path `<type>_<slug>` is relative to the bare repo root (the `-C ..` directory), so the worktree lands at `<bare-repo>/<type>_<slug>` — i.e. a sibling of `develop/`. Do NOT prefix with `../` (that would place it one level above the bare repo).
-
-Then install dependencies inside the new worktree so subsequent agents can run lint, type-check, and tests:
+**Requires Task 1 to have completed successfully.**
 
 ```bash
-cd <type>_<slug> && npm install
+bash scripts/pipeline/worktree-create.sh <type> <slug>
 ```
 
-Resolve the absolute path of the new worktree and report it back to the orchestrator as `Worktree: <absolute-path>` so every subsequent agent can use it.
+Creates `<bare-repo>/<type>_<slug>` on branch `<type>/<slug>` from `origin/develop` and installs npm dependencies. Prints:
+
+```
+Worktree: <absolute-path>
+```
+
+Report that path back to the orchestrator as `Worktree: <absolute-path>`.
 
 ### Task 3: Commit specs output
 
@@ -156,50 +154,37 @@ If the last line is `status: passed`:
 
 ### Task 6: Create pull request
 
-Run from the worktree root:
+- Derive the PR title from `[task-folder]/business-specifications.md` (short imperative summary, ≤70 chars).
+- Write the PR body to a temporary file (e.g. `/tmp/pr-body.md`). The body must include: a summary of what changed and why, a test plan checklist, and `Closes #<issue-id>`.
+- Target branch is always `develop` — never `main`.
 
 ```bash
-gh pr create --base develop --title "<title>" --body "<body>"
+# Write the body to a temp file first, then call the script:
+cat > /tmp/pr-body.md << 'EOF'
+<body content here>
+EOF
+
+bash scripts/pipeline/pr-create.sh <worktree> "<title>" /tmp/pr-body.md
 ```
 
-- Derive the PR title from `[task-folder]/business-specifications.md` (short imperative summary, ≤70 chars).
-- The PR body must include: a summary of what changed and why, a test plan checklist, and a reference to the issue (`Closes #<issue-id>`).
-- Target branch is always `develop` — never `main`.
-- Report the PR URL back to the orchestrator.
+The script pushes the branch and opens the PR. It prints `PR: <url>` — report that URL back to the orchestrator.
 
 ### Task 7: Merge pull request
 
-Must run from the bare repo root (not from inside any worktree) to avoid `gh` attempting a local `git switch develop` after merging, which fails because `develop` is already checked out in its own worktree.
-
 ```bash
-cd .. && gh pr merge <pr-url> --rebase --delete-branch
+bash scripts/pipeline/pr-complete.sh <pr-url>
 ```
 
-- Always rebase-merge to keep `develop` history linear (the repository does not allow squash or merge commits).
-- `--delete-branch` removes the remote branch automatically.
+Merges the PR with rebase and deletes the remote branch. Skips gracefully if the PR was already merged or closed by the user on GitHub.
 
-### Task 8: Remove worktree (post-merge cleanup)
-
-Run from the bare repo root (`..` relative to the `develop/` worktree):
+### Task 8: Remove worktree and refresh develop
 
 ```bash
-git -C .. fetch origin
-git -C .. worktree remove --force <type>_<slug>
-git -C .. worktree prune
-git -C .. branch -D <type>/<slug>
+bash scripts/pipeline/worktree-cleanup.sh <worktree>
+bash scripts/pipeline/refresh-develop.sh
 ```
 
-Notes:
-- Run `git worktree remove --force` **before** `git worktree prune`. Prune deregisters stale entries first; if the worktree directory still exists but is deregistered, a subsequent `remove` will fail with a permission error.
-- `--force` handles Windows file-lock edge cases where git would otherwise refuse to delete the directory.
-- If the worktree directory still exists on disk after `git worktree remove --force` (e.g. because git already deregistered it in a prior run), delete it manually: `rm -rf <absolute-worktree-path>`.
-- Use `-D` (force) instead of `-d` on `git branch` because GitHub rebase-merges do not create a merge commit, so git never considers the local branch "fully merged".
-
-Then pull latest into `develop/` to ensure it reflects the merged commit:
-
-```bash
-git pull origin develop
-```
+`worktree-cleanup.sh` removes the worktree directory, prunes stale git entries, and deletes the local branch. `refresh-develop.sh` fetches origin and fast-forwards `develop`. Both scripts are safe to re-run if a prior attempt was partial.
 
 ## Shell Command Retry Limit
 
