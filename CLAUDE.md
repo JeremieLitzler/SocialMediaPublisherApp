@@ -66,7 +66,7 @@ Each platform has its own content interface: `XContent`, `LinkedInContent`, `Med
 
 - Composables in `src/composables/` prefixed with `use`
 - Utility functions in `src/utils/` — pure functions, no Vue dependencies
-- **Styling**: always use Tailwind CSS utility classes. Write custom CSS (inline `style` attributes, `<style>` blocks, or `.css` files) only when no Tailwind utility class covers the need — and add a comment explaining why
+- **Styling** *(coder agent: write; reviewer agent: enforce)*: always use Tailwind CSS utility classes. Write custom CSS (inline `style` attributes, `<style>` blocks, or `.css` files) only when no Tailwind utility class covers the need — and add a comment explaining why
 
 #### Naming Conventions
 
@@ -79,7 +79,7 @@ Each platform has its own content interface: `XContent`, `LinkedInContent`, `Med
 
 #### Testing Conventions
 
-- Use Vitest + @vue/test-utils
+- Use Vitest + @vue/test-utils (see ADR-005)
 - Co-locate test files next to source files or in `src/__tests__/`
 - Naming: `*.spec.ts` for all tests
 - Coverage targets:
@@ -88,7 +88,12 @@ Each platform has its own content interface: `XContent`, `LinkedInContent`, `Med
   - Components: 80%+ (focus on logic, not styling)
 - All tests must pass before merging
 
-When saving HTML files for test fixtures, always clean them up to prevent happy-dom from fetching external resources during tests (ECONNREFUSED in CI):
+##### HTML Fixtures
+
+When saving HTML files for test fixtures, always clean them up:
+- Remove all `<link rel="stylesheet">` tags
+- Remove all `<script>` tags and their content
+- Keep metadata tags like `<link rel="canonical">` and `<link rel="shortcut icon">`
 
 ```bash
 cd tests/fixtures && for file in *.html; do
@@ -99,9 +104,10 @@ done
 
 ## Documentation
 
-- `docs/specs/` — Project specifications and requirements (FR-1 through FR-6)
-- `docs/decisions/` — Architecture Decision Records (ADR-001 through ADR-006)
-- `docs/prompts/` — Pipeline artifacts per issue; see `docs/prompts/README.md` for the full pipeline reference
+- `docs/specs/` — Project specifications and requirements
+- `docs/decisions/` — Architecture Decision Records (a.k.a ADR)
+- `docs/prompts/` — Pipeline artifacts per issue; 
+  - See `docs/prompts/README.md` for the full pipeline reference. NEVER READ THIS FILE UNLESS THE PIPELINE CHANGES
 
 ## Who Is Claude Code
 
