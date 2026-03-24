@@ -35,8 +35,9 @@ describe('generateXContent', () => {
   it('last chunk contains UTM link and triple arrow', () => {
     const result = generateXContent(baseArticle)
     const lastChunk = result.chunks.at(-1)
-    expect(lastChunk.text).toContain('⬇️⬇️⬇️')
-    expect(lastChunk.text).toContain('utm_medium=social&utm_source=X')
+    expect(lastChunk).toBeDefined()
+    expect(lastChunk!.text).toContain('⬇️⬇️⬇️')
+    expect(lastChunk!.text).toContain('utm_medium=social&utm_source=X')
   })
 
   it('non-last chunks contain single down-arrow separator', () => {
