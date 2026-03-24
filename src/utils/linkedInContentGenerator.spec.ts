@@ -38,7 +38,7 @@ describe('generateLinkedInContent', () => {
   it('body ends with the UTM link after the separator', () => {
     const result = generateLinkedInContent(baseArticle)
     const lines = result.body.split('\n')
-    const lastLine = lines[lines.length - 1]
+    const lastLine = lines.at(-1)
     expect(lastLine).toContain('utm_source=LinkedIn')
   })
 })
