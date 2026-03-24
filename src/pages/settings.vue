@@ -71,59 +71,12 @@ async function resetAll(): Promise<void> {
     </div>
 
     <!-- ─── Substack section ──────────────────────────────────────────────── -->
-    <section class="mb-10">
-      <h2 class="text-xl font-semibold mb-4 border-b pb-2">Substack</h2>
-
-      <div class="space-y-6">
-        <div>
-          <label class="block font-medium mb-1" for="EN_SUBSTACK_SHARE_BLOCK">
-            EN — Share block sentence
-          </label>
-          <input
-            id="EN_SUBSTACK_SHARE_BLOCK"
-            v-model="local.EN_SUBSTACK_SHARE_BLOCK"
-            type="text"
-            class="w-full border rounded px-3 py-2 text-sm"
-          />
-        </div>
-
-        <div>
-          <label class="block font-medium mb-1" for="FR_SUBSTACK_SHARE_BLOCK">
-            FR — Share block sentence
-          </label>
-          <input
-            id="FR_SUBSTACK_SHARE_BLOCK"
-            v-model="local.FR_SUBSTACK_SHARE_BLOCK"
-            type="text"
-            class="w-full border rounded px-3 py-2 text-sm"
-          />
-        </div>
-
-        <div>
-          <label class="block font-medium mb-1" for="EN_SUBSTACK_UTM_ANCHOR">
-            EN — UTM link anchor text
-          </label>
-          <input
-            id="EN_SUBSTACK_UTM_ANCHOR"
-            v-model="local.EN_SUBSTACK_UTM_ANCHOR"
-            type="text"
-            class="w-full border rounded px-3 py-2 text-sm"
-          />
-        </div>
-
-        <div>
-          <label class="block font-medium mb-1" for="FR_SUBSTACK_UTM_ANCHOR">
-            FR — UTM link anchor text
-          </label>
-          <input
-            id="FR_SUBSTACK_UTM_ANCHOR"
-            v-model="local.FR_SUBSTACK_UTM_ANCHOR"
-            type="text"
-            class="w-full border rounded px-3 py-2 text-sm"
-          />
-        </div>
-      </div>
-    </section>
+    <SettingsSubstackSection
+      v-model:EN_SUBSTACK_SHARE_BLOCK="local.EN_SUBSTACK_SHARE_BLOCK"
+      v-model:FR_SUBSTACK_SHARE_BLOCK="local.FR_SUBSTACK_SHARE_BLOCK"
+      v-model:EN_SUBSTACK_UTM_ANCHOR="local.EN_SUBSTACK_UTM_ANCHOR"
+      v-model:FR_SUBSTACK_UTM_ANCHOR="local.FR_SUBSTACK_UTM_ANCHOR"
+    />
 
     <!-- ─── Medium section ───────────────────────────────────────────────── -->
     <SettingsMediumSection
