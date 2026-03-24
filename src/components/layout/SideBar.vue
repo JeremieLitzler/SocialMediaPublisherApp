@@ -47,8 +47,6 @@ import { useWindowSize } from '@vueuse/core'
 import Home from '../ui/icon/Home.vue'
 import Settings2 from '../ui/icon/Settings2.vue'
 
-console.log('SideBar>script:setup...')
-
 defineEmits<{ (event: '@createTask'): void; (event: '@createProject'): void }>()
 
 const sideBarLinks: LinkProp[] = [
