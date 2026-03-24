@@ -11,28 +11,9 @@
 
 import type { Article, LinkedInContent } from '@/types/article'
 import { generateUTMLink } from './utm'
+import { VISUAL_SEPARATOR, extractParagraphTexts } from './articleHtmlBuilder'
 
 const PARAGRAPH_SEPARATOR = '\n\n'
-const VISUAL_SEPARATOR = '⬇️⬇️⬇️'
-
-/**
- * Extract plain-text paragraphs from an HTML string, preserving paragraph breaks.
- *
- * Each <p> element becomes one entry in the returned array.
- * Whitespace within each paragraph is collapsed to a single space.
- *
- * @param html - Raw HTML string containing <p> elements
- * @returns Array of plain-text paragraph strings (empty paragraphs excluded)
- */
-function extractParagraphs(html: string): string[] {
-  const parser = new DOMParser()
-  const doc = parser.parseFromString(html, 'text/html')
-  const paragraphs = Array.from(doc.querySelectorAll('p'))
-
-  return paragraphs
-    .map((paragraph) => (paragraph.textContent ?? '').replace(/\s+/g, ' ').trim())
-    .filter((text) => text.length > 0)
-}
 
 /**
  * Generate LinkedIn content from an article.
@@ -51,7 +32,7 @@ function extractParagraphs(html: string): string[] {
  * @returns LinkedInContent with a single formatted body string
  */
 export function generateLinkedInContent(article: Article): LinkedInContent {
-  const paragraphs = extractParagraphs(article.introduction)
+  const paragraphs = extractParagraphTexts(article.introduction)
   const introductionText = paragraphs.join(PARAGRAPH_SEPARATOR)
   const utmLink = generateUTMLink(article.url, 'LinkedIn')
   const body = introductionText + PARAGRAPH_SEPARATOR + VISUAL_SEPARATOR + '\n' + utmLink
