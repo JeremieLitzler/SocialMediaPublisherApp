@@ -29,7 +29,7 @@ const frWhyBodyHtml = defineModel<string>('FR_WHY_BODY_HTML', { required: true }
         <textarea
           id="EN_WHY_BODY_HTML"
           v-model="enWhyBodyHtml"
-          rows="6"
+          rows="10"
           class="w-full border rounded px-3 py-2 text-sm font-mono resize-y"
         />
       </div>
@@ -55,7 +55,7 @@ const frWhyBodyHtml = defineModel<string>('FR_WHY_BODY_HTML', { required: true }
         <textarea
           id="FR_WHY_BODY_HTML"
           v-model="frWhyBodyHtml"
-          rows="6"
+          rows="10"
           class="w-full border rounded px-3 py-2 text-sm font-mono resize-y"
         />
       </div>
