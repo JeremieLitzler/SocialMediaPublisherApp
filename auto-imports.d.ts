@@ -92,6 +92,7 @@ declare global {
   const useCssVars: typeof import('vue').useCssVars
   const useId: typeof import('vue').useId
   const useIndexedDb: typeof import('./src/composables/useIndexedDb').useIndexedDb
+  const useIndexedDbError: typeof import('./src/composables/useIndexedDbError').useIndexedDbError
   const useMenu: typeof import('./src/composables/menu').useMenu
   const useModel: typeof import('vue').useModel
   const useRoute: typeof import('vue-router').useRoute
