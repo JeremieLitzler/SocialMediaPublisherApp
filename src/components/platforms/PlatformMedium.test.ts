@@ -1,15 +1,18 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
-import { ref } from 'vue'
+import { ref, readonly } from 'vue'
 import PlatformMedium from './PlatformMedium.vue'
 import { useArticleState } from '@/composables/useArticleState'
+import { useSnippets } from '@/composables/useSnippets'
 import { generateMediumContent } from '@/utils/mediumContentGenerator'
+import { SNIPPET_DEFAULTS } from '@/config/snippets'
 
 // vi.hoisted ensures mocks are available inside the vi.mock factory (which is hoisted)
 const mockPush = vi.hoisted(() => vi.fn())
 const mockReplace = vi.hoisted(() => vi.fn())
 
 vi.mock('@/composables/useArticleState')
+vi.mock('@/composables/useSnippets')
 vi.mock('@/utils/mediumContentGenerator')
 vi.mock('vue-router', () => ({ useRouter: () => ({ push: mockPush, replace: mockReplace }) }))
 
@@ -64,6 +67,12 @@ describe('PlatformMedium', () => {
     resetState = vi.fn() as unknown as () => void
 
     vi.mocked(useArticleState).mockReturnValue({ extractionState, resetState })
+    vi.mocked(useSnippets).mockReturnValue({
+      snippets: readonly(ref({ ...SNIPPET_DEFAULTS })),
+      load: vi.fn().mockResolvedValue(undefined),
+      save: vi.fn().mockResolvedValue(undefined),
+      reset: vi.fn().mockResolvedValue(undefined),
+    })
     vi.mocked(generateMediumContent).mockReturnValue(makeMediumContent())
     mockPush.mockReset()
     mockReplace.mockReset()
@@ -80,11 +89,11 @@ describe('PlatformMedium', () => {
     expect(wrapper.text()).toContain('Medium')
   })
 
-  it('calls generateMediumContent with the article', () => {
+  it('calls generateMediumContent with the article and snippets map', () => {
     const article = makeArticle()
     extractionState.value.article = article
     mount(PlatformMedium, { global: { stubs: globalStubs } })
-    expect(generateMediumContent).toHaveBeenCalledWith(article)
+    expect(generateMediumContent).toHaveBeenCalledWith(article, expect.any(Object))
   })
 
   it('displays the actual title value as text', () => {

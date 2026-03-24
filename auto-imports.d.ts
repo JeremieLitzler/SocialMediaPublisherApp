@@ -91,11 +91,13 @@ declare global {
   const useCssModule: typeof import('vue').useCssModule
   const useCssVars: typeof import('vue').useCssVars
   const useId: typeof import('vue').useId
+  const useIndexedDb: typeof import('./src/composables/useIndexedDb').useIndexedDb
   const useMenu: typeof import('./src/composables/menu').useMenu
   const useModel: typeof import('vue').useModel
   const useRoute: typeof import('vue-router').useRoute
   const useRouter: typeof import('vue-router').useRouter
   const useSlots: typeof import('vue').useSlots
+  const useSnippets: typeof import('./src/composables/useSnippets').useSnippets
   const useTemplateRef: typeof import('vue').useTemplateRef
   const watch: typeof import('vue').watch
   const watchEffect: typeof import('vue').watchEffect
@@ -132,6 +134,6 @@ declare global {
   export type { SideBarLinkAction } from './src/types/SideBarLinkAction'
   import('./src/types/SideBarLinkAction')
   // @ts-ignore
-  export type { ArticleURL, Blog, Platform, Article, ExtractionStatus, ExtractionState, XChunk, XContent, LinkedInContent, MediumContent, SubstackContent, UTMParams } from './src/types/article'
+  export type { ArticleURL, Blog, Platform, Article, ExtractionStatus, ExtractionState, XChunk, XContent, LinkedInContent, MediumContent, SubstackContent, UTMParams, SnippetKey, SnippetMap } from './src/types/article'
   import('./src/types/article')
 }

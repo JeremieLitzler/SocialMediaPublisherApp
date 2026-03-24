@@ -1,12 +1,16 @@
 <script setup lang="ts">
-import { computed, ref, watch, watchEffect } from 'vue'
+import { computed, ref, watch, watchEffect, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useArticleState } from '@/composables/useArticleState'
+import { useSnippets } from '@/composables/useSnippets'
 import { generateMediumContent } from '@/utils/mediumContentGenerator'
 import { sanitizeBodyHtml } from '@/utils/sanitize'
 
 const router = useRouter()
 const { extractionState, resetState } = useArticleState()
+const { snippets, load } = useSnippets()
+
+onMounted(load)
 
 const article = computed(() => extractionState.value.article)
 
@@ -16,7 +20,7 @@ watchEffect(() => {
 
 const content = computed(() => {
   if (!article.value) return null
-  return generateMediumContent(article.value)
+  return generateMediumContent(article.value, snippets.value)
 })
 
 const rawBodyHtml = ref('')
