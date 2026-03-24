@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { watch, ref, onUnmounted } from 'vue'
+import { watch, onUnmounted } from 'vue'
 import { useIndexedDbError } from '@/composables/useIndexedDbError'
 import { useSnippets } from '@/composables/useSnippets'
 
