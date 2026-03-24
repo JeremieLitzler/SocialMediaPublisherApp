@@ -45,7 +45,6 @@ import type { LinkProp } from '@/types/LinkProp'
 import { RouterPathEnum } from '@/types/RouterPathEnum'
 import { useWindowSize } from '@vueuse/core'
 import Home from '../ui/icon/Home.vue'
-import Files from '../ui/icon/Files.vue'
 import Settings2 from '../ui/icon/Settings2.vue'
 
 console.log('SideBar>script:setup...')
@@ -58,10 +57,6 @@ const sideBarLinks: LinkProp[] = [
     icon: Home,
     label: 'Dashboard',
   },
-  { to: RouterPathEnum.X, icon: Files, label: 'X' },
-  { to: RouterPathEnum.LinkedIn, icon: Files, label: 'LinkedIn' },
-  { to: RouterPathEnum.Medium, icon: Files, label: 'Medium' },
-  { to: RouterPathEnum.Substack, icon: Files, label: 'Substack' },
   { to: RouterPathEnum.Settings, icon: Settings2, label: 'Settings' },
 ]
 
