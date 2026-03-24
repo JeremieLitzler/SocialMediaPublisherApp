@@ -59,7 +59,7 @@ export function extractParagraphTexts(html: string): string[] {
   const texts: string[] = []
 
   for (const node of paragraphNodes) {
-    const text = (node.textContent ?? '').replace(/\s+/g, ' ').trim()
+    const text = (node.textContent ?? '').replaceAll(/\s+/g, ' ').trim()
     if (text.length > 0) texts.push(text)
   }
 
