@@ -55,7 +55,7 @@ const sideBarLinks: LinkProp[] = [
   {
     to: RouterPathEnum.Home,
     icon: Home,
-    label: 'Dashboard',
+    label: 'Share',
   },
   { to: RouterPathEnum.Settings, icon: Settings2, label: 'Settings' },
 ]
