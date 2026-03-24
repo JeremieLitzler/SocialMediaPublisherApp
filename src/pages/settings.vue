@@ -64,19 +64,7 @@ async function resetAll(): Promise<void> {
 
 <template>
   <div class="container mx-auto max-w-4xl p-6">
-    <h1 class="text-3xl font-bold mb-2">Settings</h1>
-    <p class="text-gray-600 mb-6">
-      Customise the text snippets used when generating platform content. Values are saved to your
-      browser and survive page reloads. Clearing your browser storage resets all values to defaults.
-    </p>
-
-    <!-- Save / Reset actions -->
-    <div class="flex gap-4 mb-8">
-      <Button :disabled="saving" @click="saveAll">
-        {{ saving ? 'Saving…' : 'Save all' }}
-      </Button>
-      <Button variant="outline" :disabled="saving" @click="resetAll"> Reset to defaults </Button>
-    </div>
+    <SettingsHeader :saving="saving" @save="saveAll" @reset="resetAll" />
 
     <div v-if="saveError" class="mb-4 p-3 border border-red-400 rounded text-red-600 text-sm">
       {{ saveError }}
