@@ -126,61 +126,12 @@ async function resetAll(): Promise<void> {
     </section>
 
     <!-- ─── Medium section ───────────────────────────────────────────────── -->
-    <section class="mb-10">
-      <h2 class="text-xl font-semibold mb-4 border-b pb-2">Medium</h2>
-
-      <!-- EN group -->
-      <h3 class="text-base font-medium mb-3 mt-4">English</h3>
-      <div class="space-y-6">
-        <div>
-          <label class="block font-medium mb-1" for="EN_WHY_HEADING"> EN — "Why" heading </label>
-          <input
-            id="EN_WHY_HEADING"
-            v-model="local.EN_WHY_HEADING"
-            type="text"
-            class="w-full border rounded px-3 py-2 text-sm"
-          />
-        </div>
-
-        <div>
-          <label class="block font-medium mb-1" for="EN_WHY_BODY_HTML">
-            EN — "Why" body HTML
-          </label>
-          <textarea
-            id="EN_WHY_BODY_HTML"
-            v-model="local.EN_WHY_BODY_HTML"
-            rows="6"
-            class="w-full border rounded px-3 py-2 text-sm font-mono resize-y"
-          />
-        </div>
-      </div>
-
-      <!-- FR group -->
-      <h3 class="text-base font-medium mb-3 mt-6">French</h3>
-      <div class="space-y-6">
-        <div>
-          <label class="block font-medium mb-1" for="FR_WHY_HEADING"> FR — "Why" heading </label>
-          <input
-            id="FR_WHY_HEADING"
-            v-model="local.FR_WHY_HEADING"
-            type="text"
-            class="w-full border rounded px-3 py-2 text-sm"
-          />
-        </div>
-
-        <div>
-          <label class="block font-medium mb-1" for="FR_WHY_BODY_HTML">
-            FR — "Why" body HTML
-          </label>
-          <textarea
-            id="FR_WHY_BODY_HTML"
-            v-model="local.FR_WHY_BODY_HTML"
-            rows="6"
-            class="w-full border rounded px-3 py-2 text-sm font-mono resize-y"
-          />
-        </div>
-      </div>
-    </section>
+    <SettingsMediumSection
+      v-model:EN_WHY_HEADING="local.EN_WHY_HEADING"
+      v-model:EN_WHY_BODY_HTML="local.EN_WHY_BODY_HTML"
+      v-model:FR_WHY_HEADING="local.FR_WHY_HEADING"
+      v-model:FR_WHY_BODY_HTML="local.FR_WHY_BODY_HTML"
+    />
 
     <!-- Save / Reset actions (repeated at bottom for long-form convenience) -->
     <div class="flex gap-4 mt-4">
