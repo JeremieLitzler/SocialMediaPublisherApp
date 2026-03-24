@@ -9,10 +9,10 @@
  * follow-me snippet, and a bilingual "Why" explanation block.
  */
 
-import type { Article, MediumContent } from '@/types/article'
+import type { Article, MediumContent, SnippetMap } from '@/types/article'
 import { generateUTMLink } from './utm'
 import { htmlToText } from './htmlToText'
-import { getWhySnippet } from '@/config/snippets'
+import { getWhySnippet, SNIPPET_DEFAULTS } from '@/config/snippets'
 
 const VISUAL_SEPARATOR = '⬇️⬇️⬇️'
 
@@ -37,12 +37,12 @@ function buildUtmBlock(url: string): string {
   return `<p>${VISUAL_SEPARATOR}<br /><a href="${utmLink}">Read the full article</a></p>`
 }
 
-function buildWhyBlock(article: Article): string {
-  const snippet = getWhySnippet(article.blog)
+function buildWhyBlock(article: Article, snippets: Readonly<SnippetMap>): string {
+  const snippet = getWhySnippet(article.blog, snippets)
   return `<h2>${snippet.heading}</h2>${snippet.bodyHtml}`
 }
 
-function buildBodyHtml(article: Article): string {
+function buildBodyHtml(article: Article, snippets: Readonly<SnippetMap>): string {
   return [
     buildFigureHtml(article),
     '<hr />',
@@ -51,7 +51,7 @@ function buildBodyHtml(article: Article): string {
     '<hr />',
     article.followMeSnippet,
     '<hr />',
-    buildWhyBlock(article),
+    buildWhyBlock(article, snippets),
   ].join('')
 }
 
@@ -59,15 +59,19 @@ function buildBodyHtml(article: Article): string {
  * Generate Medium content from an extracted article.
  *
  * @param article - Extracted article data
+ * @param snippets - Optional live snippet map from useSnippets (defaults to SNIPPET_DEFAULTS)
  * @returns MediumContent with all fields required for a Medium cross-post
  */
-export function generateMediumContent(article: Article): MediumContent {
+export function generateMediumContent(
+  article: Article,
+  snippets: Readonly<SnippetMap> = SNIPPET_DEFAULTS,
+): MediumContent {
   return {
     title: article.title,
     description: article.description,
     imageAlt: article.imageAlt,
     imageCaption: buildImageCaption(article.imageCreditSnippet),
-    bodyHtml: buildBodyHtml(article),
+    bodyHtml: buildBodyHtml(article, snippets),
     canonicalUrl: article.url,
     category: article.category,
     tags: article.tags,

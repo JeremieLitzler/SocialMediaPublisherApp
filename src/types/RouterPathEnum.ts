@@ -4,6 +4,7 @@ export enum RouterPathEnum {
   LinkedIn = '/linkedin',
   Medium = '/medium',
   Substack = '/substack',
+  Settings = '/settings',
   // To showcase the style guide
   StyleGuide = '/style-guide',
 }

@@ -150,3 +150,23 @@ export interface UTMParams {
   /** Platform name for tracking */
   source: Platform
 }
+
+/**
+ * All user-editable snippet keys used across platform content generators.
+ * Keys map 1-to-1 to the constants in src/config/snippets.ts.
+ */
+export type SnippetKey =
+  | 'EN_SUBSTACK_SHARE_BLOCK'
+  | 'FR_SUBSTACK_SHARE_BLOCK'
+  | 'EN_SUBSTACK_UTM_ANCHOR'
+  | 'FR_SUBSTACK_UTM_ANCHOR'
+  | 'EN_WHY_HEADING'
+  | 'FR_WHY_HEADING'
+  | 'EN_WHY_BODY_HTML'
+  | 'FR_WHY_BODY_HTML'
+
+/**
+ * Map of all editable snippet values.
+ * Used by useSnippets composable and settings page.
+ */
+export type SnippetMap = Record<SnippetKey, string>

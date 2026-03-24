@@ -8,6 +8,7 @@ export default mergeConfig(
     test: {
       environment: 'happy-dom',
       globals: true,
+      setupFiles: ['src/__tests__/setup-indexeddb.ts'],
       coverage: {
         provider: 'v8',
         reporter: ['text', 'json', 'html'],

@@ -8,10 +8,10 @@
  * UTM link, bilingual attribution line, and bilingual share block.
  */
 
-import type { Article, SubstackContent } from '@/types/article'
+import type { Article, SubstackContent, SnippetMap } from '@/types/article'
 import { generateUTMLink } from './utm'
 import { htmlToText } from './htmlToText'
-import { getSubstackShareBlockText, getSubstackUtmAnchorText } from '@/config/snippets'
+import { getSubstackShareBlockText, getSubstackUtmAnchorText, SNIPPET_DEFAULTS } from '@/config/snippets'
 
 const VISUAL_SEPARATOR = '⬇️⬇️⬇️'
 const ENGLISH_BLOG_URL = 'https://iamjeremie.me'
@@ -28,9 +28,9 @@ function buildFigureHtml(article: Article): string {
   return `<figure>${imgTag}${figcaption}</figure>`
 }
 
-function buildUtmBlock(url: string, blog: Article['blog']): string {
+function buildUtmBlock(url: string, blog: Article['blog'], snippets: Readonly<SnippetMap>): string {
   const utmLink = generateUTMLink(url, 'Substack')
-  const anchorText = getSubstackUtmAnchorText(blog)
+  const anchorText = getSubstackUtmAnchorText(blog, snippets)
   return `<p>${VISUAL_SEPARATOR}<br /><a href="${utmLink}">${anchorText}</a></p>`
 }
 
@@ -53,18 +53,18 @@ function buildAttributionBlock(article: Article): string {
   return `<p><em>${buildAttributionLine(article.blog)}</em></p>`
 }
 
-function buildShareBlock(article: Article): string {
-  const shareText = getSubstackShareBlockText(article.blog)
+function buildShareBlock(article: Article, snippets: Readonly<SnippetMap>): string {
+  const shareText = getSubstackShareBlockText(article.blog, snippets)
   return `<p>${shareText}</p>`
 }
 
-function buildBodyHtml(article: Article): string {
+function buildBodyHtml(article: Article, snippets: Readonly<SnippetMap>): string {
   return [
     buildFigureHtml(article),
     article.introduction,
-    buildUtmBlock(article.url, article.blog),
+    buildUtmBlock(article.url, article.blog, snippets),
     buildAttributionBlock(article),
-    buildShareBlock(article),
+    buildShareBlock(article, snippets),
   ].join('')
 }
 
@@ -72,13 +72,17 @@ function buildBodyHtml(article: Article): string {
  * Generate Substack content from an extracted article.
  *
  * @param article - Extracted article data
+ * @param snippets - Optional live snippet map from useSnippets (defaults to SNIPPET_DEFAULTS)
  * @returns SubstackContent with all fields required for a Substack cross-post
  */
-export function generateSubstackContent(article: Article): SubstackContent {
+export function generateSubstackContent(
+  article: Article,
+  snippets: Readonly<SnippetMap> = SNIPPET_DEFAULTS,
+): SubstackContent {
   return {
     title: article.title,
     description: article.description,
-    bodyHtml: buildBodyHtml(article),
+    bodyHtml: buildBodyHtml(article, snippets),
     category: article.category,
     tags: article.tags,
   }
