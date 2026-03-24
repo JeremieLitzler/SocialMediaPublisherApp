@@ -1,5 +1,5 @@
 <script setup lang="ts">
-defineProps<{ saving: boolean; loading?: boolean }>()
+defineProps<{ saving: boolean }>()
 const emit = defineEmits<{
   save: []
   reset: []
@@ -16,10 +16,10 @@ const emit = defineEmits<{
 
     <!-- Save / Reset actions -->
     <div class="flex gap-4 mb-8">
-      <Button :disabled="saving || loading" @click="emit('save')">
-        {{ saving ? 'Saving…' : loading ? 'Loading…' : 'Save all' }}
+      <Button :disabled="saving" @click="emit('save')">
+        {{ saving ? 'Saving…' : 'Save all' }}
       </Button>
-      <Button variant="outline" :disabled="saving || loading" @click="emit('reset')">
+      <Button variant="outline" :disabled="saving" @click="emit('reset')">
         Reset to defaults
       </Button>
     </div>
