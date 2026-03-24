@@ -22,7 +22,7 @@ Issue-driven pipeline — pick next GitHub issue and run the multi-agent pipelin
 
 ## Up Next
 
-Go find an issue in the repository's issue on GitHub using GitHub CLI. Report to human if CLI isn't logged in.
+Issue #47 branch `feat/extract-constants-to-params` is pushed and awaiting human approval for PR creation.
 
 ## Open Decisions
 
