@@ -13,23 +13,11 @@ import type { Article, MediumContent, SnippetMap } from '@/types/article'
 import { generateUTMLink } from './utm'
 import { htmlToText } from './htmlToText'
 import { getWhySnippet, SNIPPET_DEFAULTS } from '@/config/snippets'
-
-const VISUAL_SEPARATOR = '⬇️⬇️⬇️'
+import { VISUAL_SEPARATOR, buildFigureHtml } from './articleHtmlBuilder'
 
 function buildImageCaption(imageCreditSnippet: string | null): string {
   if (imageCreditSnippet === null) return ''
   return htmlToText(imageCreditSnippet)
-}
-
-function buildFigcaption(imageCreditSnippet: string | null): string {
-  if (imageCreditSnippet === null) return ''
-  return `<figcaption>${htmlToText(imageCreditSnippet)}</figcaption>`
-}
-
-function buildFigureHtml(article: Article): string {
-  const imgTag = `<img src="${article.imageUrl}" alt="${article.imageAlt}" />`
-  const figcaption = buildFigcaption(article.imageCreditSnippet)
-  return `<figure>${imgTag}${figcaption}</figure>`
 }
 
 function buildUtmBlock(url: string): string {

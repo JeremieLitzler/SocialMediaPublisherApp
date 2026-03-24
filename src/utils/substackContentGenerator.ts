@@ -10,23 +10,11 @@
 
 import type { Article, SubstackContent, SnippetMap } from '@/types/article'
 import { generateUTMLink } from './utm'
-import { htmlToText } from './htmlToText'
 import { getSubstackShareBlockText, getSubstackUtmAnchorText, SNIPPET_DEFAULTS } from '@/config/snippets'
+import { VISUAL_SEPARATOR, buildFigureHtml } from './articleHtmlBuilder'
 
-const VISUAL_SEPARATOR = '⬇️⬇️⬇️'
 const ENGLISH_BLOG_URL = 'https://iamjeremie.me'
 const FRENCH_BLOG_URL = 'https://jeremielitzler.fr'
-
-function buildFigcaption(imageCreditSnippet: string | null): string {
-  if (imageCreditSnippet === null) return ''
-  return `<figcaption>${htmlToText(imageCreditSnippet)}</figcaption>`
-}
-
-function buildFigureHtml(article: Article): string {
-  const imgTag = `<img src="${article.imageUrl}" alt="${article.imageAlt}" />`
-  const figcaption = buildFigcaption(article.imageCreditSnippet)
-  return `<figure>${imgTag}${figcaption}</figure>`
-}
 
 function buildUtmBlock(url: string, blog: Article['blog'], snippets: Readonly<SnippetMap>): string {
   const utmLink = generateUTMLink(url, 'Substack')

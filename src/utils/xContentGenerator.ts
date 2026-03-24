@@ -10,32 +10,9 @@
 
 import type { Article, XChunk, XContent } from '@/types/article'
 import { generateUTMLink } from './utm'
+import { extractParagraphTexts } from './articleHtmlBuilder'
 
 const MAX_CHUNK_LENGTH = 280
-
-/**
- * Extract plain text from each <p> element in an HTML string.
- * Uses DOMParser and reads textContent (never innerHTML) to prevent
- * any HTML from reaching the chunk strings.
- *
- * @param html - Raw HTML string containing <p> elements
- * @returns Array of trimmed non-empty paragraph plain-text strings
- */
-function extractParagraphTexts(html: string): string[] {
-  const parser = new DOMParser()
-  const doc = parser.parseFromString(html, 'text/html')
-  const paragraphNodes = doc.querySelectorAll('p')
-  const texts: string[] = []
-
-  for (const node of paragraphNodes) {
-    const text = (node.textContent ?? '').replace(/\s+/g, ' ').trim()
-    if (text.length > 0) {
-      texts.push(text)
-    }
-  }
-
-  return texts
-}
 
 /**
  * Split plain text into sentences, keeping trailing punctuation attached.
