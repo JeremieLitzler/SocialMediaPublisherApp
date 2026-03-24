@@ -18,7 +18,7 @@ const STORE_NAME = 'snippets'
 let dbPromise: Promise<IDBDatabase> | null = null
 
 function openDb(): Promise<IDBDatabase> {
-  if (dbPromise) return dbPromise
+  if (dbPromise !== null) return dbPromise
 
   dbPromise = new Promise<IDBDatabase>((resolve, reject) => {
     const request = indexedDB.open(DB_NAME, DB_VERSION)
