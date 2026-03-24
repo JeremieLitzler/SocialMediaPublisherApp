@@ -44,22 +44,19 @@ export function useSnippets() {
   /**
    * Load all snippet values from IndexedDB, merging over defaults.
    * Missing or invalid keys fall back to hardcoded defaults (R4, TC-06, TC-09).
+   * Throws if IndexedDB is unavailable — callers must catch and surface the error.
    */
   async function load(): Promise<void> {
     const merged: SnippetMap = { ...SNIPPET_DEFAULTS }
 
     await Promise.all(
       ALL_KEYS.map(async (key) => {
-        try {
-          const raw = await db.get(key)
-          const safe = toSafeString(raw)
-          if (safe !== undefined) {
-            merged[key] = safe
-          }
-          // If safe is undefined, default remains from SNIPPET_DEFAULTS spread above.
-        } catch {
-          // Individual key failure: keep the default, do not surface to user.
+        const raw = await db.get(key)
+        const safe = toSafeString(raw)
+        if (safe !== undefined) {
+          merged[key] = safe
         }
+        // If safe is undefined, default remains from SNIPPET_DEFAULTS spread above.
       }),
     )
 

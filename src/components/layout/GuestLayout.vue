@@ -5,4 +5,5 @@
     </div>
     <AppFooter />
   </div>
+  <IndexedDbErrorToast />
 </template>

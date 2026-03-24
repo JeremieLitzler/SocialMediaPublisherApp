@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { useSnippets } from '@/composables/useSnippets'
+import { useIndexedDbError } from '@/composables/useIndexedDbError'
 import { sanitizeBodyHtml } from '@/utils/sanitize'
 import type { SnippetKey } from '@/types/article'
 
@@ -9,13 +10,18 @@ import type { SnippetKey } from '@/types/article'
 // (security-guidelines.md rule 5).
 
 const { snippets, load, save, reset } = useSnippets()
+const { setError } = useIndexedDbError()
 
 // Local editable copies (two-way bound to inputs).
 // Populated from snippets after load() resolves.
 const local = ref({ ...snippets.value })
 
 onMounted(async () => {
-  await load()
+  try {
+    await load()
+  } catch {
+    setError('Snippet settings could not be loaded from browser storage. Using defaults.')
+  }
   local.value = { ...snippets.value }
 })
 

@@ -3,14 +3,22 @@ import { computed, ref, watch, watchEffect, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useArticleState } from '@/composables/useArticleState'
 import { useSnippets } from '@/composables/useSnippets'
+import { useIndexedDbError } from '@/composables/useIndexedDbError'
 import { generateSubstackContent } from '@/utils/substackContentGenerator'
 import { sanitizeBodyHtml } from '@/utils/sanitize'
 
 const router = useRouter()
 const { extractionState, resetState } = useArticleState()
 const { snippets, load } = useSnippets()
+const { setError } = useIndexedDbError()
 
-onMounted(load)
+onMounted(async () => {
+  try {
+    await load()
+  } catch {
+    setError('Snippet settings could not be loaded from browser storage. Using defaults.')
+  }
+})
 
 const article = computed(() => extractionState.value.article)
 
