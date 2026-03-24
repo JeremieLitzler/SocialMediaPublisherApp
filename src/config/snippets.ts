@@ -1,5 +1,4 @@
-import type { Blog } from '@/types/article'
-import type { SnippetKey, SnippetMap } from '@/types/article'
+import type { Blog, SnippetKey, SnippetMap } from '@/types/article'
 
 // ─── Hardcoded defaults ───────────────────────────────────────────────────────
 //
