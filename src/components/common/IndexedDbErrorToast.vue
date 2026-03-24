@@ -1,37 +1,7 @@
 <script setup lang="ts">
-import { watch, onUnmounted } from 'vue'
 import { useIndexedDbError } from '@/composables/useIndexedDbError'
-import { useSnippets } from '@/composables/useSnippets'
 
-const { error, clearError } = useIndexedDbError()
-const { load } = useSnippets()
-
-let retryInterval: ReturnType<typeof setInterval> | null = null
-
-async function retry(): Promise<void> {
-  try {
-    await load()
-    clearError()
-  } catch {
-    // IndexedDB still unavailable — keep the toast visible.
-  }
-}
-
-watch(error, (newError) => {
-  if (newError !== null && retryInterval === null) {
-    retryInterval = setInterval(retry, 5000)
-  } else if (newError === null && retryInterval !== null) {
-    clearInterval(retryInterval)
-    retryInterval = null
-  }
-})
-
-onUnmounted(() => {
-  if (retryInterval !== null) {
-    clearInterval(retryInterval)
-    retryInterval = null
-  }
-})
+const { error } = useIndexedDbError()
 </script>
 
 <template>
@@ -71,8 +41,7 @@ onUnmounted(() => {
             use.
           </p>
           <p class="mt-2 text-xs italic text-red-200">
-            Retrying automatically every 5 s &mdash; this notice will disappear once storage is
-            accessible again.
+            Please reload the page to retry.
           </p>
         </div>
       </div>

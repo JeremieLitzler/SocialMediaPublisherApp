@@ -3,7 +3,7 @@
  *
  * Any component that calls useSnippets().load() wraps it in a try/catch and
  * calls setError() on failure. The IndexedDbErrorToast reads this state and
- * retries load() automatically; clearError() is called on successful retry.
+ * shows a persistent notice telling the user to reload the page to retry.
  */
 
 import { ref, readonly } from 'vue'
@@ -15,14 +15,9 @@ export function useIndexedDbError() {
     error.value = message
   }
 
-  function clearError(): void {
-    error.value = null
-  }
-
   return {
     /** Non-null when IndexedDB is unavailable and snippet defaults are in use. */
     error: readonly(error),
     setError,
-    clearError,
   }
 }
