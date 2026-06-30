@@ -13,7 +13,8 @@
       "Bash(powershell:*)",
       "Bash(git pull:*)",
       "Bash(git checkout:*)",
-      "Bash(npm run:*)"
+      "Bash(npm run:*)",
+      "Bash(rtk git *)"
     ]
   }
 }
