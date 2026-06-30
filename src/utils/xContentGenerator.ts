@@ -4,15 +4,19 @@
  * Splits an article introduction into tweet-sized chunks (≤280 chars each),
  * with visual separators and a UTM-tagged link on the last chunk.
  *
- * Chunking is paragraph-first: each HTML <p> element is treated as an
- * independent unit. Content from different paragraphs is never merged.
+ * Chunking is block-first: each introduction block (paragraph, list,
+ * blockquote, code block) is an independent unit. Paragraphs may split at
+ * sentence boundaries; non-paragraph blocks are atomic and never merged into
+ * an adjacent block's tweet. Content from different blocks is never merged.
  */
 
-import type { Article, XChunk, XContent } from '@/types/article'
+import type { Article, IntroductionBlock, XChunk, XContent } from '@/types/article'
 import { generateUTMLink } from './utm'
-import { extractParagraphTexts } from './articleHtmlBuilder'
+import { extractIntroductionBlocks } from './articleHtmlBuilder'
 
 const MAX_CHUNK_LENGTH = 280
+
+type RawChunk = { text: string; oversized?: boolean }
 
 /**
  * Split plain text into sentences, keeping trailing punctuation attached.
@@ -100,7 +104,7 @@ function hasSentenceBoundary(text: string): boolean {
  * @param paragraphText - Trimmed plain-text content of one <p> element
  * @returns Array of raw chunk objects (text without formatting suffix, oversized flag)
  */
-function buildRawChunksFromParagraph(paragraphText: string): Array<{ text: string; oversized?: boolean }> {
+function buildRawChunksFromParagraph(paragraphText: string): RawChunk[] {
   if (paragraphText.length <= MAX_CHUNK_LENGTH) {
     return [{ text: paragraphText }]
   }
@@ -115,6 +119,37 @@ function buildRawChunksFromParagraph(paragraphText: string): Array<{ text: strin
 }
 
 /**
+ * Convert a non-paragraph block (list, blockquote, code block) into a single
+ * atomic chunk. It is never split or merged; an oversized block is flagged the
+ * same way an unsplittable oversized paragraph is.
+ *
+ * @param blockText - Rendered plain text of one non-paragraph block
+ * @returns A single raw chunk, flagged oversized when it exceeds the limit
+ */
+function buildRawChunksFromAtomicBlock(blockText: string): RawChunk[] {
+  if (blockText.length <= MAX_CHUNK_LENGTH) {
+    return [{ text: blockText }]
+  }
+
+  return [{ text: blockText, oversized: true }]
+}
+
+/**
+ * Convert one introduction block into raw chunks: paragraphs split at sentence
+ * boundaries, every other block type stays atomic.
+ *
+ * @param block - One introduction block in source order
+ * @returns Raw chunks for this block
+ */
+function buildRawChunksFromBlock(block: IntroductionBlock): RawChunk[] {
+  if (block.isParagraph) {
+    return buildRawChunksFromParagraph(block.text)
+  }
+
+  return buildRawChunksFromAtomicBlock(block.text)
+}
+
+/**
  * Apply visual formatting to raw chunk objects:
  * - Every chunk except the last gets `\n\n⬇️` appended to its text.
  * - The last chunk gets `\n\n⬇️⬇️⬇️\n{utmLink}` appended to its text.
@@ -124,7 +159,7 @@ function buildRawChunksFromParagraph(paragraphText: string): Array<{ text: strin
  * @param utmLink - UTM-tagged article URL
  * @returns Formatted XChunk objects ready for display/copy
  */
-function formatChunks(rawChunks: Array<{ text: string; oversized?: boolean }>, utmLink: string): XChunk[] {
+function formatChunks(rawChunks: RawChunk[], utmLink: string): XChunk[] {
   return rawChunks.map((chunk, index) => {
     const isLast = index === rawChunks.length - 1
     const suffix = isLast ? '\n\n⬇️⬇️⬇️\n' + utmLink : '\n\n⬇️'
@@ -145,17 +180,16 @@ function formatChunks(rawChunks: Array<{ text: string; oversized?: boolean }>, u
  * @returns XContent with an array of formatted XChunk objects
  */
 export function generateXContent(article: Article): XContent {
-  const paragraphTexts = extractParagraphTexts(article.introduction)
+  const blocks = extractIntroductionBlocks(article.introduction)
 
-  if (paragraphTexts.length === 0) {
+  if (blocks.length === 0) {
     return { chunks: [] }
   }
 
-  const rawChunks: Array<{ text: string; oversized?: boolean }> = []
+  const rawChunks: RawChunk[] = []
 
-  for (const paragraphText of paragraphTexts) {
-    const paragraphChunks = buildRawChunksFromParagraph(paragraphText)
-    rawChunks.push(...paragraphChunks)
+  for (const block of blocks) {
+    rawChunks.push(...buildRawChunksFromBlock(block))
   }
 
   const utmLink = generateUTMLink(article.url, 'X')

@@ -72,6 +72,22 @@ export interface ExtractionState {
 }
 
 /**
+ * A single rendered introduction block (paragraph, unordered/ordered list,
+ * blockquote, or code block) converted to plain text for LinkedIn/X.
+ *
+ * `text` already carries the per-type formatting (bullets, numbering, quote
+ * prefixes, code fences) with list items / quote lines joined by `\n`.
+ * `isParagraph` is true only for paragraphs — the sentence-splittable blocks;
+ * every other block type is atomic (`false`) and never split or merged.
+ */
+export interface IntroductionBlock {
+  /** Rendered plain text for this block, formatted per its source type */
+  text: string
+  /** True for paragraphs (sentence-splittable); false for atomic blocks */
+  isParagraph: boolean
+}
+
+/**
  * A single X (Twitter) chunk with optional oversized warning flag.
  * The `text` field holds the fully formatted chunk (with arrow/UTM suffix).
  * The `oversized` flag is true when the source paragraph exceeds 280 characters

@@ -1,17 +1,17 @@
 /**
  * LinkedIn Content Generator
  *
- * Composes an article introduction as plain text with paragraph breaks preserved,
+ * Composes an article introduction as plain text with block breaks preserved,
  * followed by a visual separator and a UTM-tagged link.
  *
- * LinkedIn renders line breaks, so paragraph breaks must be preserved as \n\n.
- * htmlToText() collapses all whitespace, making it unsuitable here.
- * Instead, each <p> element's textContent is extracted individually.
+ * LinkedIn renders line breaks, so block breaks must be preserved as \n\n.
+ * Every introduction block — paragraphs, lists, blockquotes, and code blocks —
+ * is rendered in source order via extractIntroductionBlocks().
  */
 
 import type { Article, LinkedInContent } from '@/types/article'
 import { generateUTMLink } from './utm'
-import { VISUAL_SEPARATOR, extractParagraphTexts } from './articleHtmlBuilder'
+import { VISUAL_SEPARATOR, extractIntroductionBlocks } from './articleHtmlBuilder'
 
 const PARAGRAPH_SEPARATOR = '\n\n'
 
@@ -20,9 +20,9 @@ const PARAGRAPH_SEPARATOR = '\n\n'
  *
  * Body format:
  * ```
- * [paragraph 1]
+ * [block 1]
  *
- * [paragraph 2]
+ * [block 2]
  *
  * ⬇️⬇️⬇️
  * [UTM link]
@@ -32,8 +32,8 @@ const PARAGRAPH_SEPARATOR = '\n\n'
  * @returns LinkedInContent with a single formatted body string
  */
 export function generateLinkedInContent(article: Article): LinkedInContent {
-  const paragraphs = extractParagraphTexts(article.introduction)
-  const introductionText = paragraphs.join(PARAGRAPH_SEPARATOR)
+  const blocks = extractIntroductionBlocks(article.introduction)
+  const introductionText = blocks.map((block) => block.text).join(PARAGRAPH_SEPARATOR)
   const utmLink = generateUTMLink(article.url, 'LinkedIn')
   const body = introductionText + PARAGRAPH_SEPARATOR + VISUAL_SEPARATOR + '\n' + utmLink
 
