@@ -1,14 +1,13 @@
 Write the business specifications for a feature. Task folder: $ARGUMENTS
 
-`$ARGUMENTS` must be the absolute path to the task folder created by `/jli-git-setup`
-(e.g. `…/<type>_<slug>/docs/prompts/tasks/issue-<id>-<slug>`). If it is empty, stop and reply:
+`$ARGUMENTS` is the task folder, given as a `@`-mention relative to the worktree root you
+opened (e.g. `@docs/prompts/tasks/issue-<id>-<slug>`). If it is empty, stop and reply:
 
-> Usage: `/jli-spec <task-folder>` — I need the absolute task-folder path printed by
-> `/jli-git-setup`.
+> Usage: `/jli-spec @<task-folder>` — open the feature worktree (`code <worktree>`) first,
+> then pass the task folder relative to it.
 
-Derive the worktree root `[worktree]` from the argument: it is the substring before
-`/docs/prompts/tasks/`. Resolve every path below under `[worktree]`. This command reads and
-writes only inside `[worktree]`.
+Run from the worktree root (your current directory). All paths below are relative to it; read
+and write only inside this worktree.
 
 ## What this command does
 
@@ -69,7 +68,7 @@ Show the user a short summary of the spec, then:
 - If the file contains `### ADR Required`:
   > ⚠ This spec requires a new ADR. Review and approve the ADR before continuing. Once
   > approved (add it under `docs/decisions/` and update `docs/decisions/README.md`), run
-  > `/jli-git-commit [task-folder]`.
+  > `/jli-git-commit @<task-folder>`.
 - Otherwise:
-  > Spec ready. Review `[task-folder]/business-specifications.md`, then run
-  > `/jli-git-commit [task-folder]`, then (optionally `/clear` and) `/jli-security [task-folder]`.
+  > Spec ready. Review `business-specifications.md` in the task folder, then run
+  > `/jli-git-commit @<task-folder>`, then (optionally `/clear` and) `/jli-security @<task-folder>`.

@@ -1,18 +1,19 @@
 Run the test suite. Task folder: $ARGUMENTS
 
-`$ARGUMENTS` must be the absolute task-folder path. If it is empty, stop and reply:
+`$ARGUMENTS` is the task folder, given as a `@`-mention relative to the worktree root you
+opened (e.g. `@docs/prompts/tasks/issue-<id>-<slug>`). If it is empty, stop and reply:
 
-> Usage: `/jli-test-run <task-folder>` — I need the absolute task-folder path.
+> Usage: `/jli-test-run @<task-folder>` — open the feature worktree (`code <worktree>`) first,
+> then pass the task folder relative to it.
 
-Derive `[worktree]` from the argument (the substring before `/docs/prompts/tasks/`). The
-bare repo root has no `node_modules` — always `cd [worktree]` first.
+Run from the worktree root (your current directory) — that is where `node_modules` lives.
 
 ## What this command does
 
 Run Vitest in non-watch mode (failures only — saves tokens) from the worktree:
 
 ```bash
-cd [worktree] && rtk vitest run
+rtk vitest run
 ```
 
 ## Output contract
@@ -62,9 +63,9 @@ full error output in `test-results.md`, and end the file with `status: failed`.
 ## Next
 
 - If `status: failed`:
-  > Tests failed (see `[task-folder]/test-results.md`). Run `/jli-git-commit [task-folder]`
-  > to record the results, then `/jli-code [task-folder]` to fix, then re-run
-  > `/jli-review [task-folder]` and `/jli-test-run [task-folder]`.
+  > Tests failed (see `test-results.md` in the task folder). Run `/jli-git-commit @<task-folder>`
+  > to record the results, then `/jli-code @<task-folder>` to fix, then re-run
+  > `/jli-review @<task-folder>` and `/jli-test-run @<task-folder>`.
 - If `status: passed`:
-  > All tests pass. Run `/jli-git-commit [task-folder]`, then `/jli-git-ship [task-folder]`
-  > to push, open the PR, and (after approval) merge and clean up.
+  > All tests pass. Run `/jli-git-commit @<task-folder>`, then `/jli-git-ship @<task-folder>`
+  > to push, open the PR, and merge after approval.

@@ -1,13 +1,14 @@
 Commit the current phase's artifacts. Task folder: $ARGUMENTS
 
-`$ARGUMENTS` must be the absolute task-folder path. If it is empty, stop and reply:
+`$ARGUMENTS` is the task folder, given as a `@`-mention relative to the worktree root you
+opened (e.g. `@docs/prompts/tasks/issue-<id>-<slug>`). If it is empty, stop and reply:
 
-> Usage: `/jli-git-commit <task-folder>` — I need the absolute task-folder path.
+> Usage: `/jli-git-commit @<task-folder>` — open the feature worktree (`code <worktree>`)
+> first, then pass the task folder relative to it.
 
-Derive `[worktree]` from the argument (the substring before `/docs/prompts/tasks/`). Always
-`cd [worktree]` before any git command — never commit from the bare repo root, and never
-commit directly to `develop` or `main` (you are on the feature branch the worktree created).
-Parse the issue `[id]` from the task-folder name (`issue-<id>-<slug>`).
+Run all git commands from the worktree root (your current directory) — never from the bare
+repo root, and never commit directly to `develop` or `main` (you are on the feature branch
+the worktree created). Parse the issue `[id]` from the task-folder name (`issue-<id>-<slug>`).
 
 ## What this command does
 
@@ -15,7 +16,7 @@ This is the commit step run between phases. Inspect what changed, then create on
 conventional commit with the matching type. Use `rtk` for all git commands.
 
 ```bash
-cd [worktree] && rtk git status
+rtk git status
 ```
 
 ## Choosing the commit type from what changed
@@ -39,8 +40,8 @@ General conventional-commit rules: subject in imperative mood, lowercase, no per
 Stage only the files belonging to the current phase, then:
 
 ```bash
-cd [worktree] && rtk git add <files>
-cd [worktree] && rtk git commit -m "<message>"
+rtk git add <files>
+rtk git commit -m "<message>"
 ```
 
 Do NOT push here — `/jli-git-ship` pushes.
@@ -49,7 +50,7 @@ Do NOT push here — `/jli-git-ship` pushes.
 
 If you discover a bug or code issue while committing, do NOT fix it here. Stop, describe the
 bug, the file(s) affected, and the root cause, and tell the user to route it through
-`/jli-code [task-folder]`.
+`/jli-code @<task-folder>`.
 
 ## Shell command retry limit
 
@@ -60,13 +61,13 @@ the full error output to the user.
 
 Report the commit. Then point the user to the next phase based on what was just committed:
 
-- after specs → `/jli-security [task-folder]`
-- after security → `/jli-test-write [task-folder]` (pass 1)
-- after test-cases → `/jli-code [task-folder]`
-- after code/review (approved) → `/jli-test-write [task-folder]` (pass 2)
-- after review (changes requested) → `/jli-code [task-folder]`
-- after `*.spec.ts` → `/jli-test-run [task-folder]`
-- after test-results (passed) → `/jli-git-ship [task-folder]`
-- after test-results (failed) → `/jli-code [task-folder]`
+- after specs → `/jli-security @<task-folder>`
+- after security → `/jli-test-write @<task-folder>` (pass 1)
+- after test-cases → `/jli-code @<task-folder>`
+- after code/review (approved) → `/jli-test-write @<task-folder>` (pass 2)
+- after review (changes requested) → `/jli-code @<task-folder>`
+- after `*.spec.ts` → `/jli-test-run @<task-folder>`
+- after test-results (passed) → `/jli-git-ship @<task-folder>`
+- after test-results (failed) → `/jli-code @<task-folder>`
 
 > Committed. You may run `/clear` before the next command.

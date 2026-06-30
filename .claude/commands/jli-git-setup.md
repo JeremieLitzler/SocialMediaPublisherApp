@@ -32,13 +32,14 @@ bash scripts/pipeline/fetch-origin.sh
 bash scripts/pipeline/worktree-create.sh <type> <slug>
 ```
 
-`worktree-create.sh` creates `<bare-repo>/<type>_<slug>` on branch `<type>/<slug>` from
-`origin/develop`, installs npm deps, and prints `Worktree: <absolute-path>`. Capture that
-absolute path as `[worktree]`.
+`worktree-create.sh` creates the worktree folder `<repo-name>_<type>-<slug>` (a sibling of
+the bare repo) on branch `<type>/<slug>` from `origin/develop`, installs npm deps, and prints
+`Worktree: <absolute-path>`. Capture that absolute path as `[worktree]`.
 
 ### Step 3 — Create the task folder and README
 
 - `task-folder` = `[worktree]/docs/prompts/tasks/issue-<id>-<slug>/`
+- The relative form (used by every later command) is `docs/prompts/tasks/issue-<id>-<slug>`.
 - Write `[task-folder]/README.md` containing:
   - A first line: `Worktree: [worktree]` (so the path is recorded for reference).
   - The issue title and the full issue body fetched in Step 1, plus any extra notes the
@@ -64,10 +65,20 @@ the full error output to the user.
 
 ## Next
 
-Report the absolute task-folder path to the user, then show:
+Report the absolute worktree path and the relative task-folder path, then show:
 
 > Worktree and task folder ready.
-> Task folder: `[task-folder]`
+> Worktree: `[worktree]`
+> Task folder (relative): `docs/prompts/tasks/issue-<id>-<slug>`
 >
-> Next: run `/clear` (optional), then `/jli-spec [task-folder]` to write the business
-> specifications. Pass that exact task-folder path to every command in the chain.
+> Next: open the worktree in its own editor window so the rest of the chain runs in its
+> context:
+>
+> ```
+> code [worktree]
+> ```
+>
+> Then, from that window, run `/jli-spec @docs/prompts/tasks/issue-<id>-<slug>`. Every later
+> command takes the task folder as a `@`-mention relative to the worktree root — you never
+> need the absolute path again. The final cleanup command is the exception: it runs back in
+> this `develop` window.

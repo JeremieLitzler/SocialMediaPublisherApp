@@ -1,18 +1,20 @@
-Push, open the PR, merge, and clean up. Task folder: $ARGUMENTS
+Push, open the PR, and merge. Task folder: $ARGUMENTS
 
-`$ARGUMENTS` must be the absolute task-folder path. If it is empty, stop and reply:
+`$ARGUMENTS` is the task folder, given as a `@`-mention relative to the worktree root you
+opened (e.g. `@docs/prompts/tasks/issue-<id>-<slug>`). If it is empty, stop and reply:
 
-> Usage: `/jli-git-ship <task-folder>` — I need the absolute task-folder path.
+> Usage: `/jli-git-ship @<task-folder>` — run this from the feature worktree
+> (`code <worktree>`), passing the task folder relative to it.
 
-Derive `[worktree]` from the argument (the substring before `/docs/prompts/tasks/`). Parse
-the issue `[id]` from the task-folder name. Use the pipeline scripts; they resolve the bare
-repo root automatically. This command is outward-facing and irreversible — honour the two
-approval gates below.
+Run from the feature worktree root (your current directory). Parse the issue `[id]` from the
+task-folder name. The pipeline scripts resolve the bare repo automatically. This command is
+outward-facing and irreversible — honour the two approval gates below. It does NOT remove the
+worktree (you are standing in it); cleanup is a separate command run from `develop`.
 
 ## Step 1 — Push and open the PR
 
-Confirm `[task-folder]/test-results.md` ends with `status: passed`. If not, stop and tell
-the user to finish `/jli-test-run [task-folder]` first.
+Confirm `test-results.md` in the task folder ends with `status: passed`. If not, stop and
+tell the user to finish `/jli-test-run @<task-folder>` first.
 
 Derive the PR title from `business-specifications.md` (short imperative summary, ≤70 chars).
 Write the PR body to a temp file: a summary of what changed and why, a test-plan checklist,
@@ -23,7 +25,7 @@ cat > /tmp/pr-body.md << 'EOF'
 <body content here>
 EOF
 
-bash scripts/pipeline/pr-create.sh [worktree] "<title>" /tmp/pr-body.md
+bash scripts/pipeline/pr-create.sh "$(pwd)" "<title>" /tmp/pr-body.md
 ```
 
 `pr-create.sh` pushes the branch and opens the PR against `develop`, printing `PR: <url>`.
@@ -42,17 +44,6 @@ bash scripts/pipeline/pr-complete.sh <pr-url>
 
 Merges with rebase and deletes the remote branch. Skips gracefully if already merged/closed.
 
-## Step 3 — Clean up
-
-```bash
-bash scripts/pipeline/worktree-cleanup.sh [worktree]
-bash scripts/pipeline/refresh-develop.sh
-```
-
-`worktree-cleanup.sh` removes the worktree, prunes stale entries, and deletes the local
-branch. `refresh-develop.sh` fetches origin and fast-forwards `develop`. Both are safe to
-re-run.
-
 ## Shell command retry limit
 
 Do not run more than 3 failing shell commands in total. After 3 failures, stop and report
@@ -60,4 +51,12 @@ the full error output to the user.
 
 ## Next
 
-> Feature shipped: PR merged, worktree cleaned up, `develop` updated. The chain is complete.
+> PR merged. Last step — clean up the worktree from the `develop` window (you can't remove
+> the worktree you're standing in):
+>
+> ```
+> code [develop-worktree]
+> ```
+>
+> Then run `/jli-git-cleanup <worktree-folder-name>` there (the folder name is the last
+> segment of this worktree's path, e.g. `<repo-name>_<type>-<slug>`).
