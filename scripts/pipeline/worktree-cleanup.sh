@@ -34,14 +34,14 @@ BRANCH="$(git -C "$WORKTREE" branch --show-current 2>/dev/null || true)"
 
 echo "==> Removing worktree '${WT_NAME}'..."
 git -C "$BARE_REPO" worktree remove --force "$WORKTREE" 2>/dev/null || true
-if [ -d "$WORKTREE" ]; then
+if [[ -d "$WORKTREE" ]]; then
   rm -rf "$WORKTREE"
 fi
 
 echo "==> Pruning stale worktree entries..."
 git -C "$BARE_REPO" worktree prune
 
-if [ -n "$BRANCH" ]; then
+if [[ -n "$BRANCH" ]]; then
   echo "==> Deleting local branch '${BRANCH}'..."
   # Use -D (force) because GitHub rebase/squash-merge does not create a merge
   # commit, so git never considers the local branch "fully merged".

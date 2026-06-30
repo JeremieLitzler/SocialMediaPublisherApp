@@ -23,10 +23,10 @@ if ! git -C "$BARE_REPO" remote get-url origin &>/dev/null; then
   DEVELOP="$(git -C "$BARE_REPO" worktree list --porcelain \
     | awk '/^worktree /{wt=$2} /^branch refs\/heads\/develop$/{print wt; exit}')"
   REMOTE_URL=""
-  if [ -n "$DEVELOP" ]; then
+  if [[ -n "$DEVELOP" ]]; then
     REMOTE_URL="$(git -C "$DEVELOP" remote get-url origin 2>/dev/null || true)"
   fi
-  if [ -z "$REMOTE_URL" ]; then
+  if [[ -z "$REMOTE_URL" ]]; then
     echo "ERROR: origin remote not found in bare repo and could not be inferred." >&2
     echo "Run: git -C \"$BARE_REPO\" remote add origin <url>" >&2
     exit 1
