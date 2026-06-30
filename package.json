@@ -16,7 +16,8 @@
     "format": "prettier --write src/",
     "test": "vitest",
     "test:ui": "vitest --ui",
-    "test:coverage": "vitest --coverage"
+    "test:coverage": "vitest --coverage",
+    "dev:netlify": "netlify dev --functions netlify/functions"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.18",

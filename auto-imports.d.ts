@@ -135,6 +135,6 @@ declare global {
   export type { SideBarLinkAction } from './src/types/SideBarLinkAction'
   import('./src/types/SideBarLinkAction')
   // @ts-ignore
-  export type { ArticleURL, Blog, Platform, Article, ExtractionStatus, ExtractionState, XChunk, XContent, LinkedInContent, MediumContent, SubstackContent, UTMParams, SnippetKey, SnippetMap } from './src/types/article'
+  export type { ArticleURL, Blog, Platform, Article, ExtractionStatus, ExtractionState, IntroductionBlock, XChunk, XContent, LinkedInContent, MediumContent, SubstackContent, UTMParams, SnippetKey, SnippetMap } from './src/types/article'
   import('./src/types/article')
 }
