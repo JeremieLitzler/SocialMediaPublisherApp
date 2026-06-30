@@ -17,7 +17,7 @@ The orchestrator passes:
 
 I may read and edit:
 
-- `.claude/agents/agent-*.md` — agent instruction files
+- `.claude/deprecated-agents/agent-*.md` — agent instruction files
 - `CLAUDE.md` — main project instructions for Claude Code
 - `CLAUDE-*.md` — supplementary workflow and analysis documents at the repo root
 
