@@ -20,10 +20,10 @@ BARE_REPO="$(cd "$SCRIPT_DIR" && cd "$(git rev-parse --git-common-dir)" && pwd)"
 echo "==> Checking PR state..."
 PR_STATE="$(gh pr view "$PR_URL" --json state --jq '.state' 2>/dev/null || echo "UNKNOWN")"
 
-if [ "$PR_STATE" = "MERGED" ]; then
+if [[ "$PR_STATE" == "MERGED" ]]; then
   echo "    PR already merged — nothing to do."
   exit 0
-elif [ "$PR_STATE" = "CLOSED" ]; then
+elif [[ "$PR_STATE" == "CLOSED" ]]; then
   echo "    PR is closed (not merged) — nothing to do."
   exit 0
 fi

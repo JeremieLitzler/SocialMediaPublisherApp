@@ -14,7 +14,7 @@ BARE_REPO="$(cd "$SCRIPT_DIR" && cd "$(git rev-parse --git-common-dir)" && pwd)"
 DEVELOP="$(git -C "$BARE_REPO" worktree list --porcelain \
   | awk '/^worktree /{wt=$2} /^branch refs\/heads\/develop$/{print wt; exit}')"
 
-if [ -z "$DEVELOP" ]; then
+if [[ -z "$DEVELOP" ]]; then
   echo "ERROR: could not locate the develop worktree." >&2
   exit 1
 fi
