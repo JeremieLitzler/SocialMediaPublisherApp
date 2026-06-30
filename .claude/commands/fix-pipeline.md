@@ -1,5 +1,9 @@
 A pipeline issue has been reported: $ARGUMENTS
 
+This command maintains the **deprecated** orchestrator-era agent files under
+`.claude/deprecated-agents/` and the `CLAUDE*.md` instructions. To change the active `jli-`
+command chain instead, use `/jli-tweak-command-chain`.
+
 Follow this workflow to fix it.
 
 ## What NOT to do
@@ -33,7 +37,7 @@ Record the resulting worktree absolute path as `[worktree]`.
 
 Read and edit the affected files directly in the main conversation. You may read and edit:
 
-- `[worktree]/.claude/agents/agent-*.md` — agent instruction files
+- `[worktree]/.claude/deprecated-agents/agent-*.md` — agent instruction files
 - `[worktree]/CLAUDE.md` — main project instructions
 - `[worktree]/CLAUDE-*.md` — supplementary workflow documents
 
@@ -49,7 +53,7 @@ For every change:
 
 Stage only the affected files and commit using conventional commits:
 
-- Files under `.claude/agents/` → `ci(agent): <message>`
+- Files under `.claude/deprecated-agents/` → `ci(agent): <message>`
 - Files at the repo root (`CLAUDE*.md`) → `docs: <message>`
 
 Use `rtk git add <files>` and `rtk git commit -m "..."`.
