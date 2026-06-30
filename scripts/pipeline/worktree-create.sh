@@ -6,9 +6,15 @@
 # Creates a git worktree for a new feature/fix branch, installs npm deps,
 # and prints the absolute worktree path as "Worktree: <path>".
 #
-# Works when called from any worktree (develop/, feat_*/,  ci_*/) because
-# the bare repo is always the parent directory of whichever worktree holds
-# this script.
+# Layout (isolated worktree): the bare repo and every worktree are siblings
+# under one parent folder. The bare repo is discovered with
+# `git rev-parse --git-common-dir`, so folder names are never hardcoded.
+#
+#   <parent>/<repo-name>.git              <- bare repo
+#   <parent>/<repo-name>-develop          <- develop worktree (runs this script)
+#   <parent>/<repo-name>_<type>-<slug>    <- worktree this script creates
+#
+# Branch is `<type>/<slug>`; the worktree folder is `<repo-name>_<type>-<slug>`.
 #
 # Prerequisites: run fetch-origin.sh before this script.
 
@@ -18,16 +24,17 @@ TYPE="${1:?Usage: worktree-create.sh <type> <slug>}"
 SLUG="${2:?Usage: worktree-create.sh <type> <slug>}"
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-# scripts/pipeline is 2 levels below the worktree root, which is 1 level
-# below the bare repo: <bare-repo>/<worktree>/scripts/pipeline
-BARE_REPO="$(cd "$SCRIPT_DIR/../../.." && pwd)"
+BARE_REPO="$(cd "$SCRIPT_DIR" && cd "$(git rev-parse --git-common-dir)" && pwd)"
+WORKTREES_ROOT="$(dirname "$BARE_REPO")"
+REPO_NAME="$(basename "$BARE_REPO" .git)"
 
-WT_NAME="${TYPE}_${SLUG}"
+WT_SLUG="${TYPE}-${SLUG}"
+WT_NAME="${REPO_NAME}_${WT_SLUG}"
 BRANCH="${TYPE}/${SLUG}"
-WT_PATH="${BARE_REPO}/${WT_NAME}"
+WT_PATH="${WORKTREES_ROOT}/${WT_NAME}"
 
 echo "==> Creating worktree '${WT_NAME}' on branch '${BRANCH}'..."
-git -C "$BARE_REPO" worktree add "$WT_NAME" -b "$BRANCH" origin/develop
+git -C "$BARE_REPO" worktree add "$WT_PATH" -b "$BRANCH" origin/develop
 
 echo "==> Installing npm dependencies in ${WT_PATH}..."
 (cd "$WT_PATH" && npm install --silent)

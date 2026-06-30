@@ -46,10 +46,13 @@ command must still hold ALL of these invariants:
 1. **Self-contained** — no reference to any `agent-*.md` file and **no orchestrator
    vocabulary** ("orchestrator", "the orchestrator passes", "notify/report to the
    orchestrator"). The chain and the deprecated pipeline must share no text.
-2. **Argument guard** — opens by requiring its argument and printing a usage line when empty
-   (task-folder path for every command except `jli-git-setup`, which takes an issue number).
-3. **Worktree derivation** — phase/commit/ship commands derive `[worktree]` by stripping
-   `/docs/prompts/tasks/...` from the task-folder argument, and read/write only inside it.
+2. **Argument guard** — opens by requiring its argument and printing a usage line when empty.
+   The argument is the task folder as a `@`-mention relative to the worktree
+   (`@docs/prompts/tasks/issue-<id>-<slug>`) for the phase/commit/ship commands;
+   `jli-git-setup` takes an issue number; `jli-git-cleanup` takes a worktree name/path.
+3. **Run location** — phase/commit/ship commands run from inside the feature worktree and
+   treat the task-folder argument as relative to it (no path derivation). `jli-git-setup`
+   and `jli-git-cleanup` run from the `develop` worktree.
 4. **Status-line contract** — any artifact it writes still ends with its required status line
    as the last line.
 5. **Next hint** — ends with a hint block covering the happy-path successor and any

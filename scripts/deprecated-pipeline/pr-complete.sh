@@ -15,7 +15,7 @@ set -euo pipefail
 PR_URL="${1:?Usage: pr-complete.sh <pr-url>}"
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-BARE_REPO="$(cd "$SCRIPT_DIR" && cd "$(git rev-parse --git-common-dir)" && pwd)"
+BARE_REPO="$(cd "$SCRIPT_DIR/../../.." && pwd)"
 
 echo "==> Checking PR state..."
 PR_STATE="$(gh pr view "$PR_URL" --json state --jq '.state' 2>/dev/null || echo "UNKNOWN")"

@@ -1,11 +1,13 @@
 Write security guidelines for a feature. Task folder: $ARGUMENTS
 
-`$ARGUMENTS` must be the absolute path to the task folder. If it is empty, stop and reply:
+`$ARGUMENTS` is the task folder, given as a `@`-mention relative to the worktree root you
+opened (e.g. `@docs/prompts/tasks/issue-<id>-<slug>`). If it is empty, stop and reply:
 
-> Usage: `/jli-security <task-folder>` — I need the absolute task-folder path.
+> Usage: `/jli-security @<task-folder>` — open the feature worktree (`code <worktree>`) first,
+> then pass the task folder relative to it.
 
-Derive `[worktree]` from the argument (the substring before `/docs/prompts/tasks/`).
-Read and write only inside `[worktree]`.
+Run from the worktree root (your current directory). All paths below are relative to it; read
+and write only inside this worktree.
 
 ## What this command does
 
@@ -55,8 +57,8 @@ the full error output to the user.
 
 ## Next
 
-> Security guidelines ready. Review `[task-folder]/security-guidelines.md`, then run
-> `/jli-git-commit [task-folder]`, then (optionally `/clear` and)
-> `/jli-test-write [task-folder]` to write the plain-language test cases (pass 1).
+> Security guidelines ready. Review `security-guidelines.md` in the task folder, then run
+> `/jli-git-commit @<task-folder>`, then (optionally `/clear` and)
+> `/jli-test-write @<task-folder>` to write the plain-language test cases (pass 1).
 
 If the file contains `### ADR Required`, warn the user to approve the ADR before continuing.

@@ -1,12 +1,13 @@
 Implement the feature. Task folder: $ARGUMENTS
 
-`$ARGUMENTS` must be the absolute task-folder path. If it is empty, stop and reply:
+`$ARGUMENTS` is the task folder, given as a `@`-mention relative to the worktree root you
+opened (e.g. `@docs/prompts/tasks/issue-<id>-<slug>`). If it is empty, stop and reply:
 
-> Usage: `/jli-code <task-folder>` — I need the absolute task-folder path.
+> Usage: `/jli-code @<task-folder>` — open the feature worktree (`code <worktree>`) first,
+> then pass the task folder relative to it.
 
-Derive `[worktree]` from the argument (the substring before `/docs/prompts/tasks/`).
-All file paths are relative to `[worktree]` — never read or write outside it. If you run a
-shell command, `cd [worktree]` first; never run from the bare repo root.
+Run from the worktree root (your current directory). All file paths are relative to it —
+never read or write outside this worktree.
 
 ## What this command does
 
@@ -81,7 +82,7 @@ to `/jli-test-run` and `/jli-review`.
 ## RTK token optimization
 
 Prefer the Read/Glob/Grep tools. For shell, prefer `rtk ls`, `rtk read <file>`,
-`rtk grep <pattern>` (use absolute paths).
+`rtk grep <pattern>` (paths relative to the worktree root).
 
 ## Shell command retry limit
 
@@ -91,11 +92,11 @@ the full error output to the user.
 ## Next
 
 - If the file ends `status: review specs`:
-  > The specs need review. Run `/jli-spec [task-folder]` to revise them, re-commit, then
-  > return to `/jli-code [task-folder]`.
+  > The specs need review. Run `/jli-spec @<task-folder>` to revise them, re-commit, then
+  > return to `/jli-code @<task-folder>`.
 - If the file contains `### ADR Required`:
   > ⚠ This implementation requires a new ADR. Approve it (add under `docs/decisions/`, update
-  > the index) before committing, then run `/jli-git-commit [task-folder]`.
+  > the index) before committing, then run `/jli-git-commit @<task-folder>`.
 - Otherwise:
-  > Implementation ready. Review `[task-folder]/technical-specifications.md`, run
-  > `/jli-git-commit [task-folder]`, then (optionally `/clear` and) `/jli-review [task-folder]`.
+  > Implementation ready. Review `technical-specifications.md` in the task folder, run
+  > `/jli-git-commit @<task-folder>`, then (optionally `/clear` and) `/jli-review @<task-folder>`.

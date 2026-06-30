@@ -1,12 +1,14 @@
 Write test artifacts for a feature. Task folder (and optional pass): $ARGUMENTS
 
-`$ARGUMENTS` must start with the absolute task-folder path, optionally followed by `1` or
+`$ARGUMENTS` starts with the task folder, given as a `@`-mention relative to the worktree
+root you opened (e.g. `@docs/prompts/tasks/issue-<id>-<slug>`), optionally followed by `1` or
 `2` to force the pass. If it is empty, stop and reply:
 
-> Usage: `/jli-test-write <task-folder> [1|2]` — I need the absolute task-folder path.
+> Usage: `/jli-test-write @<task-folder> [1|2]` — open the feature worktree
+> (`code <worktree>`) first, then pass the task folder relative to it.
 
-Derive `[worktree]` from the argument (the substring before `/docs/prompts/tasks/`).
-Read and write only inside `[worktree]`.
+Run from the worktree root (your current directory). All paths below are relative to it; read
+and write only inside this worktree.
 
 ## Pass selection
 
@@ -65,8 +67,8 @@ the full error output to the user.
 ## Next
 
 - After **pass 1**:
-  > Test cases ready. Run `/jli-git-commit [task-folder]`, then (optionally `/clear` and)
-  > `/jli-code [task-folder]` to implement.
+  > Test cases ready. Run `/jli-git-commit @<task-folder>`, then (optionally `/clear` and)
+  > `/jli-code @<task-folder>` to implement.
 - After **pass 2**:
-  > Test files written. Run `/jli-git-commit [task-folder]`, then (optionally `/clear` and)
-  > `/jli-test-run [task-folder]` to run the suite.
+  > Test files written. Run `/jli-git-commit @<task-folder>`, then (optionally `/clear` and)
+  > `/jli-test-run @<task-folder>` to run the suite.

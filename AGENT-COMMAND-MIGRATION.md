@@ -12,44 +12,64 @@ easily and left the human no natural place to intervene between phases. The manu
 fixes both: each command is a single, stateless step the human runs by hand, with a `/clear`
 allowed between any two steps to keep context small.
 
+## Worktree layout and run location
+
+The repo uses one bare repo with sibling worktrees under a shared parent:
+
+```
+<parent>/<repo-name>.git              <- bare repo
+<parent>/<repo-name>-develop          <- develop worktree
+<parent>/<repo-name>_<type>-<slug>    <- a feature worktree
+```
+
+`/jli-git-setup` and `/jli-git-cleanup` run from the **develop worktree**. Every other
+command runs from inside the **feature worktree** — you open it in its own editor window
+(`code <worktree>`) after setup, and all later commands run in that window.
+
 ## How state flows
 
-All state lives in the task folder under the worktree:
-`<worktree>/docs/prompts/tasks/issue-<id>-<slug>/`. Each command reads the artifacts written
-by earlier commands and writes its own. Because every command takes the **absolute
-task-folder path as a required argument**, it can rebuild everything it needs from disk after
-a `/clear` — the worktree root is derived by stripping `/docs/prompts/tasks/...` from the
-argument. `/jli-git-setup` prints that path; paste the same path into every later command.
+All state lives in the task folder under the feature worktree:
+`docs/prompts/tasks/issue-<id>-<slug>/`. Each command reads the artifacts written by earlier
+commands and writes its own. Because the phase/commit/ship commands run *inside* the feature
+worktree, the task folder is a simple relative path — you pass it as a `@`-mention
+(`@docs/prompts/tasks/issue-<id>-<slug>`), never an absolute path. The argument is required on
+every command, so each one rebuilds what it needs from disk after a `/clear`.
 
 The **specification phase is the input exception**: `/jli-spec` reads the `README.md` request
 created by `/jli-git-setup` rather than a prior pipeline artifact.
 
 ## Command ↔ agent mapping
 
-| Command | Replaces (agent) |
-|---|---|
-| `/jli-git-setup <issue-num + title>` | `agent-4-git` Tasks 1–2 (fetch + worktree) |
-| `/jli-spec <task-folder>` | `agent-1-specs` |
-| `/jli-security <task-folder>` | `agent-5-security` |
-| `/jli-test-write <task-folder> [pass]` | `agent-3-test-writer` (pass 1 and pass 2) |
-| `/jli-code <task-folder>` | `agent-2-coder` |
-| `/jli-review <task-folder>` | `agent-6-reviewer` |
-| `/jli-test-run <task-folder>` | `agent-3-test-runner` |
-| `/jli-git-commit <task-folder>` | `agent-4-git` commit tasks (3 / 3.5 / 3.7 / 4 / 5-commit) |
-| `/jli-git-ship <task-folder>` | `agent-4-git` Tasks 5-push / 6 / 7 / 8 (push, PR, merge, cleanup) |
+| Command | Runs from | Replaces (agent) |
+|---|---|---|
+| `/jli-git-setup <issue-num + title>` | develop | `agent-4-git` Tasks 1–2 (fetch + worktree) |
+| `/jli-spec @<task-folder>` | feature worktree | `agent-1-specs` |
+| `/jli-security @<task-folder>` | feature worktree | `agent-5-security` |
+| `/jli-test-write @<task-folder> [pass]` | feature worktree | `agent-3-test-writer` (pass 1 and 2) |
+| `/jli-code @<task-folder>` | feature worktree | `agent-2-coder` |
+| `/jli-review @<task-folder>` | feature worktree | `agent-6-reviewer` |
+| `/jli-test-run @<task-folder>` | feature worktree | `agent-3-test-runner` |
+| `/jli-git-commit @<task-folder>` | feature worktree | `agent-4-git` commit tasks (3 / 3.5 / 3.7 / 4 / 5-commit) |
+| `/jli-git-ship @<task-folder>` | feature worktree | `agent-4-git` Tasks 5-push / 6 / 7 (push, PR, merge) |
+| `/jli-git-cleanup <worktree>` | develop | `agent-4-git` Task 8 (worktree cleanup + refresh develop) |
 
 `agent-0-orchestrator` is **dissolved** into the "Next" hint at the end of each command — no
 command replaces it. `agent-7-pipeline-maintainer` is unchanged; it is still reached via the
 existing `/fix-pipeline` skill.
 
-`agent-4-git`'s three responsibilities were split into three commands (`setup`, `commit`,
-`ship`) so each step does one thing. Commits are their own step (`/jli-git-commit`) rather
-than being folded into the phase commands.
+`agent-4-git`'s responsibilities were split into four commands — `setup` (bootstrap),
+`commit` (its own step between phases), `ship` (push + PR + merge), and `cleanup` (worktree
+removal + refresh develop). `cleanup` is separate because it cannot run from inside the
+worktree it removes.
 
 ## The chain
 
 ```
+[develop worktree]
 /jli-git-setup
+  → code <worktree>        (open the feature worktree; everything below runs there)
+
+[feature worktree]
   → /jli-spec        → /jli-git-commit
   → /jli-security    → /jli-git-commit
   → /jli-test-write  → /jli-git-commit      (pass 1: writes test-cases.md)
@@ -57,7 +77,10 @@ than being folded into the phase commands.
   → /jli-review      → /jli-git-commit
   → /jli-test-write  → /jli-git-commit      (pass 2: writes *.spec.ts)
   → /jli-test-run    → /jli-git-commit
-  → /jli-git-ship
+  → /jli-git-ship          (push + PR + merge)
+
+[back in develop worktree]
+  → /jli-git-cleanup <worktree>
 ```
 
 Loop-backs (each command's hint states the branch it took):
@@ -93,7 +116,7 @@ Two maintenance commands, by target:
 
 - `/jli-tweak-command-chain <change>` — edits the **active chain only**: the
   `.claude/commands/jli-*.md` files and this document. It preserves the chain invariants
-  (self-containment, argument guard, worktree derivation, status-line contract, Next hint)
+  (self-containment, argument guard, run location, status-line contract, Next hint)
   and keeps the diagram/mapping here in sync.
 - `/fix-pipeline <issue>` — maintains the **deprecated** orchestrator-era agents (now under
   `.claude/deprecated-agents/`) and the `CLAUDE*.md` instructions.
