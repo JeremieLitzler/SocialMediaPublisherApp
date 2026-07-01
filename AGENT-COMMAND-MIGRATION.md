@@ -67,9 +67,8 @@ worktree it removes.
 The full workflow, including the two-editor split and the loop-backs:
 
 ```mermaid
-flowchart LR
+flowchart TD
     subgraph INST1["VSCode instance 1 — develop worktree"]
-        direction TB
         setup["/jli-git-setup"]
         cleanup["/jli-git-cleanup &lt;worktree&gt;"]
     end
@@ -83,20 +82,20 @@ flowchart LR
         review --> tw2["/jli-test-write · pass 2"]
         tw2 --> trun["/jli-test-run"]
         trun --> ship["/jli-git-ship"]
-
-        review -. "changes requested" .-> code
-        trun -. "failed" .-> code
-        code -. "review specs" .-> spec
-
-        commit{{"/jli-git-commit — after every phase"}}
-        commit -. "each phase" .-> spec
-
-        clear{{"/clear — any stage; keeps task folder"}}
-        clear -. "any stage" .-> spec
     end
 
-    INST1 == "code &lt;worktree&gt; (new editor window)" ==> INST2
-    INST2 == "back to develop worktree" ==> INST1
+    setup -->|"code &lt;worktree&gt; (open a new editor window)"| spec
+    ship -->|"back to develop worktree"| cleanup
+
+    review -. "changes requested" .-> code
+    trun -. "failed" .-> code
+    code -. "review specs" .-> spec
+
+    commit{{"/jli-git-commit — run after every phase<br/>(between each step above and the next)"}}
+    commit -. "each phase" .-> INST2
+
+    clear{{"/clear — may be run between any two steps;<br/>resets context, keeps the task folder on disk"}}
+    clear -. "any stage" .-> INST2
 
     classDef editor fill:#eef,stroke:#557,stroke-width:1px;
     classDef note fill:#efe,stroke:#5a5,stroke-width:1px,stroke-dasharray:4 3;
