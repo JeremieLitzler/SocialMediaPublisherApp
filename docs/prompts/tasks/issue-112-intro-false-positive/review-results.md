@@ -1,17 +1,16 @@
-# Review Results — Issue #112: Intro "false positive" messaging
+# Review Results — Issue #112: Intro messaging + empty-introduction detection
 
 Reviewed files (from `technical-specifications.md`):
 
 - `src/composables/useArticleExtractor.ts`
+- `src/utils/htmlExtractor.ts`
 - `src/components/article/ManualIntroduction.vue`
-
-No `security-guidelines.md` exists for this task (messaging-only change; the business spec
-states no new security surface). Security checklist is therefore N/A.
+- `tests/fixtures/english-no-intro.html`
 
 ## `rtk lint` / `npm run lint`
 
 `rtk lint` could not run (`program not found` at the rtk wrapper level), so lint was invoked
-via `npm run lint`. ESLint failed to load its own configuration:
+via `npm run lint`. ESLint again fails to load its own configuration:
 
 ```
 > eslint . --fix
@@ -22,38 +21,10 @@ SyntaxError: Unexpected token ':'
     ...
 ```
 
-Root cause: `eslint.config.js:19` places `rules: { 'vue/multi-word-component-names': 0 }` as a
-bare element of the top-level array (`export default [ … ]`). A `key: value` pair is not valid
-inside an array literal, which produces the `Unexpected token ':'` parse error. It should be
-wrapped as its own config object:
-
-```js
-// current (invalid)
-export default [
-  ...vueTsEslintConfig(),
-  skipFormatting,
-  rules: {
-    'vue/multi-word-component-names': 0
-  }
-]
-
-// expected
-export default [
-  ...vueTsEslintConfig(),
-  skipFormatting,
-  {
-    rules: {
-      'vue/multi-word-component-names': 0,
-    },
-  },
-]
-```
-
-**Scope note:** `eslint.config.js` is NOT part of this change (not in the technical spec, not
-in the issue-112 commit) — this is a pre-existing, repo-wide tooling breakage that predates the
-change under review and blocks lint for every file, not just the two edited here. It is out of
-scope for a messaging fix and should be routed as its own `fix(ci)`/`ci` task. It does not
-reflect a defect in the reviewed code.
+Root cause is unchanged: `eslint.config.js:19` places `rules: {…}` as a bare `key: value`
+entry inside the top-level array. This is a **pre-existing, repo-wide** breakage unrelated to
+this change (the file is not in this diff) and is already tracked in a separate GitHub issue.
+It blocks lint for every file, so no lint signal is available for the reviewed code.
 
 ## `npm run type-check`
 
@@ -65,26 +36,31 @@ Passed cleanly (no diagnostics):
 
 ## Checklist
 
-- ✓ **Security rules** — N/A (no `security-guidelines.md`; messaging-only, no new input,
-  network, or sink surface). The reworded strings are static literals rendered via `{{ }}`
-  (auto-escaped) and a `<code>&lt;h2&gt;</code>` literal — no interpolated/user data, no XSS.
-- ✓ **Object Calisthenics** — diff is two static-string edits; no new methods, classes,
-  indentation levels, `else`, or abbreviations introduced. Existing small-entity structure
-  preserved.
-- ✓ **Matches business spec** — R2/TC-2: message names the missing-`<h2>` cause, states the
-  introduction end can't be located, directs the author to use `<h2>`, and drops the false
-  "no paragraphs" claim. R3/TC-4: `ManualIntroduction.vue` copy agrees and still offers manual
-  entry as the workaround. R4/TC-3: the missing-`.article-content` path funnels through the
-  same `MISSING_INTRODUCTION` branch and inherits the same message — no separate flow. R1/TC-5/
-  TC-6: detection untouched. No scope creep (detection, state values, tag set unchanged).
-- ✓ **No dead code / unused imports / unreachable branches** — no imports changed; the
-  `MISSING_INTRODUCTION` branch already existed and still `return`s.
-- ✓ **Naming clarity** — no abbreviations introduced; existing `error`/`extractionState`/
-  `canContinue`/`handleContinue` names are unabbreviated.
-- ✓ **Vue/TS pitfalls** — `useArticleState()` is accessed via `extractionState.value` (no
-  reactivity-losing destructure of the ref's contents); no props mutated; no `any`/`unknown`;
-  no non-null `!`; `handleContinue` uses a guard-clause early return; composable is `use`-
-  prefixed; no new side effects requiring cleanup. `{{ extractionState.error }}` renders the
-  literal `<h2>` text safely (escaped).
+- ✓ **Security rules.** R1: the two messages are fixed literals in a `const` map; the catch
+  renders `MISSING_INTRODUCTION_MESSAGES[error.message]` only after `isMissingIntroductionCode`
+  validates the code — no fetched HTML/URL/article text is interpolated. R2:
+  `ManualIntroduction.vue` renders the message and copy via `{{ }}` (no `v-html`), so the literal
+  `<h2>` is escaped. R3: `extractIntroduction` stays on DOM traversal (`querySelector`,
+  `firstElementChild`/`nextElementSibling`); no `innerHTML` assignment or regex execution on the
+  untrusted HTML (the fixture cleanup used a build-time script on test data, not runtime).
+- ✓ **Object Calisthenics.** Two guard clauses replace the single null-check (no `else`); helpers
+  (`isMissingIntroductionCode`) are small and single-purpose; the message map is a first-class
+  constant; names are unabbreviated. `extractArticleData`'s trailing object literal is a single
+  expression (acceptable).
+- ✓ **Matches business spec.** R1/R2/R5 (no-`<h2>`/no-container → NO_HEADING message, unchanged);
+  R3/R4 (first `<h2>` with empty intro → EMPTY message, distinct); R6 (manual-entry workaround
+  preserved, static copy cause-agnostic). No scope creep — the `<h2>` boundary, tag set, and
+  status values are untouched; only the empty-result mapping changed.
+- ✓ **No dead code / unused imports / unreachable branches.** Both map keys are thrown and
+  rendered; the `''` guard is reachable (the `english-no-intro.html` fixture triggers it); the
+  old inline `MISSING_INTRODUCTION` message and single-cause check were fully replaced.
+- ✓ **Naming clarity.** `MISSING_INTRODUCTION_MESSAGES`, `MissingIntroductionCode`,
+  `isMissingIntroductionCode` — no abbreviations; existing `error`/`extractionState` retained.
+- ✓ **Vue/TS pitfalls.** No reactive destructure (uses `extractionState.value`); no prop
+  mutation; no `any`/`unknown`; no non-null `!`; the guard returns a proper
+  `value is MissingIntroductionCode` predicate and uses `hasOwnProperty` (not `in`) to avoid
+  prototype-chain false positives; exported functions keep explicit return types
+  (`extractIntroduction: string | null`). Composable stays `use`-prefixed with no self-triggered
+  fetch and no side effects needing cleanup.
 
 status: approved
