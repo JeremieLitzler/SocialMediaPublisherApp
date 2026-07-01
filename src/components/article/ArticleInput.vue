@@ -72,13 +72,25 @@ const platformRoutes: Record<Platform, string> = {
   Substack: RouterPathEnum.Substack,
 }
 
+function rememberSelectedPlatform() {
+  extractionState.value.selectedPlatform = selectedPlatform.value
+}
+
 async function handleExtract() {
   if (!canExtract.value) return
   await extractArticle(url.value.trim())
 
-  if (extractionState.value.status === 'success') {
-    extractionState.value.selectedPlatform = selectedPlatform.value
+  const status = extractionState.value.status
+  // Remember the platform for both resolved states so a manually completed
+  // introduction can later open it (R6). Navigate only on success — a missing
+  // introduction stays on home and shows the fallback there (R2).
+  if (status === 'success') {
+    rememberSelectedPlatform()
     await router.push(platformRoutes[selectedPlatform.value])
+    return
+  }
+  if (status === 'missing-introduction') {
+    rememberSelectedPlatform()
   }
 }
 </script>
