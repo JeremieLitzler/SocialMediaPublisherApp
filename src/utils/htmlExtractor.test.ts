@@ -19,7 +19,6 @@ describe('htmlExtractor', () => {
   let englishWithIntroDoc: Document
   let frenchWithIntroDoc: Document
   let englishNoCreditDoc: Document
-  let frenchNoCreditDoc: Document
   let englishNoH2Doc: Document
   let organizingSpecificationsDoc: Document
 
@@ -44,12 +43,6 @@ describe('htmlExtractor', () => {
       'utf-8'
     )
     englishNoCreditDoc = new JSDOM(englishNoCreditHtml).window.document
-
-    const frenchNoCreditHtml = readFileSync(
-      join(fixturesPath, 'french-no-credit.html'),
-      'utf-8'
-    )
-    frenchNoCreditDoc = new JSDOM(frenchNoCreditHtml).window.document
 
     // Create a version without h2 for testing null return
     const htmlWithoutH2 = englishWithIntroHtml.replace(/<h2[^>]*>.*?<\/h2>/gs, '')

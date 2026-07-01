@@ -10,7 +10,7 @@ interface FetchArticleResponse {
 
 export const handler: Handler = async (
   event: HandlerEvent,
-  context: HandlerContext
+  _context: HandlerContext
 ) => {
   // Only allow GET requests
   if (event.httpMethod !== 'GET') {
@@ -34,7 +34,7 @@ export const handler: Handler = async (
   let urlObj: URL
   try {
     urlObj = new URL(url)
-  } catch (error) {
+  } catch {
     return {
       statusCode: 400,
       body: JSON.stringify({ success: false, error: 'Invalid URL format' }),

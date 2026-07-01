@@ -39,7 +39,7 @@ export function generateUTMLink(url: string, platform: Platform): string {
     urlObj.searchParams.set('utm_source', platform)
 
     return urlObj.toString()
-  } catch (error) {
+  } catch {
     // If URL parsing fails, fall back to simple string append
     // This shouldn't happen in normal use but provides graceful degradation
     const separator = url.includes('?') ? '&' : '?'

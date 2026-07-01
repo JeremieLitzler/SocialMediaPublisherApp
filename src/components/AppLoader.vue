@@ -5,7 +5,7 @@ const {
 </script>
 
 <template>
-  <div>
+  <div :class="cssClass">
     <!-- <iconify-icon icon="lucide:loader-circle" class="text-6xl animate-spin" /> -->
     <p>Loading...</p>
   </div>

@@ -1,4 +1,4 @@
-import pluginVue, { rules } from 'eslint-plugin-vue'
+import pluginVue from 'eslint-plugin-vue'
 import vueTsEslintConfig from '@vue/eslint-config-typescript'
 import skipFormatting from '@vue/eslint-config-prettier/skip-formatting'
 
@@ -16,7 +16,26 @@ export default [
   ...pluginVue.configs['flat/essential'],
   ...vueTsEslintConfig(),
   skipFormatting,
-  rules: {
-    'vue/multi-word-component-names': 0
-  }
+  {
+    name: 'app/rules',
+    rules: {
+      'vue/multi-word-component-names': 0,
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        {
+          argsIgnorePattern: '^_',
+          varsIgnorePattern: '^_',
+          caughtErrorsIgnorePattern: '^_',
+        },
+      ],
+    },
+  },
+  {
+    name: 'app/test-overrides',
+    files: ['**/*.{test,spec}.{ts,tsx}'],
+    rules: {
+      // Test mocks legitimately use `any` for partial fixtures and stubs.
+      '@typescript-eslint/no-explicit-any': 'off',
+    },
+  },
 ]
