@@ -114,14 +114,8 @@ done
 
 It is a senior engineer following Git Flow strategy, suggesting performant, secure and clean solutions.
 
-It must create:
+Commits to `develop`/`main` prohibited. Use worktrees and conventional-commit type of the change (`feat`, `fix`, `docs`, `ci`, `refactor`, …). Pipeline work derives the branch and commit type automatically (see the `jli-*` commands); for one-off changes, name the branch after the change type.
 
-- a feature branch when adding functionnality,
-- a fix branch when resolving an issue,
-- a docs branch when updating Markdown files only.
-- a new branch when a file is modified and it doesn't fall in the three previous scenarii. Follow conventional commit and Git Flow rules when naming branches.
-
-It always plans tasks and requests approval before after writing docs or code.
 No need to confirm file creation or modification, but confirm content is OK with Claude code's user.
 
 No need to congratulate or use language that use unnecessary output tokens. Go to the point.
@@ -163,106 +157,29 @@ Read when relevant:
 
 ## Development commands
 
-### Prerequisites
-
 ```bash
-# Install dependencies
-npm install
+npm install              # Install dependencies
 
-# Start local dev server (Netlify Dev handles both frontend and functions)
-npx netlify dev
+netlify dev              # Dev server WITH Netlify Functions (required for article fetching)
+npm run dev              # Vite only, no Functions (article fetching will fail on CORS)
 
-# Build for production
-npx netlify build
+npm run build            # Type-check + production build
+npm run build-only       # Vite build only (skips type-check)
+npm run preview          # Preview production build locally
 
-# Run tests
-npm test
+npm run type-check       # vue-tsc type checking
+npm run lint             # ESLint with auto-fix
+npm run format           # Prettier formatting
+
+npm run test             # Vitest unit tests
+npm run test:ui          # Vitest with browser UI dashboard
+npm run test:coverage    # Coverage report
 ```
 
-### While developping
-
-```bash
-# Development
-npm run dev          # Start Vite dev server (no Netlify Functions)
-netlify dev          # Start dev server with Netlify Functions (required for article fetching)
-
-# Build
-npm run build        # Type-check + build (production)
-npm run build-only   # Vite build only (skips type-check)
-npm run preview      # Preview production build locally
-
-# Type checking & linting
-npm run type-check   # Run vue-tsc type checking
-npm run lint         # Run ESLint with auto-fix
-npm run format       # Run Prettier formatting
-
-# Run tests
-npm run test             # Run all Vitest unit tests
-npm run test:ui          # Run tests with browser UI dashboard
-npm run test:coverage    # Generate coverage report
-```
-
-Use `netlify dev` (not `npm run dev`) during development to enable the `/api/fetch-article` backend proxy — without it, article fetching will fail due to CORS.
+Use `netlify dev` (not `npm run dev`) during development to enable the `/api/fetch-article` backend proxy — without it, article fetching fails on CORS.
 
 ## Shell commands — use `rtk` wrappers
 
-**Always** use `rtk` for the commands listed below — never the bare equivalent. These are the commands auto-approved in `.claude/settings.local.json`; running them without `rtk` will trigger a permission prompt on every call.
+**Always** prefix git, `gh`, build/lint, test, and file/search commands with `rtk` — never the bare equivalent. These are the commands auto-approved in `.claude/settings.local.json`; running them without `rtk` triggers a permission prompt on every call. The full command reference lives in the global `~/.claude/CLAUDE.md`.
 
-### Git
-
-```bash
-rtk git status          # compact status
-rtk git log -n 10       # one-line commits
-rtk git diff            # condensed diff
-rtk git add             # -> "ok"
-rtk git commit -m "msg" # -> "ok abc1234"
-rtk git push            # -> "ok main"
-rtk git pull            # -> "ok 3 files +10 -2"
-```
-
-### GitHub CLI
-
-```bash
-rtk gh pr list          # compact PR listing
-rtk gh pr view 42       # PR details + checks
-rtk gh issue list       # compact issue listing
-rtk gh run list         # workflow run status
-```
-
-### Build & lint
-
-```bash
-rtk tsc                 # TypeScript errors grouped by file
-rtk lint                # ESLint grouped by rule/file
-rtk err npm run build   # errors/warnings only
-rtk vitest run          # failures only
-```
-
-`npm run type-check` (vue-tsc) has no rtk equivalent — keep as-is.
-
-### Files & search
-
-```bash
-rtk ls .                # token-optimized directory tree
-rtk read file.ts        # smart file reading
-rtk find "*.ts" .       # compact find results
-rtk grep "pattern" .    # grouped search results
-rtk diff file1 file2    # condensed diff
-```
-
-### Package managers
-
-```bash
-rtk pnpm list           # compact dependency tree
-```
-
-### Token savings
-
-```bash
-rtk gain                # summary stats
-rtk discover            # find missed savings opportunities
-```
-
-## Agent Pipeline Issue Handling
-
-When the user reports a problem with an agent's behaviour or instructions, use the `/fix-pipeline` skill.
+Exception: `npm run type-check` (vue-tsc) has no rtk equivalent — keep as-is.
