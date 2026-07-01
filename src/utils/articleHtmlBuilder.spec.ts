@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { VISUAL_SEPARATOR, buildFigcaption, buildFigureHtml, extractParagraphTexts } from './articleHtmlBuilder'
+import { VISUAL_SEPARATOR, buildFigcaption, buildFigureHtml } from './articleHtmlBuilder'
 import type { Article } from '@/types/article'
 
 const baseArticle: Article = {
@@ -50,30 +50,5 @@ describe('buildFigureHtml', () => {
     expect(result).toContain(`<img src="${article.imageUrl}" alt="${article.imageAlt}" />`)
     expect(result).toMatch(/^<figure>/)
     expect(result).toMatch(/<\/figure>$/)
-  })
-})
-
-describe('extractParagraphTexts', () => {
-  it('returns trimmed non-empty paragraph strings', () => {
-    const html = '<p>  Hello world  </p><p></p><p>  Second  </p>'
-    const result = extractParagraphTexts(html)
-    expect(result).toEqual(['Hello world', 'Second'])
-  })
-
-  it('collapses internal whitespace', () => {
-    const html = '<p>Hello   world</p>'
-    const result = extractParagraphTexts(html)
-    expect(result).toEqual(['Hello world'])
-  })
-
-  it('returns an empty array when HTML has no p elements', () => {
-    const html = '<div>Some content</div>'
-    const result = extractParagraphTexts(html)
-    expect(result).toEqual([])
-  })
-
-  it('returns an empty array for empty HTML string', () => {
-    const result = extractParagraphTexts('')
-    expect(result).toEqual([])
   })
 })

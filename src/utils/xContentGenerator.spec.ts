@@ -64,3 +64,46 @@ describe('generateXContent', () => {
     expect(result.chunks[0].oversized).toBe(true)
   })
 })
+
+/** Build an article with the given introduction HTML, other fields fixed. */
+function makeArticle(introduction: string): Article {
+  return { ...baseArticle, introduction }
+}
+
+describe('generateXContent — block-first chunking', () => {
+  // TC-13 Each non-paragraph block is its own chunk
+  it('puts a list in its own chunk, never merged into the preceding paragraph', () => {
+    const result = generateXContent(
+      makeArticle('<p>Lead in.</p><ul><li>Item A</li><li>Item B</li></ul>'),
+    )
+    expect(result.chunks.length).toBe(2)
+
+    const paragraphChunk = result.chunks.find((chunk) => chunk.text.includes('Lead in.'))
+    const listChunk = result.chunks.find((chunk) => chunk.text.includes('- Item A'))
+
+    expect(paragraphChunk).toBeDefined()
+    expect(listChunk).toBeDefined()
+    expect(paragraphChunk!.text).not.toContain('- Item A')
+    expect(listChunk!.text).not.toContain('Lead in.')
+    expect(listChunk!.text).toContain('- Item A\n- Item B')
+  })
+
+  // TC-14 Oversized block obeys the same length handling as a paragraph
+  it('flags an oversized non-paragraph block instead of splitting or dropping it', () => {
+    const result = generateXContent(makeArticle(`<pre>${'a'.repeat(300)}</pre>`))
+    expect(result.chunks.length).toBe(1)
+    expect(result.chunks[0].oversized).toBe(true)
+    expect(result.chunks[0].text).toContain('```')
+  })
+
+  // TC-16 Block text comes from DOM text, not raw markup
+  it('emits readable text only; script content does not propagate into chunks', () => {
+    const result = generateXContent(
+      makeArticle('<p>Safe <script>bad()</script>text</p>'),
+    )
+    const allText = result.chunks.map((chunk) => chunk.text).join(' ')
+    expect(allText).toContain('Safe text')
+    expect(allText).not.toContain('<script')
+    expect(allText).not.toContain('bad(')
+  })
+})
