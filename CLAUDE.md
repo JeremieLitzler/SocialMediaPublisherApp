@@ -36,7 +36,7 @@ Pure functions targeting these CSS selectors on the fetched blog HTML:
 - Description: `.article-subtitle`
 - Image URL: `meta[name="twitter:image"]` content attribute (full absolute URL)
 - Image alt: `.article-header .article-image a img` alt attribute
-- Introduction: All `<p>`, `<pre>`, `<ul>`, and `<blockquote>` tags before the first `<h2>` in `.article-content`, preserved in source order
+- Introduction: All `<p>`, `<pre>`, `<ul>`, `<ol>` and `<blockquote>` tags before the first `<h2>` in `.article-content`, preserved in source order
 - Categories: `<header class="article-category"> a`
 - Tags: `<section class="article-tags"> a`
 - Follow-me snippet: second-to-last child of `.article-content`; if it is a `div.jli-notice.jli-notice-tip`, the inner `<p class="jli-notice-title">` is replaced with `<h2 class="jli-notice-title">`
@@ -66,7 +66,7 @@ Each platform has its own content interface: `XContent`, `LinkedInContent`, `Med
 
 - Composables in `src/composables/` prefixed with `use`
 - Utility functions in `src/utils/` — pure functions, no Vue dependencies
-- **Styling** *(coder agent: write; reviewer agent: enforce)*: always use Tailwind CSS utility classes. Write custom CSS (inline `style` attributes, `<style>` blocks, or `.css` files) only when no Tailwind utility class covers the need — and add a comment explaining why
+- **Styling** _(coder agent: write; reviewer agent: enforce)_: always use Tailwind CSS utility classes. Write custom CSS (inline `style` attributes, `<style>` blocks, or `.css` files) only when no Tailwind utility class covers the need — and add a comment explaining why
 
 #### Naming Conventions
 
@@ -91,6 +91,7 @@ Each platform has its own content interface: `XContent`, `LinkedInContent`, `Med
 ##### HTML Fixtures
 
 When saving HTML files for test fixtures, always clean them up:
+
 - Remove all `<link rel="stylesheet">` tags
 - Remove all `<script>` tags and their content
 - Keep metadata tags like `<link rel="canonical">` and `<link rel="shortcut icon">`
@@ -106,7 +107,7 @@ done
 
 - `docs/specs/` — Project specifications and requirements
 - `docs/decisions/` — Architecture Decision Records (a.k.a ADR)
-- `docs/prompts/` — Pipeline artifacts per issue; 
+- `docs/prompts/` — Pipeline artifacts per issue;
   - See `docs/prompts/README.md` for the full pipeline reference. NEVER READ THIS FILE UNLESS THE PIPELINE CHANGES
 
 ## Who Is Claude Code
@@ -162,7 +163,7 @@ Read when relevant:
 
 ## Development commands
 
-### Prerequisites 
+### Prerequisites
 
 ```bash
 # Install dependencies

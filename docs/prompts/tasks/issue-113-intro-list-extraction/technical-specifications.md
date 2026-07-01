@@ -11,6 +11,10 @@
   instead of paragraphs only; separator and UTM tail unchanged.
 - `src/utils/xContentGenerator.ts` — chunks per block; paragraphs split at sentence
   boundaries, non-paragraph blocks are atomic chunk units.
+- `src/utils/htmlExtractor.ts` — added `'OL'` to `INTRODUCTION_ELEMENT_TAGS` so ordered lists
+  in a real article introduction reach the generators (review loop-back fix; see below).
+- `CLAUDE.md` — "HTML Extraction Selectors" introduction line now lists `<ol>` alongside the
+  other retained tags, matching the extraction.
 
 ## Design decisions (why)
 
@@ -53,16 +57,37 @@
 3. **Defensive `doc.body` guard** in `extractIntroductionBlocks` returns `[]` on a null body
    instead of throwing on `.children`.
 
-## Noted discrepancy (non-blocking)
+## Review loop-back fixes (round 2)
 
-Business-spec rule 3 and TC-03 require **ordered lists** (`<ol>`) to render as numbered items,
-and the builder handles `<ol>`. However, the introduction *extraction* in
-`src/utils/htmlExtractor.ts` (`INTRODUCTION_ELEMENT_TAGS`) and CLAUDE.md's selector list retain
-only `<p>`, `<pre>`, `<ul>`, `<blockquote>` — not `<ol>`. `htmlExtractor.ts` is outside this
-task's declared file scope, and the test cases drive the generators with introduction HTML
-directly, so every scenario (including TC-03) is satisfiable as written. But end-to-end, a real
-article's `<ol>` would not reach the generators until `'OL'` is added to
-`INTRODUCTION_ELEMENT_TAGS`. Flagging for a follow-up decision; not changed here to respect the
-declared scope.
+Addresses `review-results.md` (`status: changes requested`).
+
+1. **Ordered lists now reach the generators (blocking finding resolved).** The builder already
+   rendered `<ol>` via `orderedListBlock`, but `INTRODUCTION_ELEMENT_TAGS` in
+   `htmlExtractor.ts` excluded `OL`, so a real article's ordered list never entered
+   `article.introduction` and TC-03/business-rule 3 failed end-to-end. Added `'OL'` to the set
+   (and updated the function's doc comment and CLAUDE.md's selector list to match). The business
+   spec's premise — "the existing extraction already retains them" — was inaccurate for `<ol>`;
+   this one-line extraction change is the minimal fix that makes the feature whole, so touching
+   `htmlExtractor.ts` (outside the originally declared file list) is justified over descoping an
+   explicitly required block type.
+2. **`extractParagraphTexts` retained, not removed (minor finding).** It is now unused by the
+   generators but still exported and covered by its own spec. Deletion would require editing a
+   `.spec.ts`, which is out of `/jli-code`'s remit (`/jli-test-write` owns test files). It is a
+   stable, tested pure helper kept available for future consumers; retention is documented here
+   rather than silently left dangling.
+
+## Self-review (three candidates examined)
+
+- **`div.highlight` code text may include line-number gutters.** `codeBlock` reads
+  `element.textContent`; a Chroma/Hugo highlight wrapper with a line-number column would
+  concatenate numbers into the fence. Pre-existing, no fixture/test exercises it, and fixing it
+  needs real highlight markup to validate — left unchanged to avoid an unverifiable edit.
+- **A single sentence longer than 280 chars inside a splittable paragraph** is emitted as a
+  chunk without the `oversized` flag. Spec/TC-14 scope oversized handling to non-paragraph
+  blocks and unsplittable paragraphs, both already flagged; changing this would exceed spec.
+- **Ordered-list `start` attribute ignored** — numbering always begins at `1.`. Business rule 3
+  requires sequential `1., 2., …`, so starting at 1 is spec-correct; no change.
+
+Only candidate that was an actual defect against the spec (the `<ol>` extraction gap) was fixed.
 
 status: ready
