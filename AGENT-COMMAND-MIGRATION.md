@@ -89,7 +89,8 @@ flowchart TD
     ship -->|"back to develop worktree"| cleanup
 
     review -. "changes requested" .-> code
-    trun -. "failed" .-> code
+    trun -. "failed: code bug" .-> code
+    trun -. "failed: bad test" .-> tw2
     code -. "review specs" .-> spec
 
     commit{{"/jli-commits — run after every phase<br/>(between each step above and the next)"}}
@@ -132,7 +133,8 @@ task folder, so clearing context between steps is safe. The same chain in text:
 
 Loop-backs (each command's hint states the branch it took):
 - `/jli-reviews-code` > `status: changes requested` > back to `/jli-codes`.
-- `/jli-runs-tests` > `status: failed` > back to `/jli-codes`.
+- `/jli-runs-tests` > `status: failed` > back to `/jli-codes` if the code is wrong, or to
+  `/jli-writes-tests` if the test is wrong (the human diagnoses which from the failure).
 - `/jli-codes` > `status: review specs` > back to `/jli-writes-spec`.
 
 The two test phases are separate commands: `/jli-writes-tests-spec` runs **before** coding

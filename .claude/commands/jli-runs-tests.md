@@ -64,8 +64,10 @@ full error output in `test-results.md`, and end the file with `status: failed`.
 
 - If `status: failed`:
   > Tests failed (see `test-results.md` in the task folder). Run `/jli-commits @<task-folder>`
-  > to record the results, then `/jli-codes @<task-folder>` to fix, then re-run
-  > `/jli-reviews-code @<task-folder>` and `/jli-runs-tests @<task-folder>`.
+  > to record the results, then diagnose the failure: if the code is wrong, fix it with
+  > `/jli-codes @<task-folder>`; if the test itself is wrong, correct it with
+  > `/jli-writes-tests @<task-folder>`. Then re-run `/jli-reviews-code @<task-folder>` and
+  > `/jli-runs-tests @<task-folder>`.
 - If `status: passed`:
   > All tests pass. Run `/jli-commits @<task-folder>`, then `/jli-ships @<task-folder>`
   > to push, open the PR, and merge after approval.

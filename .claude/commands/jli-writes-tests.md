@@ -23,6 +23,10 @@ Translate each scenario in `test-cases.md` into a Vitest `.spec.ts` test. Place 
 alongside source files or in `src/__tests__/`, following existing conventions. Import only
 from paths confirmed to exist in the implementation files.
 
+If `[task-folder]/test-results.md` ends with `status: failed` and the failure is a wrong
+assertion rather than a code bug, read it first and correct the offending `.spec.ts` (this
+command is being re-run in a loop-back from `/jli-runs-tests`).
+
 Do NOT:
 - write tests for scenarios not in `test-cases.md`
 - write `@ts-expect-error` tests, or tests whose only assertion is `toBeDefined()` on a
