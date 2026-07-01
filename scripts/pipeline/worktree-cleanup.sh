@@ -29,8 +29,17 @@ esac
 WORKTREE="$( (cd "$WORKTREE" 2>/dev/null && pwd) || echo "$WORKTREE" )"
 WT_NAME="$(basename "$WORKTREE")"
 
-# Read branch name before the worktree is removed.
-BRANCH="$(git -C "$WORKTREE" branch --show-current 2>/dev/null || true)"
+# Read the branch name BEFORE the worktree is removed. Prefer the worktree
+# metadata from `worktree list`, which still reports the branch even when the
+# working directory is already gone (a 'prunable' worktree). Fall back to
+# reading it from inside the worktree if metadata has no branch (e.g. detached).
+BRANCH="$(git -C "$BARE_REPO" worktree list --porcelain | awk -v name="$WT_NAME" '
+  /^worktree / { wt = substr($0, 10); sub(/.*\//, "", wt); is_match = (wt == name) }
+  is_match && /^branch / { br = substr($0, 8); sub(/^refs\/heads\//, "", br); print br; exit }
+')"
+if [[ -z "$BRANCH" ]]; then
+  BRANCH="$(git -C "$WORKTREE" branch --show-current 2>/dev/null || true)"
+fi
 
 echo "==> Removing worktree '${WT_NAME}'..."
 git -C "$BARE_REPO" worktree remove --force "$WORKTREE" 2>/dev/null || true
