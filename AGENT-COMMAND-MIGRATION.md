@@ -75,14 +75,13 @@ flowchart TD
 
     subgraph INST2["VSCode instance 2 — feature worktree"]
         direction TB
-        spec["/jli-spec"] --> cspec["/jli-git-commit"]
-        cspec --> sec["/jli-security"] --> csec["/jli-git-commit"]
-        csec --> tw1["/jli-test-write · pass 1"] --> ctw1["/jli-git-commit"]
-        ctw1 --> code["/jli-code"] --> ccode["/jli-git-commit"]
-        ccode --> review["/jli-review"] --> crev["/jli-git-commit"]
-        crev --> tw2["/jli-test-write · pass 2"] --> ctw2["/jli-git-commit"]
-        ctw2 --> trun["/jli-test-run"] --> ctrun["/jli-git-commit"]
-        ctrun --> ship["/jli-git-ship"]
+        spec["/jli-spec"] --> sec["/jli-security"]
+        sec --> tw1["/jli-test-write · pass 1"]
+        tw1 --> code["/jli-code"]
+        code --> review["/jli-review"]
+        review --> tw2["/jli-test-write · pass 2"]
+        tw2 --> trun["/jli-test-run"]
+        trun --> ship["/jli-git-ship"]
     end
 
     setup -->|"code &lt;worktree&gt; (open a new editor window)"| spec
@@ -92,12 +91,17 @@ flowchart TD
     trun -. "failed" .-> code
     code -. "review specs" .-> spec
 
+    commit{{"/jli-git-commit — run after every phase<br/>(between each step above and the next)"}}
+    commit -. "each phase" .-> INST2
+
     clear{{"/clear — may be run between any two steps;<br/>resets context, keeps the task folder on disk"}}
     clear -. "any stage" .-> INST2
 
     classDef editor fill:#eef,stroke:#557,stroke-width:1px;
+    classDef note fill:#efe,stroke:#5a5,stroke-width:1px,stroke-dasharray:4 3;
     classDef reset fill:#fee,stroke:#a55,stroke-width:1px,stroke-dasharray:4 3;
     class setup,cleanup editor;
+    class commit note;
     class clear reset;
 ```
 
