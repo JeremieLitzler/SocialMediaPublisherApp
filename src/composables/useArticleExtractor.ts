@@ -18,29 +18,40 @@ import {
   extractImageCredit,
   detectBlog,
 } from '@/utils/htmlExtractor'
-import type { Article } from '@/types/article'
+import type { Article, ExtractionState } from '@/types/article'
 
 /**
  * User-facing messages for each cause that lands extraction in the
  * `missing-introduction` state. Kept as fixed literals so no fetched HTML,
  * URL, or article text is ever interpolated into rendered copy
- * (see security-guidelines R1). The two causes carry distinct wording:
+ * (see security-guidelines). The two causes carry distinct wording:
  * - NO_HEADING: no `<h2>` (or no `.article-content`), so the introduction
- *   boundary cannot be located — the author must add an `<h2>`.
+ *   boundary cannot be located — the author must fix the source (no manual
+ *   entry, see R4).
  * - EMPTY: a first `<h2>` exists but no introduction precedes it — the author
- *   must add an introduction, or the user can enter one manually.
+ *   must add an introduction, or the reader can enter one manually (R3).
  */
 const MISSING_INTRODUCTION_MESSAGES = {
-  MISSING_INTRODUCTION_NO_HEADING:
+  NO_HEADING:
     'The source article has no <h2> section heading, so the end of the introduction cannot be located. Update the source article to use <h2> for its section headings.',
-  MISSING_INTRODUCTION_EMPTY:
+  EMPTY:
     'The source article has no introduction before its first <h2> section heading. Add an introduction to the source article, or enter one manually below.',
 } as const
 
-type MissingIntroductionCode = keyof typeof MISSING_INTRODUCTION_MESSAGES
-
-function isMissingIntroductionCode(value: string): value is MissingIntroductionCode {
-  return Object.prototype.hasOwnProperty.call(MISSING_INTRODUCTION_MESSAGES, value)
+/**
+ * Build an extraction state from partial overrides on top of the idle defaults.
+ * Centralising the shape keeps every result (loading, success, missing, error)
+ * consistent and avoids repeating the five fields at each transition.
+ */
+function makeState(overrides: Partial<ExtractionState>): ExtractionState {
+  return {
+    status: 'idle',
+    article: null,
+    error: null,
+    manualIntroduction: '',
+    selectedPlatform: null,
+    ...overrides,
+  }
 }
 
 /**
@@ -73,18 +84,11 @@ function parseHTML(html: string): Document {
 }
 
 /**
- * Extract all article data from parsed HTML document
+ * Build the article from every non-introduction field plus the given
+ * introduction. The introduction is supplied by the caller so an EMPTY result
+ * can still retain the article with a blank introduction (R1).
  */
-function extractArticleData(doc: Document, url: string): Article {
-  const introduction = extractIntroduction(doc)
-
-  if (introduction === null) {
-    throw new Error('MISSING_INTRODUCTION_NO_HEADING')
-  }
-  if (introduction === '') {
-    throw new Error('MISSING_INTRODUCTION_EMPTY')
-  }
-
+function buildArticle(doc: Document, url: string, introduction: string): Article {
   return {
     url,
     blog: detectBlog(url),
@@ -102,6 +106,38 @@ function extractArticleData(doc: Document, url: string): Article {
 }
 
 /**
+ * Map the introduction outcome to an extraction state.
+ * - null (no `.article-content`/`<h2>`) -> NO_HEADING, article discarded (R4).
+ * - '' (first `<h2>` but nothing before it) -> EMPTY, article retained (R1/R3).
+ * - non-empty -> success with the full article.
+ */
+function resolveExtractionState(
+  doc: Document,
+  url: string,
+  introduction: string | null,
+): ExtractionState {
+  if (introduction === null) {
+    return makeState({
+      status: 'missing-introduction',
+      error: MISSING_INTRODUCTION_MESSAGES.NO_HEADING,
+    })
+  }
+  if (introduction === '') {
+    return makeState({
+      status: 'missing-introduction',
+      article: buildArticle(doc, url, ''),
+      error: MISSING_INTRODUCTION_MESSAGES.EMPTY,
+    })
+  }
+  return makeState({ status: 'success', article: buildArticle(doc, url, introduction) })
+}
+
+function toErrorMessage(error: unknown): string {
+  if (error instanceof Error) return error.message
+  return 'Unknown error occurred during extraction'
+}
+
+/**
  * Composable for extracting article content from a URL
  *
  * @returns Object with extractArticle function
@@ -115,48 +151,14 @@ export function useArticleExtractor() {
    * @param url - Blog article URL to extract from
    */
   async function extractArticle(url: string): Promise<void> {
-    extractionState.value = {
-      status: 'loading',
-      article: null,
-      error: null,
-      manualIntroduction: '',
-      selectedPlatform: null,
-    }
+    extractionState.value = makeState({ status: 'loading' })
 
     try {
       const html = await fetchHTML(url)
       const doc = parseHTML(html)
-      const article = extractArticleData(doc, url)
-
-      extractionState.value = {
-        status: 'success',
-        article,
-        error: null,
-        manualIntroduction: '',
-        selectedPlatform: null,
-      }
+      extractionState.value = resolveExtractionState(doc, url, extractIntroduction(doc))
     } catch (error) {
-      if (error instanceof Error && isMissingIntroductionCode(error.message)) {
-        extractionState.value = {
-          status: 'missing-introduction',
-          article: null,
-          error: MISSING_INTRODUCTION_MESSAGES[error.message],
-          manualIntroduction: '',
-          selectedPlatform: null,
-        }
-        return
-      }
-
-      const errorMessage =
-        error instanceof Error ? error.message : 'Unknown error occurred during extraction'
-
-      extractionState.value = {
-        status: 'error',
-        article: null,
-        error: errorMessage,
-        manualIntroduction: '',
-        selectedPlatform: null,
-      }
+      extractionState.value = makeState({ status: 'error', error: toErrorMessage(error) })
     }
   }
 
