@@ -2,7 +2,7 @@ A pipeline issue has been reported: $ARGUMENTS
 
 This command maintains the **deprecated** orchestrator-era agent files under
 `.claude/deprecated-agents/` and the `CLAUDE*.md` instructions. To change the active `jli-`
-command chain instead, use `/jli-tweak-command-chain`.
+command chain instead, use `/jli-tweaks-command-chain`.
 
 Follow this workflow to fix it.
 
