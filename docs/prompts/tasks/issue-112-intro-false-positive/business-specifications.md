@@ -4,8 +4,9 @@
 
 An article that has an introduction can still land in the `missing-introduction` state,
 and the message wrongly tells the user the article "must have paragraphs before the first
-`<h2>`." Investigation of the reported article (saved as `example-ko.html` in this task
-folder) shows the real cause: inside `.article-content` the section headings are `<h3>`,
+`<h2>`." Investigation of the reported article (preserved, cleaned, as the
+`tests/fixtures/french-no-h2.html` fixture) shows the real cause: inside `.article-content`
+the section headings are `<h3>`,
 so there is **no `<h2>`** to mark where the introduction ends. Per the maintainer, an
 article without an `<h2>` section heading is authored incorrectly and must be fixed at the
 source; the app's `missing-introduction` outcome is therefore correct.
@@ -20,8 +21,8 @@ boundary, the set of introduction element tags, and the `ExtractionState` status
   still enters `missing-introduction` and shows the manual-introduction fallback, which
   recommends adding an `<h2>` section heading to the source article (not that the
   introduction itself is missing).
-  Example: `example-ko.html` (section headings are `<h3>`) results in
-  `missing-introduction`.
+  Example: the reported article (`tests/fixtures/french-no-h2.html`, section headings are
+  `<h3>`) results in `missing-introduction`.
 
 - **R2 — The message names the true cause.** The text shown in that state must explain
   that the source article has no `<h2>` section heading, so the end of the introduction
@@ -43,8 +44,9 @@ boundary, the set of introduction element tags, and the `ExtractionState` status
   `missing-introduction` state; reword that text per R2/R4.
 - `src/components/article/ManualIntroduction.vue` — renders that text plus surrounding
   guidance; align its static copy with the corrected cause per R3.
-- A test fixture under `tests/fixtures/` derived from `example-ko.html` (cleaned per the
-  CLAUDE.md fixture rules) plus the corresponding extractor/composable spec — assert that
+- A test fixture under `tests/fixtures/` derived from the reported article (cleaned per the
+  CLAUDE.md fixture rules, saved as `french-no-h2.html`) plus the corresponding
+  extractor/composable spec — assert that
   an article whose section headings are `<h3>` yields the `missing-introduction` outcome
   and the corrected message.
 
