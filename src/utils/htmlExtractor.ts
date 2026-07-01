@@ -63,7 +63,7 @@ export function extractImageAlt(doc: Document): string {
   return imgElement?.alt || ''
 }
 
-const INTRODUCTION_ELEMENT_TAGS = new Set(['P', 'PRE', 'UL', 'BLOCKQUOTE'])
+const INTRODUCTION_ELEMENT_TAGS = new Set(['P', 'PRE', 'UL', 'OL', 'BLOCKQUOTE'])
 
 function isFencedCodeWrapper(element: Element): boolean {
   return element.tagName === 'DIV' && element.classList.contains('highlight')
@@ -89,7 +89,7 @@ function collectIntroductionElements(articleContent: Element, firstH2: Element):
 
 /**
  * Extract introduction elements before first h2 in article content.
- * Retains <p>, <pre>, <ul>, and <blockquote> elements in source order.
+ * Retains <p>, <pre>, <ul>, <ol>, and <blockquote> elements in source order.
  * Returns null if no h2 is found (invalid article structure).
  * @param doc - Parsed HTML document
  * @returns Introduction HTML string or null if no h2 found
