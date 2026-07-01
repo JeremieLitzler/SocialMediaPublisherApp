@@ -1,0 +1,196 @@
+<html lang="fr" dir="ltr" data-scheme="dark"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Plongeons-nous dans les trois concepts de la programmation orientée objet."><title>Composition vs Agrégation vs Association</title><link rel="canonical" href="https://jeremielitzler.fr/post/2025-10/composition-vs-aggregation-vs-association/" itemprop="url"><link rel="stylesheet" href="/scss/style.min.9027be8b7574674b7d3e668a8622511e11d535965eeb9de40dcb7989e1aa2b45.css"><meta property="og:title" content="Composition vs Agrégation vs Association"><meta property="og:description" content="Plongeons-nous dans les trois concepts de la programmation orientée objet."><meta property="og:url" content="https://jeremielitzler.fr/post/2025-10/composition-vs-aggregation-vs-association/"><meta property="og:site_name" content="Jérémie Litzler"><meta property="og:type" content="article"><meta property="article:section" content="Post"><meta property="article:tag" content="Modèles De Conception"><meta property="article:published_time" content="2025-10-22T00:00:00+00:00"><meta property="article:modified_time" content="2025-10-22T00:00:00+00:00"><meta property="og:image" content="https://jeremielitzler.fr/post/2025-10/composition-vs-aggregation-vs-association/2025-07-14-a-notebook-with-wireframes.jpg"><meta name="twitter:title" content="Composition vs Agrégation vs Association"><meta name="twitter:description" content="Plongeons-nous dans les trois concepts de la programmation orientée objet."><meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="https://jeremielitzler.fr/post/2025-10/composition-vs-aggregation-vs-association/2025-07-14-a-notebook-with-wireframes.jpg"><link rel="shortcut icon" href="/favicon.ico"><link rel="stylesheet" href="https://jeremielitzler.fr/css/custom-style.css"><meta name="author" content="Jérémie Litzler"></head><body class="article-page" style="transition: background-color 0.3s;"><script>(function(){const e="StackColorScheme";localStorage.getItem(e)||localStorage.setItem(e,"auto")})()</script><script>(function(){const t="StackColorScheme",e=localStorage.getItem(t),n=window.matchMedia("(prefers-color-scheme: dark)").matches===!0;e=="dark"||e==="auto"&&n?document.documentElement.dataset.scheme="dark":document.documentElement.dataset.scheme="light"})()</script><div class="container main-container flex on-phone--column
+extended"><aside class="sidebar left-sidebar sticky"><button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Afficher le menu">
+<span class="hamburger-box"><span class="hamburger-inner"></span></span></button><header><figure class="site-avatar"><a href="/"><img src="/img/profilepic-400w_hu_63da95539758f437.jpg" width="300" height="300" class="site-logo" loading="lazy" alt="Avatar"></a></figure><div class="site-meta"><p class="site-name"><a href="/">Jérémie Litzler</a></p><p class="site-description">Je partage ici mes notes et experiences qui, je suis sûr, seront utiles pour au moins une personne. Bonne lecture !</p></div></header><ol class="menu-social"><li><a href="https://www.google.com/search?q=linkedin+jeremie+litzler" target="_blank" title="LinkedIn" rel="me"><svg class="icon icon-tabler icon-tabler-brand-linkedin" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M4 4m0 2a2 2 0 012-2h12a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2z"></path><path d="M8 11v5"></path><path d="M8 8v.01"></path><path d="M12 16v-5"></path><path d="M16 16v-3a2 2 0 00-4 0"></path></svg></a></li><li><a href="https://github.com/JeremieLitzler" target="_blank" title="GitHub" rel="me"><svg class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6.0 00-1.3-3.2 4.2 4.2.0 00-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3.0 00-6.2.0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2.0 00-.1 3.2A4.6 4.6.0 004 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"></path></svg></a></li><li><a href="https://twitter.com/LitzlerJeremie" target="_blank" title="X" rel="me"><svg class="icon icon-tabler icon-tabler-brand-x" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M4 4l11.733 16H20L8.267 4z"></path><path d="M4 20l6.768-6.768m2.46-2.46L20 4"></path></svg></a></li><li><a href="https://iamjeremie.me" target="_blank" title="English website" rel="me"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-language"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M4 5h7"></path><path d="M9 3v2c0 4.418-2.239 8-5 8"></path><path d="M5 9c0 2.144 2.952 3.908 6.7 4"></path><path d="M12 20l4-9 4 9"></path><path d="M19.1 18h-6.2"></path></svg></a></li></ol><ol class="menu" id="main-menu"><li><a href="/"><svg class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"></path><polyline points="5 12 3 12 12 3 21 12 19 12"></polyline><path d="M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"></path><path d="M9 21v-6a2 2 0 012-2h2a2 2 0 012 2v6"></path></svg>
+<span>Accueil</span></a></li><li><a href="/page/a-propos/"><svg class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"></path><circle cx="12" cy="7" r="4"></circle><path d="M6 21v-2a4 4 0 014-4h4a4 4 0 014 4v2"></path></svg>
+<span>Qui suis-je ?</span></a></li><li><a href="/page/soutenez-moi/"><svg class="icon icon-tabler icon-tabler-heart-handshake" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="#707070" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M19.5 12.572 12 20l-7.5-7.428A5 5 0 1112 6.006a5 5 0 117.5 6.572"></path><path d="M12 6 8.707 9.293a1 1 0 000 1.414l.543.543c.69.69 1.81.69 2.5.0l1-1a3.182 3.182.0 014.5.0l2.25 2.25"></path><path d="M12.5 15.5l2 2"></path><path d="M15 13l2 2"></path></svg>
+<span>Soutenez mon travail</span></a></li><li><a href="/page/contactez-moi/"><svg class="icon icon-tabler icon-tabler-message-chatbot" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="#707070" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M4 21V8a3 3 0 013-3h10a3 3 0 013 3v6a3 3 0 01-3 3H8l-4 4"></path><path d="M9.5 9h.01"></path><path d="M14.5 9h.01"></path><path d="M9.5 13a3.5 3.5.0 005 0"></path></svg>
+<span>Contactez-moi</span></a></li><li><a href="/page/search/"><svg class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"></path><circle cx="10" cy="10" r="7"></circle><line x1="21" y1="21" x2="15" y2="15"></line></svg>
+<span>Rechercher</span></a></li><li><a href="/page/archives/"><svg class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"></path><rect x="3" y="4" width="18" height="4" rx="2"></rect><path d="M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8"></path><line x1="10" y1="12" x2="14" y2="12"></line></svg>
+<span>Archive d'articles</span></a></li><li class="menu-bottom-section"><ol class="menu"><li id="dark-mode-toggle"><svg class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"></path><circle cx="8" cy="12" r="2"></circle><rect x="2" y="6" width="20" height="12" rx="6"></rect></svg>
+<svg class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"></path><circle cx="16" cy="12" r="2"></circle><rect x="2" y="6" width="20" height="12" rx="6"></rect></svg>
+<span>Mode sombre</span></li></ol></li></ol></aside><aside class="sidebar right-sidebar sticky"><section class="widget archives"><div class="widget-icon"><svg class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"></path><line x1="5" y1="9" x2="19" y2="9"></line><line x1="5" y1="15" x2="19" y2="15"></line><line x1="11" y1="4" x2="7" y2="20"></line><line x1="17" y1="4" x2="13" y2="20"></line></svg></div><h2 class="widget-title section-title">Table des matières</h2><div class="widget--toc"><nav id="TableOfContents"><ol><li><ol><li><a href="#association">Association</a></li><li><a href="#agrégation">Agrégation</a></li><li><a href="#composition">Composition</a></li></ol></li></ol></nav></div></section></aside><main class="main full-width"><article class="has-image main-article"><header class="article-header"><div class="article-image"><a href="/post/2025-10/composition-vs-aggregation-vs-association/"><img src="/post/2025-10/composition-vs-aggregation-vs-association/2025-07-14-a-notebook-with-wireframes_hu_fdf4da1bd3833779.jpg" srcset="/post/2025-10/composition-vs-aggregation-vs-association/2025-07-14-a-notebook-with-wireframes_hu_8936e7b81610df03.jpg 360w, /post/2025-10/composition-vs-aggregation-vs-association/2025-07-14-a-notebook-with-wireframes_hu_fdf4da1bd3833779.jpg 600w, /post/2025-10/composition-vs-aggregation-vs-association/2025-07-14-a-notebook-with-wireframes_hu_2900330c245ab511.jpg 1024w" width="600" height="400" alt="Un cahier avec des wireframes" title="Un cahier avec des wireframes"></a></div><div class="article-details"><header class="article-category"><a href="/categories/d%C3%A9veloppement-logiciel/" style="background-color:#9d2a2a;color:#fff">Développement logiciel</a></header><div class="article-title-wrapper"><h1 class="article-title"><a href="/post/2025-10/composition-vs-aggregation-vs-association/">Composition vs Agrégation vs Association</a></h1><h2 class="article-subtitle">Plongeons-nous dans les trois concepts de la programmation orientée objet.</h2></div><footer class="article-time"><div><svg class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"></path><path d="M11.795 21H5a2 2 0 01-2-2V7a2 2 0 012-2h12a2 2 0 012 2v4"></path><circle cx="18" cy="18" r="4"></circle><path d="M15 3v4"></path><path d="M7 3v4"></path><path d="M3 11h16"></path><path d="M18 16.496V18l1 1"></path></svg>
+<time class="article-time--published" datetime="2025-10-22T00:00:00Z">22/10/2025</time></div><div><svg class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"></path><circle cx="12" cy="12" r="9"></circle><polyline points="12 7 12 12 15 15"></polyline></svg>
+<time class="article-time--reading">4 minutes de lecture</time></div></footer></div></header><section class="article-content"><p>Ces concepts décrivent les relations entre les objets dans une hiérarchie de classes.</p><p>Nous allons les détailler un par un ci-dessous.</p><h3 id="association">Association</h3><p>L’association représente une relation «&nbsp;<em>utilise-un</em>&nbsp;» ou «&nbsp;<em>possède-un</em>&nbsp;» entre deux classes distinctes, où une classe utilise l’autre. Elle définit une relation entre des objets où un objet peut accéder à un autre.</p><p>Par exemple, en C#&nbsp;:</p><div class="highlight"><div class="chroma"><table class="lntable"><tbody><tr><td class="lntd"><pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span></code></pre></td><td class="lntd"><pre tabindex="0" class="chroma"><code class="language-csharp" data-lang="csharp"><span class="line"><span class="cl"><span class="kd">public</span> <span class="k">class</span> <span class="nc">Driver</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">string</span> <span class="n">Name</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">public</span> <span class="k">class</span> <span class="nc">Car</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">string</span> <span class="n">Model</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="n">Driver</span> <span class="n">Driver</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>  <span class="c1">// Association avec la classe Driver</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">public</span> <span class="k">class</span> <span class="nc">Program</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kd">static</span> <span class="k">void</span> <span class="n">Main</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Driver</span> <span class="n">driver</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Driver</span> <span class="p">{</span> <span class="n">Name</span> <span class="p">=</span> <span class="s">"John"</span> <span class="p">};</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Car</span> <span class="n">car</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Car</span> <span class="p">{</span> <span class="n">Model</span> <span class="p">=</span> <span class="s">"Toyota"</span><span class="p">,</span> <span class="n">Driver</span> <span class="p">=</span> <span class="n">driver</span> <span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">$"{car.Driver.Name} drives a {car.Model}"</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></tbody></table></div><button class="copyCodeButton">Copy</button></div><h3 id="agrégation">Agrégation</h3><p>L’agrégation est une forme spécialisée d’association avec une relation «&nbsp;tout-partie&nbsp;», mais la durée de vie des parties est indépendante de celle du tout. En d’autres termes, la partie peut exister sans le tout.</p><p>Par exemple&nbsp;:</p><div class="highlight"><div class="chroma"><table class="lntable"><tbody><tr><td class="lntd"><pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span></code></pre></td><td class="lntd"><pre tabindex="0" class="chroma"><code class="language-csharp" data-lang="csharp"><span class="line"><span class="cl"><span class="kd">public</span> <span class="k">class</span> <span class="nc">Department</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">string</span> <span class="n">Name</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">public</span> <span class="k">class</span> <span class="nc">Company</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">string</span> <span class="n">Name</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="n">List</span><span class="p">&lt;</span><span class="n">Department</span><span class="p">&gt;</span> <span class="n">Departments</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span> <span class="p">=</span> <span class="k">new</span> <span class="n">List</span><span class="p">&lt;</span><span class="n">Department</span><span class="p">&gt;();</span> <span class="c1">// Aggregation</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="k">void</span> <span class="n">AddDepartment</span><span class="p">(</span><span class="n">Department</span> <span class="n">department</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Departments</span><span class="p">.</span><span class="n">Add</span><span class="p">(</span><span class="n">department</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">public</span> <span class="k">class</span> <span class="nc">Program</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kd">static</span> <span class="k">void</span> <span class="n">Main</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Department</span> <span class="n">d1</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Department</span> <span class="p">{</span> <span class="n">Name</span> <span class="p">=</span> <span class="s">"HR"</span> <span class="p">};</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Department</span> <span class="n">d2</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Department</span> <span class="p">{</span> <span class="n">Name</span> <span class="p">=</span> <span class="s">"Finance"</span> <span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">Company</span> <span class="n">company</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Company</span> <span class="p">{</span> <span class="n">Name</span> <span class="p">=</span> <span class="s">"TechCorp"</span> <span class="p">};</span>
+</span></span><span class="line"><span class="cl">        <span class="n">company</span><span class="p">.</span><span class="n">AddDepartment</span><span class="p">(</span><span class="n">d1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">company</span><span class="p">.</span><span class="n">AddDepartment</span><span class="p">(</span><span class="n">d2</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">$"{company.Name} has the following departments:"</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">foreach</span> <span class="p">(</span><span class="kt">var</span> <span class="n">dept</span> <span class="k">in</span> <span class="n">company</span><span class="p">.</span><span class="n">Departments</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="n">dept</span><span class="p">.</span><span class="n">Name</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></tbody></table></div><button class="copyCodeButton">Copy</button></div><p>Une <code>Company</code> a des <code>Departments</code>. Cette relation est représentée par la liste <code>List&lt;Department&gt;</code>.</p><p>Le cycle de vie entre la <code>Company</code> et un <code>Department</code> est indépendant.
+C’est l’élément clé qui distingue l’agrégation de la composition</p><p>Les départements sont créés à l’extérieur de la compagnie, ils existent indépendamment. Si la compagnie est détruite, les départements peuvent continuer à exister.</p><p>Les objets <code>Department</code> peuvent potentiellement appartenir à plusieurs <code>Company</code> (même si ce n’est pas illustré ci-dessus). Ils ne sont pas «&nbsp;possédés exclusivement&nbsp;» par une seule compagnie.</p><h3 id="composition">Composition</h3><p>La composition est une forme plus forte d’agrégation avec une relation «&nbsp;partie-tout&nbsp;» où la partie ne peut exister sans le tout. Si le tout est détruit, les parties sont également détruites.</p><p>Prenons l’exemple suivant&nbsp;:</p><div class="highlight"><div class="chroma"><table class="lntable"><tbody><tr><td class="lntd"><pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span></code></pre></td><td class="lntd"><pre tabindex="0" class="chroma"><code class="language-csharp" data-lang="csharp"><span class="line"><span class="cl"><span class="kd">public</span> <span class="k">class</span> <span class="nc">Engine</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">string</span> <span class="n">Model</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="n">Engine</span><span class="p">(</span><span class="kt">string</span> <span class="n">model</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Model</span> <span class="p">=</span> <span class="n">model</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">public</span> <span class="k">class</span> <span class="nc">Car</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">string</span> <span class="n">Model</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="n">Engine</span> <span class="n">Engine</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span> <span class="c1">// Composition</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="n">Car</span><span class="p">(</span><span class="kt">string</span> <span class="n">model</span><span class="p">,</span> <span class="kt">string</span> <span class="n">engineModel</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Model</span> <span class="p">=</span> <span class="n">model</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Engine</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Engine</span><span class="p">(</span><span class="n">engineModel</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">public</span> <span class="k">class</span> <span class="nc">Program</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kd">static</span> <span class="k">void</span> <span class="n">Main</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Car</span> <span class="n">car</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Car</span><span class="p">(</span><span class="s">"Toyota"</span><span class="p">,</span> <span class="s">"V8 Engine"</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">$"Car model: {car.Model}, Engine model: {car.Engine.Model}"</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></tbody></table></div><button class="copyCodeButton">Copy</button></div><p>Une <code>Car</code> a toujours un <code>Engine</code>.
+Cette relation est vitale&nbsp;: une voiture sans moteur n’a pas de sens.</p><p>Le moteur est créé à l’intérieur du constructeur de <code>Car</code>. Cela signifie&nbsp;:</p><ul><li>Le moteur naît en même temps que la voiture</li><li>Le moteur mourra avec la voiture (quand l’objet Car sera détruit)</li><li>On ne peut pas créer ce moteur indépendamment de cette voiture</li></ul><p>Dans la vraie vie, quand on construit une voiture, le moteur est assemblé pour cette voiture spécifique. Si la voiture est détruite à la casse, son moteur l’est aussi (ou du moins, il perd son sens d’exister en tant que «&nbsp;moteur de cette voiture&nbsp;»). C’est une relation indissociable, exactement ce que modélise la composition.</p><div class="jli-notice jli-notice-tip" id="Suivez-moi !"><p class="jli-notice-title">Suivez-moi !</p><p>Merci d’avoir lu cet article. Assurez-vous de <a href="https://x.com/LitzlerJeremie">me suivre sur X</a>, de <a href="https://iamjeremie.substack.com/">vous abonner à ma publication Substack</a> et d’ajouter mon blog à vos favoris pour ne pas manquer les prochains articles.</p></div><p>Photo de <a href="https://www.pexels.com/photo/notebook-beside-the-iphone-on-table-196644/">picjumbo.com</a>.</p></section><footer class="article-footer"><section class="article-tags"><a href="/tags/mod%C3%A8les-de-conception/">Modèles De Conception</a></section><section class="article-copyright"><svg class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"></path><circle cx="12" cy="12" r="9"></circle><path d="M14.5 9a3.5 4 0 100 6"></path></svg>
+<span>Licencié sous CC BY-NC-SA 4.0</span></section></footer></article><aside class="related-content--wrapper"><h2 class="section-title">Contenus liés</h2><div class="related-content"><div class="flex article-list--tile"><article class="has-image"><a href="/post/2025-11/modele-de-conception-command-vs-bus-de-messages/"><div class="article-image"><img src="/post/2025-11/modele-de-conception-command-vs-bus-de-messages/2025-11-17-a-waiter-taking-an-order-from-two-men.35df946e741263cbd64738f7df164b6f_hu_a4b3cfd03b315f4f.jpg" width="250" height="150" loading="lazy" alt="Un serveur prenant la commande de deux hommes" title="Un serveur prenant la commande de deux hommes" data-hash="md5-Nd+UbnQSY8vWRzj33xZLbw=="></div><div class="article-details"><h2 class="article-title">Modèle de conception Command vs. Bus de messages</h2></div></a></article><article class="has-image"><a href="/astuces/recommendations-pour-devs-senior/"><div class="article-image"><img src="/astuces/images/an-organized-desk.jpg" loading="lazy" data-key="" data-hash="/astuces/images/an-organized-desk.jpg" alt="Un bureau organisé" title="Un bureau organisé"></div><div class="article-details"><h2 class="article-title">Recommendations : Devenir un bon développeur expérimenté</h2></div></a></article><article class="has-image"><a href="/post/2026-02/semantic-release-with-github/"><div class="article-image"><img src="/post/2026-02/semantic-release-with-github/2026-02-09-an-orange-wall-with-shelves-at-various-level.a15ac72ebcbb8158f55750a837a4b16c_hu_4b7a02b47b94595a.jpg" width="250" height="150" loading="lazy" alt="Un mur orange avec des étagères à différents niveaux" title="Un mur orange avec des étagères à différents niveaux" data-hash="md5-oVrHLry7gVj1V1CoN6SxbA=="></div><div class="article-details"><h2 class="article-title">Utilisation de Semantic Release sur GitHub</h2></div></a></article><article class="has-image"><a href="/post/2026-02/semantic-versionning-avec-azure-pipeline-et-docker/"><div class="article-image"><img src="/post/2026-02/semantic-versionning-avec-azure-pipeline-et-docker/2024-07-24-logos-ms-azure-and-python.3ce3de4fab0f146320cf5a6ae6c0b154_hu_c5a45cbeefd76fc1.jpeg" width="250" height="150" loading="lazy" alt="Logos de Microsoft Azure et Python" title="Logos de Microsoft Azure et Python" data-hash="md5-POPeT6sPFGMgz1pq5sCxVA=="></div><div class="article-details"><h2 class="article-title">Versionnage sémantique avec Azure Pipelines et Docker</h2></div></a></article><article class="has-image"><a href="/post/2026-01/a-timecostlogger-in-csharp/"><div class="article-image"><img src="/post/2026-01/a-timecostlogger-in-csharp/2026-01-26-a-stopwatch.6f325fdf36351cfa2739d1a83fe259f7_hu_d6d37a5a4e20e792.jpg" width="250" height="150" loading="lazy" alt="Un chronomètre" title="Un chronomètre" data-hash="md5-bzJf3zY1HPonOdGoP+JZ9w=="></div><div class="article-details"><h2 class="article-title">Un enregistreur de temps passé en C#</h2></div></a></article></div></div></aside><footer class="site-footer"><section class="copyright">©
+2020 -
+2026 Jérémie Litzler</section><section class="powerby">License GPLv3 | <a href="https://jeremielitzler.fr/page/mentions-legales/" title="Lire les mentions légales">Mentions légales</a><br>Généré avec <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a><br>Thème <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.34.1">Stack</a></b> conçu par <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a></section></footer><div class="pswp" tabindex="-1" role="dialog" aria-hidden="true"><div class="pswp__bg"></div><div class="pswp__scroll-wrap"><div class="pswp__container"><div class="pswp__item"></div><div class="pswp__item"></div><div class="pswp__item"></div></div><div class="pswp__ui pswp__ui--hidden"><div class="pswp__top-bar"><div class="pswp__counter"></div><button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+<button class="pswp__button pswp__button--share" title="Share"></button>
+<button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button><div class="pswp__preloader"><div class="pswp__preloader__icn"><div class="pswp__preloader__cut"><div class="pswp__preloader__donut"></div></div></div></div></div><div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap"><div class="pswp__share-tooltip"></div></div><button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+</button>
+<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button><div class="pswp__caption"><div class="pswp__caption__center"></div></div></div></div></div><script src="/js/photoswipe.4.1.3.min.js" integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo=" crossorigin="anonymous" defer=""></script><script src="/js/photoswipe-ui-default.4.1.3.min.js" integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU=" crossorigin="anonymous" defer=""></script><link rel="stylesheet" href="/css/photoswipe-default-skin.4.1.3.min.css" crossorigin="anonymous"><link rel="stylesheet" href="/css/photoswipe.4.1.3.min.css" crossorigin="anonymous"></main></div><script src="/js/vibrant.3.1.6.min.js" integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z+KMkF24hUW8WePSA9HM=" crossorigin="anonymous"></script><script type="text/javascript" src="/ts/main.c922af694cc257bf1ecc41c0dd7b0430f9114ec280ccf67cd2c6ad55f5316c4e.js" defer=""></script><script data-collect-dnt="true" async="" defer="" src="https://scripts.simpleanalyticscdn.com/latest.js"></script>
+<noscript><img aria-hidden="true" src="https://queue.simpleanalyticscdn.com/hello.gif" alt="One pixel gif image is used to collect page views. Visit https://docs.simpleanalytics.com/without-javascript for more details." referrerpolicy="no-referrer-when-downgrade" /></noscript><protonpass-root-9c57 data-protonpass-role="root" data-protonpass-theme="os"></protonpass-root-9c57></body></html>
