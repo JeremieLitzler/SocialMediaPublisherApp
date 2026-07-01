@@ -17,7 +17,9 @@ boundary, the set of introduction element tags, and the `ExtractionState` status
 ## Rules (Example Mapping)
 
 - **R1 — State is unchanged.** When no `<h2>` is found inside `.article-content`, the app
-  still enters `missing-introduction` and shows the manual-introduction fallback and recommend user to add one.
+  still enters `missing-introduction` and shows the manual-introduction fallback, which
+  recommends adding an `<h2>` section heading to the source article (not that the
+  introduction itself is missing).
   Example: `example-ko.html` (section headings are `<h3>`) results in
   `missing-introduction`.
 
