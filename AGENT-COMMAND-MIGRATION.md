@@ -64,6 +64,48 @@ worktree it removes.
 
 ## The chain
 
+The full workflow, including the two-editor split and the loop-backs:
+
+```mermaid
+flowchart TD
+    subgraph INST1["VSCode instance 1 — develop worktree"]
+        setup["/jli-git-setup"]
+        cleanup["/jli-git-cleanup &lt;worktree&gt;"]
+    end
+
+    subgraph INST2["VSCode instance 2 — feature worktree"]
+        direction TB
+        spec["/jli-spec"] --> cspec["/jli-git-commit"]
+        cspec --> sec["/jli-security"] --> csec["/jli-git-commit"]
+        csec --> tw1["/jli-test-write · pass 1"] --> ctw1["/jli-git-commit"]
+        ctw1 --> code["/jli-code"] --> ccode["/jli-git-commit"]
+        ccode --> review["/jli-review"] --> crev["/jli-git-commit"]
+        crev --> tw2["/jli-test-write · pass 2"] --> ctw2["/jli-git-commit"]
+        ctw2 --> trun["/jli-test-run"] --> ctrun["/jli-git-commit"]
+        ctrun --> ship["/jli-git-ship"]
+    end
+
+    setup -->|"code &lt;worktree&gt; (open a new editor window)"| spec
+    ship -->|"back to develop worktree"| cleanup
+
+    review -. "changes requested" .-> code
+    trun -. "failed" .-> code
+    code -. "review specs" .-> spec
+
+    clear{{"/clear — may be run between any two steps;<br/>resets context, keeps the task folder on disk"}}
+    clear -. "any stage" .-> INST2
+
+    classDef editor fill:#eef,stroke:#557,stroke-width:1px;
+    classDef reset fill:#fee,stroke:#a55,stroke-width:1px,stroke-dasharray:4 3;
+    class setup,cleanup editor;
+    class clear reset;
+```
+
+Setup (`/jli-git-setup`) and cleanup (`/jli-git-cleanup`) run in the **develop-worktree
+editor**; every phase command runs in a **separate editor window** opened on the feature
+worktree. `/clear` is available at any stage — each command rebuilds what it needs from the
+task folder, so clearing context between steps is safe. The same chain in text:
+
 ```
 [develop worktree]
 /jli-git-setup
