@@ -44,11 +44,11 @@ request created by `/jli-sets-up` rather than a prior pipeline artifact.
 |---|---|---|
 | `/jli-sets-up <issue-num + title>` | develop | `agent-4-git` Tasks 1–2 (fetch + worktree) |
 | `/jli-writes-spec @<task-folder>` | feature worktree | `agent-1-specs` |
-| `/jli-verify-security @<task-folder>` | feature worktree | `agent-5-security` |
+| `/jli-verifies-security @<task-folder>` | feature worktree | `agent-5-security` |
 | `/jli-writes-tests-spec @<task-folder>` | feature worktree | `agent-3-test-writer` (pass 1: test cases) |
 | `/jli-codes @<task-folder>` | feature worktree | `agent-2-coder` |
 | `/jli-reviews-code @<task-folder>` | feature worktree | `agent-6-reviewer` |
-| `/jli-write-tests @<task-folder>` | feature worktree | `agent-3-test-writer` (pass 2: `*.spec.ts`) |
+| `/jli-writes-tests @<task-folder>` | feature worktree | `agent-3-test-writer` (pass 2: `*.spec.ts`) |
 | `/jli-runs-tests @<task-folder>` | feature worktree | `agent-3-test-runner` |
 | `/jli-commits @<task-folder>` | feature worktree | `agent-4-git` commit tasks (3 / 3.5 / 3.7 / 4 / 5-commit) |
 | `/jli-ships @<task-folder>` | feature worktree | `agent-4-git` Tasks 5-push / 6 / 7 (push, PR, merge) |
@@ -76,11 +76,11 @@ flowchart TD
 
     subgraph INST2["VSCode instance 2 — feature worktree"]
         direction TB
-        spec["/jli-writes-spec"] --> sec["/jli-verify-security"]
+        spec["/jli-writes-spec"] --> sec["/jli-verifies-security"]
         sec --> tw1["/jli-writes-tests-spec"]
         tw1 --> code["/jli-codes"]
         code --> review["/jli-reviews-code"]
-        review --> tw2["/jli-write-tests"]
+        review --> tw2["/jli-writes-tests"]
         tw2 --> trun["/jli-runs-tests"]
         trun --> ship["/jli-ships"]
     end
@@ -118,11 +118,11 @@ task folder, so clearing context between steps is safe. The same chain in text:
 
 [feature worktree]
   > /jli-writes-spec        > /jli-commits
-  > /jli-verify-security    > /jli-commits
+  > /jli-verifies-security  > /jli-commits
   > /jli-writes-tests-spec  > /jli-commits      (writes test-cases.md)
   > /jli-codes              > /jli-commits
   > /jli-reviews-code       > /jli-commits
-  > /jli-write-tests        > /jli-commits      (writes *.spec.ts)
+  > /jli-writes-tests       > /jli-commits      (writes *.spec.ts)
   > /jli-runs-tests         > /jli-commits
   > /jli-ships                  (push + PR + merge)
 
@@ -136,7 +136,7 @@ Loop-backs (each command's hint states the branch it took):
 - `/jli-codes` > `status: review specs` > back to `/jli-writes-spec`.
 
 The two test phases are separate commands: `/jli-writes-tests-spec` runs **before** coding
-and writes the plain-language `test-cases.md`; `/jli-write-tests` runs **after** review and
+and writes the plain-language `test-cases.md`; `/jli-writes-tests` runs **after** review and
 turns those cases into `*.spec.ts` files.
 
 ## Why the commands are self-contained
@@ -161,7 +161,7 @@ hints:
 
 Two maintenance commands, by target:
 
-- `/jli-tweak-command-chain <change>` — edits the **active chain only**: the
+- `/jli-tweaks-command-chain <change>` — edits the **active chain only**: the
   `.claude/commands/jli-*.md` files and this document. It preserves the chain invariants
   (self-containment, argument guard, run location, status-line contract, Next hint)
   and keeps the diagram/mapping here in sync.

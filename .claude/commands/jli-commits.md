@@ -61,10 +61,10 @@ the full error output to the user.
 
 Report the commit. Then point the user to the next phase based on what was just committed:
 
-- after specs → `/jli-verify-security @<task-folder>`
+- after specs → `/jli-verifies-security @<task-folder>`
 - after security → `/jli-writes-tests-spec @<task-folder>`
 - after test-cases → `/jli-codes @<task-folder>`
-- after code/review (approved) → `/jli-write-tests @<task-folder>`
+- after code/review (approved) → `/jli-writes-tests @<task-folder>`
 - after review (changes requested) → `/jli-codes @<task-folder>`
 - after `*.spec.ts` → `/jli-runs-tests @<task-folder>`
 - after test-results (passed) → `/jli-ships @<task-folder>`

@@ -71,4 +71,4 @@ Show the user a short summary of the spec, then:
   > `/jli-commits @<task-folder>`.
 - Otherwise:
   > Spec ready. Review `business-specifications.md` in the task folder, then run
-  > `/jli-commits @<task-folder>`, then (optionally `/clear` and) `/jli-verify-security @<task-folder>`.
+  > `/jli-commits @<task-folder>`, then (optionally `/clear` and) `/jli-verifies-security @<task-folder>`.

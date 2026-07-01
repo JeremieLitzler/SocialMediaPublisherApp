@@ -72,4 +72,4 @@ If you hit the 3-failing-shell-command limit, record the error output and end th
   > address the findings, then `/jli-reviews-code @<task-folder>` again.
 - If `status: approved`:
   > Review approved. Run `/jli-commits @<task-folder>`, then (optionally `/clear` and)
-  > `/jli-write-tests @<task-folder>` to write the `.spec.ts` files.
+  > `/jli-writes-tests @<task-folder>` to write the `.spec.ts` files.

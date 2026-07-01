@@ -13,7 +13,7 @@ and write only inside this worktree.
 
 This is the **before-coding** test pass. It writes `[task-folder]/test-cases.md` — the
 plain-language scenarios the implementer must satisfy. The executable `.spec.ts` files come
-later, from `/jli-write-tests` once the code exists.
+later, from `/jli-writes-tests` once the code exists.
 
 Read `[task-folder]/business-specifications.md` and `[task-folder]/security-guidelines.md`.
 

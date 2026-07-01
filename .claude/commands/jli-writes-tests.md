@@ -3,7 +3,7 @@ Write the executable test files for a feature. Task folder: $ARGUMENTS
 `$ARGUMENTS` is the task folder, given as a `@`-mention relative to the worktree root you
 opened (e.g. `@docs/prompts/tasks/issue-<id>-<slug>`). If it is empty, stop and reply:
 
-> Usage: `/jli-write-tests @<task-folder>` — open the feature worktree
+> Usage: `/jli-writes-tests @<task-folder>` — open the feature worktree
 > (`code <worktree>`) first, then pass the task folder relative to it.
 
 Run from the worktree root (your current directory). All paths below are relative to it; read

@@ -16,7 +16,7 @@ Read `[task-folder]/business-specifications.md`, `[task-folder]/security-guideli
 every security rule, and make every scenario in `test-cases.md` satisfiable.
 
 Do NOT write any test files (`.spec.ts` / `.test.ts`) — `/jli-writes-tests-spec` and
-`/jli-write-tests` own all test authoring. Follow the architecture in `CLAUDE.md`. Do not add
+`/jli-writes-tests` own all test authoring. Follow the architecture in `CLAUDE.md`. Do not add
 features beyond the spec.
 
 If `[task-folder]/review-results.md` ends with `status: changes requested`, or
