@@ -3,7 +3,7 @@ Write security guidelines for a feature. Task folder: $ARGUMENTS
 `$ARGUMENTS` is the task folder, given as a `@`-mention relative to the worktree root you
 opened (e.g. `@docs/prompts/tasks/issue-<id>-<slug>`). If it is empty, stop and reply:
 
-> Usage: `/jli-security @<task-folder>` — open the feature worktree (`code <worktree>`) first,
+> Usage: `/jli-verify-security @<task-folder>` — open the feature worktree (`code <worktree>`) first,
 > then pass the task folder relative to it.
 
 Run from the worktree root (your current directory). All paths below are relative to it; read
@@ -58,7 +58,7 @@ the full error output to the user.
 ## Next
 
 > Security guidelines ready. Review `security-guidelines.md` in the task folder, then run
-> `/jli-git-commit @<task-folder>`, then (optionally `/clear` and)
-> `/jli-test-write @<task-folder>` to write the plain-language test cases (pass 1).
+> `/jli-commits @<task-folder>`, then (optionally `/clear` and)
+> `/jli-writes-tests-spec @<task-folder>` to write the plain-language test cases.
 
 If the file contains `### ADR Required`, warn the user to approve the ADR before continuing.

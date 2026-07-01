@@ -3,7 +3,7 @@ Run the test suite. Task folder: $ARGUMENTS
 `$ARGUMENTS` is the task folder, given as a `@`-mention relative to the worktree root you
 opened (e.g. `@docs/prompts/tasks/issue-<id>-<slug>`). If it is empty, stop and reply:
 
-> Usage: `/jli-test-run @<task-folder>` — open the feature worktree (`code <worktree>`) first,
+> Usage: `/jli-runs-tests @<task-folder>` — open the feature worktree (`code <worktree>`) first,
 > then pass the task folder relative to it.
 
 Run from the worktree root (your current directory) — that is where `node_modules` lives.
@@ -63,9 +63,9 @@ full error output in `test-results.md`, and end the file with `status: failed`.
 ## Next
 
 - If `status: failed`:
-  > Tests failed (see `test-results.md` in the task folder). Run `/jli-git-commit @<task-folder>`
-  > to record the results, then `/jli-code @<task-folder>` to fix, then re-run
-  > `/jli-review @<task-folder>` and `/jli-test-run @<task-folder>`.
+  > Tests failed (see `test-results.md` in the task folder). Run `/jli-commits @<task-folder>`
+  > to record the results, then `/jli-codes @<task-folder>` to fix, then re-run
+  > `/jli-reviews-code @<task-folder>` and `/jli-runs-tests @<task-folder>`.
 - If `status: passed`:
-  > All tests pass. Run `/jli-git-commit @<task-folder>`, then `/jli-git-ship @<task-folder>`
+  > All tests pass. Run `/jli-commits @<task-folder>`, then `/jli-ships @<task-folder>`
   > to push, open the PR, and merge after approval.

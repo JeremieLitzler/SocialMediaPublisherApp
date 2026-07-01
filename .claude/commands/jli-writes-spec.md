@@ -3,7 +3,7 @@ Write the business specifications for a feature. Task folder: $ARGUMENTS
 `$ARGUMENTS` is the task folder, given as a `@`-mention relative to the worktree root you
 opened (e.g. `@docs/prompts/tasks/issue-<id>-<slug>`). If it is empty, stop and reply:
 
-> Usage: `/jli-spec @<task-folder>` — open the feature worktree (`code <worktree>`) first,
+> Usage: `/jli-writes-spec @<task-folder>` — open the feature worktree (`code <worktree>`) first,
 > then pass the task folder relative to it.
 
 Run from the worktree root (your current directory). All paths below are relative to it; read
@@ -68,7 +68,7 @@ Show the user a short summary of the spec, then:
 - If the file contains `### ADR Required`:
   > ⚠ This spec requires a new ADR. Review and approve the ADR before continuing. Once
   > approved (add it under `docs/decisions/` and update `docs/decisions/README.md`), run
-  > `/jli-git-commit @<task-folder>`.
+  > `/jli-commits @<task-folder>`.
 - Otherwise:
   > Spec ready. Review `business-specifications.md` in the task folder, then run
-  > `/jli-git-commit @<task-folder>`, then (optionally `/clear` and) `/jli-security @<task-folder>`.
+  > `/jli-commits @<task-folder>`, then (optionally `/clear` and) `/jli-verify-security @<task-folder>`.

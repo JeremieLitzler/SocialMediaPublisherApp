@@ -8,7 +8,7 @@ and ask which to remove:
 git worktree list
 ```
 
-> Usage: `/jli-git-cleanup <worktree-folder-name>` — run this from the `develop` worktree,
+> Usage: `/jli-cleans <worktree-folder-name>` — run this from the `develop` worktree,
 > after the PR has merged.
 
 ## Run location
@@ -19,7 +19,7 @@ worktree, stop and tell the user to `code [develop-worktree]` and run the comman
 
 ## What this command does
 
-The PR for this feature is already merged (by `/jli-git-ship` or manually on GitHub). This
+The PR for this feature is already merged (by `/jli-ships` or manually on GitHub). This
 removes the local worktree, prunes stale git entries, deletes the local branch, and
 fast-forwards `develop`.
 

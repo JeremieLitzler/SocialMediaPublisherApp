@@ -3,7 +3,7 @@ Review the implementation. Task folder: $ARGUMENTS
 `$ARGUMENTS` is the task folder, given as a `@`-mention relative to the worktree root you
 opened (e.g. `@docs/prompts/tasks/issue-<id>-<slug>`). If it is empty, stop and reply:
 
-> Usage: `/jli-review @<task-folder>` — open the feature worktree (`code <worktree>`) first,
+> Usage: `/jli-reviews-code @<task-folder>` — open the feature worktree (`code <worktree>`) first,
 > then pass the task folder relative to it.
 
 Run from the worktree root (your current directory) — that is where `node_modules` lives and
@@ -23,7 +23,7 @@ rtk lint           # eslint . --fix, grouped, token-optimized
 npm run type-check # vue-tsc --build (no rtk equivalent)
 ```
 
-Do NOT run `npm run test` — that is `/jli-test-run`'s job.
+Do NOT run `npm run test` — that is `/jli-runs-tests`'s job.
 
 Before reviewing Vue/TypeScript issues, fetch these reference pages to ground the review:
 - `https://vuejs.org/guide/essentials/reactivity-fundamentals`
@@ -68,8 +68,8 @@ If you hit the 3-failing-shell-command limit, record the error output and end th
 
 - If `status: changes requested`:
   > Review found issues (see `review-results.md` in the task folder). Run
-  > `/jli-git-commit @<task-folder>` to record the review, then `/jli-code @<task-folder>` to
-  > address the findings, then `/jli-review @<task-folder>` again.
+  > `/jli-commits @<task-folder>` to record the review, then `/jli-codes @<task-folder>` to
+  > address the findings, then `/jli-reviews-code @<task-folder>` again.
 - If `status: approved`:
-  > Review approved. Run `/jli-git-commit @<task-folder>`, then (optionally `/clear` and)
-  > `/jli-test-write @<task-folder>` for pass 2 (the `.spec.ts` files).
+  > Review approved. Run `/jli-commits @<task-folder>`, then (optionally `/clear` and)
+  > `/jli-write-tests @<task-folder>` to write the `.spec.ts` files.

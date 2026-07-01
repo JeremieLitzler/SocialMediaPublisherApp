@@ -3,7 +3,7 @@ Push, open the PR, and merge. Task folder: $ARGUMENTS
 `$ARGUMENTS` is the task folder, given as a `@`-mention relative to the worktree root you
 opened (e.g. `@docs/prompts/tasks/issue-<id>-<slug>`). If it is empty, stop and reply:
 
-> Usage: `/jli-git-ship @<task-folder>` — run this from the feature worktree
+> Usage: `/jli-ships @<task-folder>` — run this from the feature worktree
 > (`code <worktree>`), passing the task folder relative to it.
 
 Run from the feature worktree root (your current directory). Parse the issue `[id]` from the
@@ -14,7 +14,7 @@ worktree (you are standing in it); cleanup is a separate command run from `devel
 ## Step 1 — Push and open the PR
 
 Confirm `test-results.md` in the task folder ends with `status: passed`. If not, stop and
-tell the user to finish `/jli-test-run @<task-folder>` first.
+tell the user to finish `/jli-runs-tests @<task-folder>` first.
 
 Derive the PR title from `business-specifications.md` (short imperative summary, ≤70 chars).
 Write the PR body to a temp file: a summary of what changed and why, a test-plan checklist,
@@ -58,5 +58,5 @@ the full error output to the user.
 > code [develop-worktree]
 > ```
 >
-> Then run `/jli-git-cleanup <worktree-folder-name>` there (the folder name is the last
+> Then run `/jli-cleans <worktree-folder-name>` there (the folder name is the last
 > segment of this worktree's path, e.g. `<repo-name>_<type>-<slug>`).

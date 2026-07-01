@@ -3,7 +3,7 @@ Implement the feature. Task folder: $ARGUMENTS
 `$ARGUMENTS` is the task folder, given as a `@`-mention relative to the worktree root you
 opened (e.g. `@docs/prompts/tasks/issue-<id>-<slug>`). If it is empty, stop and reply:
 
-> Usage: `/jli-code @<task-folder>` — open the feature worktree (`code <worktree>`) first,
+> Usage: `/jli-codes @<task-folder>` — open the feature worktree (`code <worktree>`) first,
 > then pass the task folder relative to it.
 
 Run from the worktree root (your current directory). All file paths are relative to it —
@@ -15,8 +15,9 @@ Read `[task-folder]/business-specifications.md`, `[task-folder]/security-guideli
 `[task-folder]/test-cases.md`. Implement exactly what the business spec describes, enforce
 every security rule, and make every scenario in `test-cases.md` satisfiable.
 
-Do NOT write any test files (`.spec.ts` / `.test.ts`) — `/jli-test-write` owns all test
-authoring. Follow the architecture in `CLAUDE.md`. Do not add features beyond the spec.
+Do NOT write any test files (`.spec.ts` / `.test.ts`) — `/jli-writes-tests-spec` and
+`/jli-write-tests` own all test authoring. Follow the architecture in `CLAUDE.md`. Do not add
+features beyond the spec.
 
 If `[task-folder]/review-results.md` ends with `status: changes requested`, or
 `[task-folder]/test-results.md` ends with `status: failed`, read that feedback first and fix
@@ -77,7 +78,7 @@ Otherwise end the file with `status: ready` as the last line.
 
 After writing the code, identify three potential bugs or performance bottlenecks and fix
 them. Do NOT run `npm run test`, `npm run lint`, or `npm run type-check` here — those belong
-to `/jli-test-run` and `/jli-review`.
+to `/jli-runs-tests` and `/jli-reviews-code`.
 
 ## RTK token optimization
 
@@ -92,11 +93,11 @@ the full error output to the user.
 ## Next
 
 - If the file ends `status: review specs`:
-  > The specs need review. Run `/jli-spec @<task-folder>` to revise them, re-commit, then
-  > return to `/jli-code @<task-folder>`.
+  > The specs need review. Run `/jli-writes-spec @<task-folder>` to revise them, re-commit, then
+  > return to `/jli-codes @<task-folder>`.
 - If the file contains `### ADR Required`:
   > ⚠ This implementation requires a new ADR. Approve it (add under `docs/decisions/`, update
-  > the index) before committing, then run `/jli-git-commit @<task-folder>`.
+  > the index) before committing, then run `/jli-commits @<task-folder>`.
 - Otherwise:
   > Implementation ready. Review `technical-specifications.md` in the task folder, run
-  > `/jli-git-commit @<task-folder>`, then (optionally `/clear` and) `/jli-review @<task-folder>`.
+  > `/jli-commits @<task-folder>`, then (optionally `/clear` and) `/jli-reviews-code @<task-folder>`.

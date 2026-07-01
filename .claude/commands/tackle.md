@@ -1,5 +1,5 @@
 > **Deprecated.** This orchestrator-driven flow is superseded by the manual `jli-` command
-> chain (start with `/jli-git-setup`). See `AGENT-COMMAND-MIGRATION.md` at the project root.
+> chain (start with `/jli-sets-up`). See `AGENT-COMMAND-MIGRATION.md` at the project root.
 > This file is kept for history only.
 
 Tackle GitHub issue $ARGUMENTS using the multi-agent pipeline.
