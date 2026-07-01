@@ -3,7 +3,7 @@ Commit the current phase's artifacts. Task folder: $ARGUMENTS
 `$ARGUMENTS` is the task folder, given as a `@`-mention relative to the worktree root you
 opened (e.g. `@docs/prompts/tasks/issue-<id>-<slug>`). If it is empty, stop and reply:
 
-> Usage: `/jli-git-commit @<task-folder>` — open the feature worktree (`code <worktree>`)
+> Usage: `/jli-commits @<task-folder>` — open the feature worktree (`code <worktree>`)
 > first, then pass the task folder relative to it.
 
 Run all git commands from the worktree root (your current directory) — never from the bare
@@ -44,13 +44,13 @@ rtk git add <files>
 rtk git commit -m "<message>"
 ```
 
-Do NOT push here — `/jli-git-ship` pushes.
+Do NOT push here — `/jli-ships` pushes.
 
 ## Bug discovery rule
 
 If you discover a bug or code issue while committing, do NOT fix it here. Stop, describe the
 bug, the file(s) affected, and the root cause, and tell the user to route it through
-`/jli-code @<task-folder>`.
+`/jli-codes @<task-folder>`.
 
 ## Shell command retry limit
 
@@ -61,13 +61,13 @@ the full error output to the user.
 
 Report the commit. Then point the user to the next phase based on what was just committed:
 
-- after specs → `/jli-security @<task-folder>`
-- after security → `/jli-test-write @<task-folder>` (pass 1)
-- after test-cases → `/jli-code @<task-folder>`
-- after code/review (approved) → `/jli-test-write @<task-folder>` (pass 2)
-- after review (changes requested) → `/jli-code @<task-folder>`
-- after `*.spec.ts` → `/jli-test-run @<task-folder>`
-- after test-results (passed) → `/jli-git-ship @<task-folder>`
-- after test-results (failed) → `/jli-code @<task-folder>`
+- after specs → `/jli-verify-security @<task-folder>`
+- after security → `/jli-writes-tests-spec @<task-folder>`
+- after test-cases → `/jli-codes @<task-folder>`
+- after code/review (approved) → `/jli-write-tests @<task-folder>`
+- after review (changes requested) → `/jli-codes @<task-folder>`
+- after `*.spec.ts` → `/jli-runs-tests @<task-folder>`
+- after test-results (passed) → `/jli-ships @<task-folder>`
+- after test-results (failed) → `/jli-codes @<task-folder>`
 
 > Committed. You may run `/clear` before the next command.

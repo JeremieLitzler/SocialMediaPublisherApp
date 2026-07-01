@@ -22,7 +22,7 @@ The repo uses one bare repo with sibling worktrees under a shared parent:
 <parent>/<repo-name>_<type>-<slug>    <- a feature worktree
 ```
 
-`/jli-git-setup` and `/jli-git-cleanup` run from the **develop worktree**. Every other
+`/jli-sets-up` and `/jli-cleans` run from the **develop worktree**. Every other
 command runs from inside the **feature worktree** — you open it in its own editor window
 (`code <worktree>`) after setup, and all later commands run in that window.
 
@@ -35,23 +35,24 @@ worktree, the task folder is a simple relative path — you pass it as a `@`-men
 (`@docs/prompts/tasks/issue-<id>-<slug>`), never an absolute path. The argument is required on
 every command, so each one rebuilds what it needs from disk after a `/clear`.
 
-The **specification phase is the input exception**: `/jli-spec` reads the `README.md` request
-created by `/jli-git-setup` rather than a prior pipeline artifact.
+The **specification phase is the input exception**: `/jli-writes-spec` reads the `README.md`
+request created by `/jli-sets-up` rather than a prior pipeline artifact.
 
 ## Command ↔ agent mapping
 
 | Command | Runs from | Replaces (agent) |
 |---|---|---|
-| `/jli-git-setup <issue-num + title>` | develop | `agent-4-git` Tasks 1–2 (fetch + worktree) |
-| `/jli-spec @<task-folder>` | feature worktree | `agent-1-specs` |
-| `/jli-security @<task-folder>` | feature worktree | `agent-5-security` |
-| `/jli-test-write @<task-folder> [pass]` | feature worktree | `agent-3-test-writer` (pass 1 and 2) |
-| `/jli-code @<task-folder>` | feature worktree | `agent-2-coder` |
-| `/jli-review @<task-folder>` | feature worktree | `agent-6-reviewer` |
-| `/jli-test-run @<task-folder>` | feature worktree | `agent-3-test-runner` |
-| `/jli-git-commit @<task-folder>` | feature worktree | `agent-4-git` commit tasks (3 / 3.5 / 3.7 / 4 / 5-commit) |
-| `/jli-git-ship @<task-folder>` | feature worktree | `agent-4-git` Tasks 5-push / 6 / 7 (push, PR, merge) |
-| `/jli-git-cleanup <worktree>` | develop | `agent-4-git` Task 8 (worktree cleanup + refresh develop) |
+| `/jli-sets-up <issue-num + title>` | develop | `agent-4-git` Tasks 1–2 (fetch + worktree) |
+| `/jli-writes-spec @<task-folder>` | feature worktree | `agent-1-specs` |
+| `/jli-verify-security @<task-folder>` | feature worktree | `agent-5-security` |
+| `/jli-writes-tests-spec @<task-folder>` | feature worktree | `agent-3-test-writer` (pass 1: test cases) |
+| `/jli-codes @<task-folder>` | feature worktree | `agent-2-coder` |
+| `/jli-reviews-code @<task-folder>` | feature worktree | `agent-6-reviewer` |
+| `/jli-write-tests @<task-folder>` | feature worktree | `agent-3-test-writer` (pass 2: `*.spec.ts`) |
+| `/jli-runs-tests @<task-folder>` | feature worktree | `agent-3-test-runner` |
+| `/jli-commits @<task-folder>` | feature worktree | `agent-4-git` commit tasks (3 / 3.5 / 3.7 / 4 / 5-commit) |
+| `/jli-ships @<task-folder>` | feature worktree | `agent-4-git` Tasks 5-push / 6 / 7 (push, PR, merge) |
+| `/jli-cleans <worktree>` | develop | `agent-4-git` Task 8 (worktree cleanup + refresh develop) |
 
 `agent-0-orchestrator` is **dissolved** into the "Next" hint at the end of each command — no
 command replaces it. `agent-7-pipeline-maintainer` is unchanged; it is still reached via the
@@ -69,19 +70,19 @@ The full workflow, including the two-editor split and the loop-backs:
 ```mermaid
 flowchart TD
     subgraph INST1["VSCode instance 1 — develop worktree"]
-        setup["/jli-git-setup"]
-        cleanup["/jli-git-cleanup &lt;worktree&gt;"]
+        setup["/jli-sets-up"]
+        cleanup["/jli-cleans &lt;worktree&gt;"]
     end
 
     subgraph INST2["VSCode instance 2 — feature worktree"]
         direction TB
-        spec["/jli-spec"] --> sec["/jli-security"]
-        sec --> tw1["/jli-test-write · pass 1"]
-        tw1 --> code["/jli-code"]
-        code --> review["/jli-review"]
-        review --> tw2["/jli-test-write · pass 2"]
-        tw2 --> trun["/jli-test-run"]
-        trun --> ship["/jli-git-ship"]
+        spec["/jli-writes-spec"] --> sec["/jli-verify-security"]
+        sec --> tw1["/jli-writes-tests-spec"]
+        tw1 --> code["/jli-codes"]
+        code --> review["/jli-reviews-code"]
+        review --> tw2["/jli-write-tests"]
+        tw2 --> trun["/jli-runs-tests"]
+        trun --> ship["/jli-ships"]
     end
 
     setup -->|"code &lt;worktree&gt; (open a new editor window)"| spec
@@ -91,7 +92,7 @@ flowchart TD
     trun -. "failed" .-> code
     code -. "review specs" .-> spec
 
-    commit{{"/jli-git-commit — run after every phase<br/>(between each step above and the next)"}}
+    commit{{"/jli-commits — run after every phase<br/>(between each step above and the next)"}}
     commit -. "each phase" .-> INST2
 
     clear{{"/clear — may be run between any two steps;<br/>resets context, keeps the task folder on disk"}}
@@ -105,38 +106,38 @@ flowchart TD
     class clear reset;
 ```
 
-Setup (`/jli-git-setup`) and cleanup (`/jli-git-cleanup`) run in the **develop-worktree
+Setup (`/jli-sets-up`) and cleanup (`/jli-cleans`) run in the **develop-worktree
 editor**; every phase command runs in a **separate editor window** opened on the feature
 worktree. `/clear` is available at any stage — each command rebuilds what it needs from the
 task folder, so clearing context between steps is safe. The same chain in text:
 
 ```
 [develop worktree]
-/jli-git-setup
-  → code <worktree>        (open the feature worktree; everything below runs there)
+/jli-sets-up
+  > code <worktree>            (open the feature worktree; everything below runs there)
 
 [feature worktree]
-  → /jli-spec        → /jli-git-commit
-  → /jli-security    → /jli-git-commit
-  → /jli-test-write  → /jli-git-commit      (pass 1: writes test-cases.md)
-  → /jli-code        → /jli-git-commit
-  → /jli-review      → /jli-git-commit
-  → /jli-test-write  → /jli-git-commit      (pass 2: writes *.spec.ts)
-  → /jli-test-run    → /jli-git-commit
-  → /jli-git-ship          (push + PR + merge)
+  > /jli-writes-spec        > /jli-commits
+  > /jli-verify-security    > /jli-commits
+  > /jli-writes-tests-spec  > /jli-commits      (writes test-cases.md)
+  > /jli-codes              > /jli-commits
+  > /jli-reviews-code       > /jli-commits
+  > /jli-write-tests        > /jli-commits      (writes *.spec.ts)
+  > /jli-runs-tests         > /jli-commits
+  > /jli-ships                  (push + PR + merge)
 
 [back in develop worktree]
-  → /jli-git-cleanup <worktree>
+  > /jli-cleans <worktree>
 ```
 
 Loop-backs (each command's hint states the branch it took):
-- `/jli-review` → `status: changes requested` → back to `/jli-code`.
-- `/jli-test-run` → `status: failed` → back to `/jli-code`.
-- `/jli-code` → `status: review specs` → back to `/jli-spec`.
+- `/jli-reviews-code` > `status: changes requested` > back to `/jli-codes`.
+- `/jli-runs-tests` > `status: failed` > back to `/jli-codes`.
+- `/jli-codes` > `status: review specs` > back to `/jli-writes-spec`.
 
-`/jli-test-write` is a single command that auto-detects the pass: pass 1 when `test-cases.md`
-is absent, pass 2 when both `test-cases.md` and `technical-specifications.md` exist. A
-trailing `1` or `2` in the argument forces the pass.
+The two test phases are separate commands: `/jli-writes-tests-spec` runs **before** coding
+and writes the plain-language `test-cases.md`; `/jli-write-tests` runs **after** review and
+turns those cases into `*.spec.ts` files.
 
 ## Why the commands are self-contained
 
@@ -151,9 +152,9 @@ confused for one another.
 
 The gate is the human deciding to run the next command. Two points are made explicit in the
 hints:
-- `/jli-spec` and `/jli-code` warn when their artifact contains `### ADR Required` — approve
-  the ADR (add it under `docs/decisions/`, update the index) before continuing.
-- `/jli-git-ship` pauses for confirmation before opening the PR and again before merging,
+- `/jli-writes-spec` and `/jli-codes` warn when their artifact contains `### ADR Required` —
+  approve the ADR (add it under `docs/decisions/`, update the index) before continuing.
+- `/jli-ships` pauses for confirmation before opening the PR and again before merging,
   because those actions are outward-facing and irreversible.
 
 ## Maintaining the chain

@@ -3,7 +3,7 @@ Bootstrap a worktree and task folder for a GitHub issue: $ARGUMENTS
 `$ARGUMENTS` must contain the GitHub issue number (and optionally a title or extra
 context). If it is empty, stop and reply:
 
-> Usage: `/jli-git-setup <issue-number> [title or notes]` — I need an issue number to
+> Usage: `/jli-sets-up <issue-number> [title or notes]` — I need an issue number to
 > create the branch and task folder.
 
 ## What this command does
@@ -78,7 +78,7 @@ Report the absolute worktree path and the relative task-folder path, then show:
 > code [worktree]
 > ```
 >
-> Then, from that window, run `/jli-spec @docs/prompts/tasks/issue-<id>-<slug>`. Every later
+> Then, from that window, run `/jli-writes-spec @docs/prompts/tasks/issue-<id>-<slug>`. Every later
 > command takes the task folder as a `@`-mention relative to the worktree root — you never
 > need the absolute path again. The final cleanup command is the exception: it runs back in
 > this `develop` window.

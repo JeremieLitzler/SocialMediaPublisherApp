@@ -1,7 +1,7 @@
 Tweak the manual `jli-` command chain: $ARGUMENTS
 
 `$ARGUMENTS` is the change you want made to the chain (e.g. "add an accessibility-audit step
-after review", "soften the ADR warning in jli-spec", "make jli-test-run also print
+after review", "soften the ADR warning in jli-writes-spec", "make jli-runs-tests also print
 coverage"). If it is empty, stop and ask what to change.
 
 This command specializes in editing **only the chain itself**. It does not develop features,
@@ -49,10 +49,10 @@ command must still hold ALL of these invariants:
 2. **Argument guard** — opens by requiring its argument and printing a usage line when empty.
    The argument is the task folder as a `@`-mention relative to the worktree
    (`@docs/prompts/tasks/issue-<id>-<slug>`) for the phase/commit/ship commands;
-   `jli-git-setup` takes an issue number; `jli-git-cleanup` takes a worktree name/path.
+   `jli-sets-up` takes an issue number; `jli-cleans` takes a worktree name/path.
 3. **Run location** — phase/commit/ship commands run from inside the feature worktree and
-   treat the task-folder argument as relative to it (no path derivation). `jli-git-setup`
-   and `jli-git-cleanup` run from the `develop` worktree.
+   treat the task-folder argument as relative to it (no path derivation). `jli-sets-up`
+   and `jli-cleans` run from the `develop` worktree.
 4. **Status-line contract** — any artifact it writes still ends with its required status line
    as the last line.
 5. **Next hint** — ends with a hint block covering the happy-path successor and any
