@@ -67,7 +67,7 @@ worktree it removes.
 The full workflow, including the two-editor split and the loop-backs:
 
 ```mermaid
-flowchart LR
+flowchart TD
     subgraph INST1["VSCode instance 1 — develop worktree"]
         setup["/jli-git-setup"]
         cleanup["/jli-git-cleanup &lt;worktree&gt;"]
