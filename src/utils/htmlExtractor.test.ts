@@ -170,7 +170,7 @@ describe('htmlExtractor', () => {
       expect(introduction).not.toContain('<h2>')
     })
 
-    describe('expanded element types — <pre>, <ul>, <blockquote>', () => {
+    describe('expanded element types — <pre>, <ul>, <ol>, <blockquote>', () => {
       function makeDoc(innerHtml: string): Document {
         return new JSDOM(
           `<html><body><section class="article-content">${innerHtml}</section></body></html>`
@@ -248,10 +248,11 @@ describe('htmlExtractor', () => {
         expect(result).toContain('<p>nested paragraph</p>')
       })
 
-      it('does not include <ol> elements (not in the allowlist)', () => {
+      it('extracts an <ol> element before first <h2>', () => {
         const doc = makeDoc('<p>Intro.</p><ol><li>ordered</li></ol><h2>Section</h2>')
         const result = extractIntroduction(doc)
-        expect(result).not.toContain('<ol>')
+        expect(result).toContain('<ol>')
+        expect(result).toContain('<li>ordered</li>')
         expect(result).toContain('<p>Intro.</p>')
       })
 
