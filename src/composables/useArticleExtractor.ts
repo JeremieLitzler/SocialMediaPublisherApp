@@ -114,7 +114,8 @@ export function useArticleExtractor() {
         extractionState.value = {
           status: 'missing-introduction',
           article: null,
-          error: 'No introduction found. The article must have paragraphs before the first <h2>.',
+          error:
+            'The source article has no <h2> section heading, so the end of the introduction cannot be located. Update the source article to use <h2> for its section headings.',
           manualIntroduction: '',
           selectedPlatform: null,
         }
