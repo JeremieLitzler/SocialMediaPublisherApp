@@ -115,7 +115,7 @@ describe('useArticleExtractor', () => {
 
       expect(extractionState.value.status).toBe('missing-introduction')
       expect(extractionState.value.article).toBeNull()
-      expect(extractionState.value.error).toContain('No introduction found')
+      expect(extractionState.value.error).toContain('<h2>')
     })
 
     it('should extract article without image credit', async () => {

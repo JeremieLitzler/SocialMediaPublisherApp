@@ -26,7 +26,8 @@ describe('ManualIntroduction', () => {
     extractionState = ref({
       status: 'missing-introduction',
       article: null,
-      error: 'No introduction found. The article must have paragraphs before the first <h2>.',
+      error:
+        'The source article has no <h2> section heading, so the end of the introduction cannot be located. Update the source article to use <h2> for its section headings.',
       manualIntroduction: '',
     })
 
@@ -38,17 +39,17 @@ describe('ManualIntroduction', () => {
     // The error is rendered in a <p> tag within .text-sm.text-muted-foreground
     const errorParagraphs = wrapper.findAll('p')
     const errorText = errorParagraphs.map((p) => p.text()).join(' ')
-    expect(errorText).toContain('No introduction found')
+    expect(errorText).toContain('<h2>')
   })
 
-  it('should render "Missing Introduction" header', () => {
+  it('should render "Introduction Not Detected" header', () => {
     const wrapper = mount(ManualIntroduction, { global: { stubs: globalStubs } })
-    expect(wrapper.text()).toContain('Missing Introduction')
+    expect(wrapper.text()).toContain('Introduction Not Detected')
   })
 
   it('should render instruction text', () => {
     const wrapper = mount(ManualIntroduction, { global: { stubs: globalStubs } })
-    expect(wrapper.text()).toContain('Please add an introduction to the source article')
+    expect(wrapper.text()).toContain('<h2> for its section headings')
     expect(wrapper.text()).toContain('enter it manually below')
   })
 
