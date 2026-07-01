@@ -2,9 +2,9 @@
   <div class="manual-introduction">
     <div class="space-y-4">
       <div class="text-sm text-muted-foreground">
-        <p class="font-medium text-foreground mb-2">Missing Introduction</p>
+        <p class="font-medium text-foreground mb-2">Introduction Not Detected</p>
         <p>{{ extractionState.error }}</p>
-        <p class="mt-2">Please add an introduction to the source article, or enter it manually below:</p>
+        <p class="mt-2">Once the source article uses <code>&lt;h2&gt;</code> for its section headings, extraction will find the introduction. In the meantime, you can enter it manually below to continue:</p>
       </div>
 
       <div>
