@@ -90,4 +90,24 @@ Addresses `review-results.md` (`status: changes requested`).
 
 Only candidate that was an actual defect against the spec (the `<ol>` extraction gap) was fixed.
 
+## Review loop-back fixes (round 3)
+
+Addresses `review-results.md` (`status: changes requested`, one minor finding).
+
+1. **Dead code removed: `extractParagraphTexts`.** The generators now consume
+   `extractIntroductionBlocks`, so `extractParagraphTexts` was exported-but-unused production
+   code kept alive only by its own spec. Removed the function from `articleHtmlBuilder.ts` and
+   its `describe` block + import from `articleHtmlBuilder.spec.ts` (confirmed no other
+   consumer repo-wide). This reverses the round-2 "retained, not removed" decision now that the
+   reviewer confirmed no pending consumer.
+2. **Stale module doc comment updated.** The `articleHtmlBuilder.ts` header still advertised
+   "the paragraph-extraction helper" (now removed) and omitted the module's new primary export.
+   Rewrote it to describe the figure/separator helpers plus `extractIntroductionBlocks`, so the
+   header matches the code.
+
+Doc-comment/dead-code changes only — no runtime behaviour changed. The three-candidate
+self-review surfaced nothing new: the runtime logic is unchanged from round 2, whose
+self-review already examined the highlight-gutter, long-single-sentence, and `<ol> start`
+candidates and found no defect against the spec.
+
 status: ready

@@ -1,10 +1,11 @@
 /**
  * Shared HTML-building utilities for platform content generators.
  *
- * Centralises the figure HTML builder, the visual separator constant,
- * and the paragraph-extraction helper that were previously duplicated
- * across mediumContentGenerator.ts, substackContentGenerator.ts,
- * linkedInContentGenerator.ts, and xContentGenerator.ts.
+ * Centralises the figure HTML builder and the visual separator constant
+ * (shared by mediumContentGenerator.ts and substackContentGenerator.ts), plus
+ * `extractIntroductionBlocks`, which turns introduction HTML into ordered
+ * plain-text blocks consumed by linkedInContentGenerator.ts and
+ * xContentGenerator.ts.
  */
 
 import type { Article, IntroductionBlock } from '@/types/article'
@@ -39,31 +40,6 @@ export function buildFigureHtml(article: Article): string {
   const imgTag = `<img src="${article.imageUrl}" alt="${article.imageAlt}" />`
   const figcaption = buildFigcaption(article.imageCreditSnippet)
   return `<figure>${imgTag}${figcaption}</figure>`
-}
-
-/**
- * Extract plain-text paragraphs from an HTML string.
- *
- * Uses DOMParser to safely parse the HTML. Each `<p>` element
- * becomes one entry in the returned array. Internal whitespace
- * within each paragraph is collapsed to a single space.
- * Empty paragraphs are excluded.
- *
- * @param html - Raw HTML string containing `<p>` elements
- * @returns Array of trimmed, whitespace-collapsed, non-empty paragraph strings
- */
-export function extractParagraphTexts(html: string): string[] {
-  const parser = new DOMParser()
-  const doc = parser.parseFromString(html, 'text/html')
-  const paragraphNodes = doc.querySelectorAll('p')
-  const texts: string[] = []
-
-  for (const node of paragraphNodes) {
-    const text = (node.textContent ?? '').replaceAll(/\s+/g, ' ').trim()
-    if (text.length > 0) texts.push(text)
-  }
-
-  return texts
 }
 
 /**
