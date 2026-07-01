@@ -38,7 +38,7 @@ function makeArticle() {
   }
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+ 
 function mountFallback(overrides: Record<string, any>) {
   const extractionState = ref<ExtractionState>({
     status: 'missing-introduction',
