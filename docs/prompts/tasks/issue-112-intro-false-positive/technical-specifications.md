@@ -1,85 +1,66 @@
-# Technical Specifications — Issue #112: Intro "false positive" messaging
-
-## Scope confirmation
-
-Investigation of `example-ko.html` confirms the spec's diagnosis: inside `.article-content`
-the section headings are `<h3>` (`#association`, `#agrégation`, `#composition`) and every
-`<h2>` in the page lives **outside** `.article-content` (the TOC widget, the
-`h2.article-subtitle`, and the related-content tiles). `extractIntroduction` therefore
-returns `null` for the right reason (no `<h2>` inside `.article-content`), and the
-`missing-introduction` outcome is correct. This change is **user-facing messaging only** —
-detection logic, the `<h2>` boundary, the introduction tag set, and `ExtractionState` values
-are untouched.
+# Technical Specifications — Issue #112: Intro messaging + empty-introduction detection
 
 ## Files changed
 
-- `src/composables/useArticleExtractor.ts` — reworded the `error` text carried into the
-  `missing-introduction` state to name the true cause (no `<h2>` section heading, so the end
-  of the introduction cannot be located) and direct the author to fix the source article.
-  Removed the false "must have paragraphs" claim.
-- `src/components/article/ManualIntroduction.vue` — realigned the surrounding static copy:
-  heading changed from "Missing Introduction" to "Introduction Not Detected"; the guidance
-  line no longer asks the author to "add an introduction" (which implied missing content) and
-  instead explains the `<h2>` fix while continuing to offer manual entry as the immediate
-  workaround.
-
-## Files NOT changed (and why)
-
-- `src/utils/htmlExtractor.ts` — detection is correct; spec forbids changing it.
-- `src/pages/index.vue` — it only mounts `ManualIntroduction` and carries no duplicated
-  cause-copy, so no R3 alignment is needed there.
+- `src/composables/useArticleExtractor.ts` — introduced a fixed-literal message map keyed by
+  two missing-introduction causes (`NO_HEADING`, `EMPTY`), an own-property type guard, two
+  guard-clause throws in `extractArticleData` (`null` → NO_HEADING, `''` → EMPTY), and a catch
+  branch that maps the thrown code to its message.
+- `src/utils/htmlExtractor.ts` — documented `extractIntroduction`'s tri-state contract
+  (`null` = no `<h2>`/no container, `''` = first `<h2>` with empty introduction, HTML = found).
+  No behaviour change; the function already produced these three outcomes.
+- `src/components/article/ManualIntroduction.vue` — made the static guidance cause-agnostic
+  (removed the `<h2>`-specific sentence) so it reads correctly for both messages; the
+  cause-specific text is carried by `extractionState.error` and rendered via `{{ }}`.
+- `tests/fixtures/english-no-intro.html` — cleaned per the CLAUDE.md fixture rules (removed all
+  `<script>` and `<link rel="stylesheet">` tags, including multi-line ones; kept canonical/icon).
+  Its `.article-content` begins with `<h2 id="sources">`, giving the empty-introduction case.
 
 ## Rule / test-case coverage
 
-- **R1 / TC-1** — no change to detection: an `<h3>`-only `.article-content` still returns
-  `null` and enters `missing-introduction`.
-- **R2 / TC-2** — the new message names the `<h2>` cause, states the introduction end cannot
-  be located, directs the author to use `<h2>`, and no longer asserts missing paragraphs.
-- **R3 / TC-4** — `ManualIntroduction.vue` copy now agrees with R2 and still presents the
-  manual textarea + Continue button as the immediate workaround; `handleContinue` behaviour
-  is unchanged.
-- **R4 / TC-3** — the missing-`.article-content` path already funnels through the same
-  `MISSING_INTRODUCTION` branch, so it inherits the same reworded message; no separate flow
-  is introduced, and the message does not falsely assert missing paragraphs.
-- **TC-5 / TC-6** — untouched detection guarantees the success path and the "first child is
-  `<h2>`" shape behave exactly as before.
+- **R1/R2/R5 (TC-1..TC-3)** — `extractIntroduction` returns `null` with no `<h2>` or no
+  container; the composable throws `NO_HEADING` and renders the "cannot be located, add `<h2>`"
+  message, unchanged from the original #112 fix.
+- **R3/R4 (TC-4/TC-5)** — `extractIntroduction` returns `''` when a first `<h2>` has no
+  introduction before it; the composable throws `EMPTY` and renders the distinct "no
+  introduction before the first heading, add one or enter manually" message. This is the
+  behaviour change: the empty case previously succeeded with an empty introduction.
+- **R6 (TC-6)** — `ManualIntroduction.vue` still renders the textarea + Continue button and its
+  generic guidance for either cause; the manual-entry path to `success` is unchanged.
+- **TC-7** — the found path (non-empty HTML before the first `<h2>`) is untouched.
 
 ## Non-trivial decisions (why)
 
-- **Single shared message for both null causes (no `<h2>` and no `.article-content`).** R4
-  explicitly mandates one message and "no separate flow." Both cases genuinely lack an `<h2>`
-  inside the article container, so one `<h2>`-focused message is accurate for both without
-  distinguishing them in `extractArticleData` — keeping the composable's control flow
-  unchanged.
-- **Message string kept as a plain primitive (no domain wrapper type).** Object Calisthenics
-  rule 3 (wrap meaningful primitives) is deliberately not applied here: the existing
-  `ExtractionState.error` field is a `string`, the change is messaging-only, and introducing a
-  message value-object would ripple into the shared state shape — out of scope and against the
-  "no new pattern / no ADR" constraint. Documented as a framework/scope exception.
-- **Heading renamed to "Introduction Not Detected".** "Missing Introduction" leans toward the
-  old (wrong) implication that content is absent; "Not Detected" matches R2's framing that the
-  boundary could not be located, not that the intro is missing.
+- **Kept `extractIntroduction`'s `string | null` signature; distinguished causes by `''` vs
+  `null`.** The function already returns `''` for the empty case and `null` for the no-heading
+  case, so this needs no signature change — avoiding a breaking change to ~15 `htmlExtractor`
+  test call-sites (and their `vue-tsc` type-check) while still reporting both causes distinctly.
+  The tri-state is now documented so the implicit distinction is explicit.
+- **Cause carried as an `Error` message code, mapped to copy in a const map.** Matches the
+  existing throw/catch idiom (previously a single `MISSING_INTRODUCTION` code) and keeps the
+  user-facing strings as fixed literals per security R1 — the catch never interpolates fetched
+  content, it only looks up a validated internal code.
+- **Own-property guard (`hasOwnProperty`) instead of the `in` operator.** `in` walks the
+  prototype chain, so a stray error message such as `'constructor'`/`'toString'` would falsely
+  match and index a prototype member; `hasOwnProperty` restricts matching to the two real codes.
+- **Static component copy made cause-agnostic.** With two possible messages, an `<h2>`-specific
+  static sentence would be wrong for the empty-introduction case; the cause-specific detail
+  lives in the message, the static copy only offers manual entry (R6).
 
 ## Object Calisthenics notes
 
-The diff is two string edits inside existing Vue-idiomatic code; no new methods, classes, or
-control flow were added. Existing composable/component conventions (`useXxx`, `setup()` top-
-level calls, lifecycle hooks) are preserved.
+Guard clauses replace the single null-check (no `else`); helpers are small and unabbreviated;
+the message map is a first-class constant. Vue composable/component conventions preserved.
 
-## Follow-up owned by the test phase (not written here per `/jli-codes`)
+## Test follow-ups owned by `/jli-writes-tests` (not written here per `/jli-codes`)
 
-`/jli-codes` does not author test assets, so the following are left for
-`/jli-writes-tests-spec` / `/jli-writes-tests`:
-
-- Create the cleaned fixture under `tests/fixtures/` derived from `example-ko.html` (remove
-  the 2 `<link rel="stylesheet">` and 2 `<script>` tags per the CLAUDE.md fixture rules; keep
-  `rel="canonical"`/`shortcut icon`). It has no `<h2>` inside `.article-content`.
-- Update the two existing tests that still assert the OLD wording, which this change
-  intentionally breaks:
-  - `src/composables/useArticleExtractor.test.ts:118` (`toContain('No introduction found')`)
-  - `src/components/article/ManualIntroduction.test.ts:29,41` (old error string and
-    `toContain('No introduction found')`)
-  These should assert the new cause text (mentions `<h2>`, does not mention missing
-  paragraphs) per TC-2.
+- Rewrite `src/composables/useArticleExtractor.spec.ts` to the new TC-1..TC-7: the empty-intro
+  fixture (`english-no-intro.html`) now yields `missing-introduction` (the user-added TC-7 now
+  passes); remove the old "first `<h2>` → success with empty introduction" assertion.
+- Update the two legacy `src/components/article/ManualIntroduction.test.ts` assertions that
+  referenced the removed `<h2>`-specific static sentence ("uses <h2> for its section headings"
+  and "enter it manually below"); add coverage for the empty-introduction message (TC-5).
+- `htmlExtractor.test.ts` and the committed `ManualIntroduction.spec.ts` remain valid (signature
+  and no-heading message unchanged).
 
 status: ready

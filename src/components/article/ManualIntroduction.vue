@@ -4,7 +4,7 @@
       <div class="text-sm text-muted-foreground">
         <p class="font-medium text-foreground mb-2">Introduction Not Detected</p>
         <p>{{ extractionState.error }}</p>
-        <p class="mt-2">Once the source article uses <code>&lt;h2&gt;</code> for its section headings, extraction will find the introduction. In the meantime, you can enter it manually below to continue:</p>
+        <p class="mt-2">You can enter the introduction manually below to continue:</p>
       </div>
 
       <div>
