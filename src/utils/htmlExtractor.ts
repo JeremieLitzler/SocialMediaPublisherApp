@@ -90,9 +90,16 @@ function collectIntroductionElements(articleContent: Element, firstH2: Element):
 /**
  * Extract introduction elements before first h2 in article content.
  * Retains <p>, <pre>, <ul>, <ol>, and <blockquote> elements in source order.
- * Returns null if no h2 is found (invalid article structure).
+ *
+ * Reports three distinct outcomes so the caller can tell the two
+ * "missing introduction" causes apart (see issue #112):
+ * - `null`  — no `.article-content`, or no `<h2>` inside it: the introduction
+ *   boundary cannot be located.
+ * - `''`    — a first `<h2>` exists but no qualifying element precedes it:
+ *   the introduction is empty.
+ * - HTML    — the qualifying elements before the first `<h2>`, in source order.
  * @param doc - Parsed HTML document
- * @returns Introduction HTML string or null if no h2 found
+ * @returns Introduction HTML string, '' when empty, or null when no h2 found
  */
 export function extractIntroduction(doc: Document): string | null {
   const articleContent = doc.querySelector('.article-content')

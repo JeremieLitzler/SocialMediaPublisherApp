@@ -21,6 +21,29 @@ import {
 import type { Article } from '@/types/article'
 
 /**
+ * User-facing messages for each cause that lands extraction in the
+ * `missing-introduction` state. Kept as fixed literals so no fetched HTML,
+ * URL, or article text is ever interpolated into rendered copy
+ * (see security-guidelines R1). The two causes carry distinct wording:
+ * - NO_HEADING: no `<h2>` (or no `.article-content`), so the introduction
+ *   boundary cannot be located — the author must add an `<h2>`.
+ * - EMPTY: a first `<h2>` exists but no introduction precedes it — the author
+ *   must add an introduction, or the user can enter one manually.
+ */
+const MISSING_INTRODUCTION_MESSAGES = {
+  MISSING_INTRODUCTION_NO_HEADING:
+    'The source article has no <h2> section heading, so the end of the introduction cannot be located. Update the source article to use <h2> for its section headings.',
+  MISSING_INTRODUCTION_EMPTY:
+    'The source article has no introduction before its first <h2> section heading. Add an introduction to the source article, or enter one manually below.',
+} as const
+
+type MissingIntroductionCode = keyof typeof MISSING_INTRODUCTION_MESSAGES
+
+function isMissingIntroductionCode(value: string): value is MissingIntroductionCode {
+  return Object.prototype.hasOwnProperty.call(MISSING_INTRODUCTION_MESSAGES, value)
+}
+
+/**
  * Fetch HTML content from a URL via Netlify Function proxy
  */
 async function fetchHTML(url: string): Promise<string> {
@@ -56,7 +79,10 @@ function extractArticleData(doc: Document, url: string): Article {
   const introduction = extractIntroduction(doc)
 
   if (introduction === null) {
-    throw new Error('MISSING_INTRODUCTION')
+    throw new Error('MISSING_INTRODUCTION_NO_HEADING')
+  }
+  if (introduction === '') {
+    throw new Error('MISSING_INTRODUCTION_EMPTY')
   }
 
   return {
@@ -110,12 +136,11 @@ export function useArticleExtractor() {
         selectedPlatform: null,
       }
     } catch (error) {
-      if (error instanceof Error && error.message === 'MISSING_INTRODUCTION') {
+      if (error instanceof Error && isMissingIntroductionCode(error.message)) {
         extractionState.value = {
           status: 'missing-introduction',
           article: null,
-          error:
-            'The source article has no <h2> section heading, so the end of the introduction cannot be located. Update the source article to use <h2> for its section headings.',
+          error: MISSING_INTRODUCTION_MESSAGES[error.message],
           manualIntroduction: '',
           selectedPlatform: null,
         }
