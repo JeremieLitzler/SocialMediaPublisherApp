@@ -49,8 +49,7 @@ describe('ManualIntroduction', () => {
 
   it('should render instruction text', () => {
     const wrapper = mount(ManualIntroduction, { global: { stubs: globalStubs } })
-    expect(wrapper.text()).toContain('<h2> for its section headings')
-    expect(wrapper.text()).toContain('enter it manually below')
+    expect(wrapper.text()).toContain('enter the introduction manually below to continue')
   })
 
   it('should render textarea for manual introduction', () => {
