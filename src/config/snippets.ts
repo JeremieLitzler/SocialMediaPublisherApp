@@ -16,7 +16,9 @@ export const SNIPPET_DEFAULTS: Readonly<SnippetMap> = {
   FR_SUBSTACK_SHARE_BLOCK:
     "Merci pour votre intérêt pour ma publication ! Cet article est public, n'hésitez pas à le partager.",
   EN_SUBSTACK_UTM_ANCHOR: "Let's review this in the full article",
-  FR_SUBSTACK_UTM_ANCHOR: "Allez lire l'article complet",
+  FR_SUBSTACK_UTM_ANCHOR: "Venez lire l'article complet",
+  EN_MEDIUM_UTM_ANCHOR: "Let's review this in the full article",
+  FR_MEDIUM_UTM_ANCHOR: "Venez lire l'article complet",
   EN_WHY_HEADING: 'Why does this post link to my blog?',
   FR_WHY_HEADING: 'Pourquoi ce billet renvoie-t-il à mon blog ?',
   EN_WHY_BODY_HTML: `<p>I have been on Medium for a while and, frankly, the editor isn't the best:</p>
@@ -68,6 +70,21 @@ export function getSubstackUtmAnchorText(
 }
 
 // ─── Medium ──────────────────────────────────────────────────────────────────
+
+/**
+ * Return the Medium UTM link anchor text for the given blog language.
+ * Reads from the provided snippet map, falling back to hardcoded defaults.
+ *
+ * @param blog - Blog language identifier
+ * @param snippets - Optional live snippet map from useSnippets (defaults to SNIPPET_DEFAULTS)
+ */
+export function getMediumUtmAnchorText(
+  blog: Blog,
+  snippets: Readonly<SnippetMap> = SNIPPET_DEFAULTS,
+): string {
+  if (blog === 'french') return snippets.FR_MEDIUM_UTM_ANCHOR
+  return snippets.EN_MEDIUM_UTM_ANCHOR
+}
 
 /**
  * Bilingual "Why does this post link to my blog?" snippet for Medium cross-posts.
