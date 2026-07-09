@@ -52,4 +52,19 @@
 - Vue `defineModel` / composable conventions are framework idioms and are used as the sanctioned
   exceptions to the getter/setter and primitive-wrapping rules.
 
+## Review loop-back — F1 disposition (2026-07-09)
+
+`review-results.md` raised one finding (F1): the pre-existing assertion at
+`src/utils/substackContentGenerator.test.ts:94` still expects the old French wording
+`Allez lire l'article complet`, which this task reworded to `Venez lire l'article complet`.
+
+- **No production source change is required** — the reviewer confirmed the implementation
+  (types, config defaults, generator, settings components) is complete and correct. F1 is
+  purely a test-assertion update.
+- **Deferred to `/jli-writes-tests`** (user decision, 2026-07-09). `/jli-codes` does not author
+  or edit test files (`.spec.ts` / `.test.ts`), and `test-cases.md` already specifies the new
+  wording and the absence of the old wording (see TC referencing `Venez lire l'article complet`
+  / `Allez lire l'article complet`), so the tests phase owns reconciling this assertion. No
+  files were modified in this loop-back pass.
+
 status: ready
