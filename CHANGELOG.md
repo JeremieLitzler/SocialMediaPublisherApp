@@ -1,3 +1,22 @@
+## [1.3.0](https://github.com/JeremieLitzler/SocialMediaPublisherApp/compare/v1.2.0...v1.3.0) (2026-07-09)
+
+### Features
+
+* **security:** add security guidelines for localized Medium read-article link ([#132](https://github.com/JeremieLitzler/SocialMediaPublisherApp/issues/132)) ([746495d](https://github.com/JeremieLitzler/SocialMediaPublisherApp/commit/746495d660d8c92f3552571bbb79aa2eb4a98dca))
+* **specs:** define specs for localized Medium read-article link ([#132](https://github.com/JeremieLitzler/SocialMediaPublisherApp/issues/132)) ([329bfe7](https://github.com/JeremieLitzler/SocialMediaPublisherApp/commit/329bfe75725aee2d9b4d2d1fff3c99a945f06cee))
+* **specs:** reword French anchor to Venez across Medium and Substack ([#132](https://github.com/JeremieLitzler/SocialMediaPublisherApp/issues/132)) ([3226558](https://github.com/JeremieLitzler/SocialMediaPublisherApp/commit/32265588ce2642a6492b83f0b37efc9574fedb4b))
+
+### Bug Fixes
+
+* **medium:** localize read-article anchor by blog language ([#132](https://github.com/JeremieLitzler/SocialMediaPublisherApp/issues/132)) ([c5d2d8f](https://github.com/JeremieLitzler/SocialMediaPublisherApp/commit/c5d2d8fe9f3eaeee2b0547bf03771bc623e41641))
+
+### Others
+
+* add tests for localized Medium read-article anchor ([#132](https://github.com/JeremieLitzler/SocialMediaPublisherApp/issues/132)) ([48783d2](https://github.com/JeremieLitzler/SocialMediaPublisherApp/commit/48783d2f2728c01b936b139cb2ecd444a316dffe))
+* **cases:** define test scenarios for localized Medium read-article link ([#132](https://github.com/JeremieLitzler/SocialMediaPublisherApp/issues/132)) ([e2034e5](https://github.com/JeremieLitzler/SocialMediaPublisherApp/commit/e2034e5b537ce01b2593ac9e0532a518a7694a73))
+* record review approval for localized Medium anchor ([#132](https://github.com/JeremieLitzler/SocialMediaPublisherApp/issues/132)) ([fb24417](https://github.com/JeremieLitzler/SocialMediaPublisherApp/commit/fb24417dae3e4ad1f5328fe0cf91bcd1d05dff95))
+* record test results for localized Medium read-article anchor ([#132](https://github.com/JeremieLitzler/SocialMediaPublisherApp/issues/132)) ([04c4c79](https://github.com/JeremieLitzler/SocialMediaPublisherApp/commit/04c4c79cd0ca4fcfec77fc86bc013f3bf8c4bbad))
+
 ## [1.2.0](https://github.com/JeremieLitzler/SocialMediaPublisherApp/compare/v1.1.0...v1.2.0) (2026-07-08)
 
 ### Features
