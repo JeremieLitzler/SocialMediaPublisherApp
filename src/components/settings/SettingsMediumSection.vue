@@ -1,4 +1,6 @@
 <script setup lang="ts">
+const enUtmAnchor = defineModel<string>('EN_MEDIUM_UTM_ANCHOR', { required: true })
+const frUtmAnchor = defineModel<string>('FR_MEDIUM_UTM_ANCHOR', { required: true })
 const enWhyHeading = defineModel<string>('EN_WHY_HEADING', { required: true })
 const enWhyBodyHtml = defineModel<string>('EN_WHY_BODY_HTML', { required: true })
 const frWhyHeading = defineModel<string>('FR_WHY_HEADING', { required: true })
@@ -12,6 +14,18 @@ const frWhyBodyHtml = defineModel<string>('FR_WHY_BODY_HTML', { required: true }
     <!-- EN group -->
     <h3 class="text-base font-medium mb-3 mt-4">English</h3>
     <div class="space-y-6">
+      <div>
+        <label class="block font-medium mb-1" for="EN_MEDIUM_UTM_ANCHOR">
+          EN — UTM link anchor text
+        </label>
+        <input
+          id="EN_MEDIUM_UTM_ANCHOR"
+          v-model="enUtmAnchor"
+          type="text"
+          class="w-full border rounded px-3 py-2 text-sm"
+        />
+      </div>
+
       <div>
         <label class="block font-medium mb-1" for="EN_WHY_HEADING"> EN — "Why" heading </label>
         <input
@@ -38,6 +52,18 @@ const frWhyBodyHtml = defineModel<string>('FR_WHY_BODY_HTML', { required: true }
     <!-- FR group -->
     <h3 class="text-base font-medium mb-3 mt-6">French</h3>
     <div class="space-y-6">
+      <div>
+        <label class="block font-medium mb-1" for="FR_MEDIUM_UTM_ANCHOR">
+          FR — UTM link anchor text
+        </label>
+        <input
+          id="FR_MEDIUM_UTM_ANCHOR"
+          v-model="frUtmAnchor"
+          type="text"
+          class="w-full border rounded px-3 py-2 text-sm"
+        />
+      </div>
+
       <div>
         <label class="block font-medium mb-1" for="FR_WHY_HEADING"> FR — "Why" heading </label>
         <input

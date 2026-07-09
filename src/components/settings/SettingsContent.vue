@@ -117,6 +117,8 @@ async function resetAll(): Promise<void> {
           v-model:FR_SUBSTACK_UTM_ANCHOR="local.FR_SUBSTACK_UTM_ANCHOR"
         />
         <SettingsMediumSection
+          v-model:EN_MEDIUM_UTM_ANCHOR="local.EN_MEDIUM_UTM_ANCHOR"
+          v-model:FR_MEDIUM_UTM_ANCHOR="local.FR_MEDIUM_UTM_ANCHOR"
           v-model:EN_WHY_HEADING="local.EN_WHY_HEADING"
           v-model:EN_WHY_BODY_HTML="local.EN_WHY_BODY_HTML"
           v-model:FR_WHY_HEADING="local.FR_WHY_HEADING"

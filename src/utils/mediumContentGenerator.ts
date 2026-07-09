@@ -12,7 +12,7 @@
 import type { Article, MediumContent, SnippetMap } from '@/types/article'
 import { generateUTMLink } from './utm'
 import { htmlToText } from './htmlToText'
-import { getWhySnippet, SNIPPET_DEFAULTS } from '@/config/snippets'
+import { getMediumUtmAnchorText, getWhySnippet, SNIPPET_DEFAULTS } from '@/config/snippets'
 import { VISUAL_SEPARATOR, buildFigureHtml } from './articleHtmlBuilder'
 
 function buildImageCaption(imageCreditSnippet: string | null): string {
@@ -20,9 +20,14 @@ function buildImageCaption(imageCreditSnippet: string | null): string {
   return htmlToText(imageCreditSnippet)
 }
 
-function buildUtmBlock(url: string): string {
+function buildUtmBlock(
+  url: string,
+  blog: Article['blog'],
+  snippets: Readonly<SnippetMap>,
+): string {
   const utmLink = generateUTMLink(url, 'Medium')
-  return `<p>${VISUAL_SEPARATOR}<br /><a href="${utmLink}">Read the full article</a></p>`
+  const anchorText = getMediumUtmAnchorText(blog, snippets)
+  return `<p>${VISUAL_SEPARATOR}<br /><a href="${utmLink}">${anchorText}</a></p>`
 }
 
 function buildWhyBlock(article: Article, snippets: Readonly<SnippetMap>): string {
@@ -35,7 +40,7 @@ function buildBodyHtml(article: Article, snippets: Readonly<SnippetMap>): string
     buildFigureHtml(article),
     '<hr />',
     article.introduction,
-    buildUtmBlock(article.url),
+    buildUtmBlock(article.url, article.blog, snippets),
     '<hr />',
     article.followMeSnippet,
     '<hr />',
