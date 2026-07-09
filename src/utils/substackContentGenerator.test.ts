@@ -91,7 +91,20 @@ describe('generateSubstackContent', () => {
 
   it('bodyHtml UTM link anchor text is the French phrase for French article', () => {
     const result = generateSubstackContent(makeFrenchArticle())
-    expect(result.bodyHtml).toContain("Allez lire l'article complet")
+    expect(result.bodyHtml).toContain("Venez lire l'article complet")
+  })
+
+  // TC-9: the French Substack anchor default is reworded; the old wording is gone.
+  it('bodyHtml no longer contains the old French anchor wording', () => {
+    const result = generateSubstackContent(makeFrenchArticle())
+    expect(result.bodyHtml).not.toContain("Allez lire l'article complet")
+  })
+
+  // TC-10: the English Substack anchor is unaffected by the French rewording.
+  it('bodyHtml English anchor still reads the English phrase and not the French one', () => {
+    const result = generateSubstackContent(makeEnglishArticle())
+    expect(result.bodyHtml).toContain("Let's review this in the full article")
+    expect(result.bodyHtml).not.toContain("Venez lire l'article complet")
   })
 
   it('bodyHtml contains EN attribution for English article', () => {
