@@ -3,12 +3,12 @@
 #
 # Usage: bash scripts/pipeline/pr-complete.sh <pr-url>
 #
-# Merges an open PR into develop (rebase strategy) and deletes the remote
+# Merges an open PR into main (rebase strategy) and deletes the remote
 # branch. Skips gracefully if the PR is already merged or closed.
 #
 # Run from any pipeline worktree. Follow with:
 #   worktree-cleanup.sh <worktree-path>
-#   refresh-develop.sh
+#   refresh-main.sh
 
 set -euo pipefail
 
@@ -29,8 +29,8 @@ elif [[ "$PR_STATE" == "CLOSED" ]]; then
 fi
 
 echo "==> Merging PR (rebase)..."
-# Run from bare repo root so `gh` does not attempt a local `git switch develop`
-# (which would fail because develop is already checked out in its own worktree).
+# Run from bare repo root so `gh` does not attempt a local `git switch main`
+# (which would fail because main is already checked out in its own worktree).
 (cd "$BARE_REPO" && gh pr merge "$PR_URL" --rebase --delete-branch)
 
 echo "==> PR merged."

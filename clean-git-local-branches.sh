@@ -31,7 +31,7 @@ while read -r branch; do
     
     [[ -z "$branch_name" ]] && echo "Skip branch because is empty" && continue
     
-    [[ "$branch_name" == "develop" || "$branch_name" == "main" ]] && echo "Skip branch because is develop or main" && continue
+    [[ "$branch_name" == "main" ]] && echo "Skip branch because is main" && continue
     
     echo "Check if <$branch_name> exists on remote"
     if ! echo "$REMOTE_BRANCHES" | grep -q "^${branch_name}$"; then

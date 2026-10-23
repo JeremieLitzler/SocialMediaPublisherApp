@@ -30,10 +30,10 @@ alias g-pb='git ct origin/'
 alias g-rb='git c main && git branch -D ' 
 # refresh local repo with the latest changes from main
 alias g-um='git c main && git pull --rebase' 
-# refresh local repo with the latest changes from develop
-alias g-ud='git c develop && git pull --rebase' 
-# list commits that are in the current branch but not in develop
-alias g-log='git log develop..HEAD --oneline' 
+# refresh local repo with the latest changes from main
+alias g-ud='git c main && git pull --rebase' 
+# list commits that are in the current branch but not in main
+alias g-log='git log main..HEAD --oneline' 
 alias nd='npm run dev'
 alias nb='npm run build'
 alias np='npm run preview'

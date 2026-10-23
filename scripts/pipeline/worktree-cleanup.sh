@@ -9,8 +9,8 @@
 # <worktree> may be an absolute path OR just the worktree folder name
 # (resolved against the parent of the bare repo).
 #
-# IMPORTANT: run this from the develop worktree, never from inside the
-# worktree being removed. Follow with refresh-develop.sh.
+# IMPORTANT: run this from the main worktree, never from inside the
+# worktree being removed. Follow with refresh-main.sh.
 
 set -euo pipefail
 

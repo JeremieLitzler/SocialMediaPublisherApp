@@ -7,7 +7,7 @@
 # deletes the local branch. Safe to re-run if a prior attempt was partial.
 #
 # Run after pr-complete.sh (or after a manual GitHub merge/close).
-# Follow with refresh-develop.sh to fast-forward the develop worktree.
+# Follow with refresh-main.sh to fast-forward the main worktree.
 
 set -euo pipefail
 

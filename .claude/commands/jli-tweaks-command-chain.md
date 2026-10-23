@@ -52,7 +52,7 @@ command must still hold ALL of these invariants:
    `jli-sets-up` takes an issue number; `jli-cleans` takes a worktree name/path.
 3. **Run location** — phase/commit/ship commands run from inside the feature worktree and
    treat the task-folder argument as relative to it (no path derivation). `jli-sets-up`
-   and `jli-cleans` run from the `develop` worktree.
+   and `jli-cleans` run from the `main` worktree.
 4. **Status-line contract** — any artifact it writes still ends with its required status line
    as the last line.
 5. **Next hint** — ends with a hint block covering the happy-path successor and any
@@ -79,7 +79,7 @@ ci(commands): <imperative summary of the tweak>
 ```
 
 Commit only when the user asks; if you commit, do it on a `ci/<slug>` branch per Git Flow,
-never directly on `develop`/`main`.
+never directly on `main`.
 
 ## Shell command retry limit
 

@@ -68,12 +68,12 @@ Three scripts under `scripts/pipeline/` encapsulate the git operations most pron
 | -------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
 | `scripts/pipeline/fetch-origin.sh [bare-repo]`                 | Ensure `origin` is configured + full refspec, then fetch. Always run first (Task 1).                                       |
 | `scripts/pipeline/worktree-create.sh <type> <slug>`            | Create branch + worktree, install npm deps. Prints `Worktree: <path>`. Requires fetch-origin.sh to have run first.        |
-| `scripts/pipeline/pr-create.sh <worktree> <title> <body-file>` | Push branch, open PR against `develop`. Prints `PR: <url>`.                                                                |
+| `scripts/pipeline/pr-create.sh <worktree> <title> <body-file>` | Push branch, open PR against `main`. Prints `PR: <url>`.                                                                |
 | `scripts/pipeline/pr-complete.sh <pr-url>`                     | Merge open PR (rebase + delete remote branch). Skips gracefully if already merged/closed.                                  |
 | `scripts/pipeline/worktree-cleanup.sh <worktree>`              | Remove worktree directory, prune stale entries, delete local branch.                                                       |
-| `scripts/pipeline/refresh-develop.sh`                          | Fetch origin and fast-forward the `develop` worktree. Closes the pipeline cycle.                                           |
+| `scripts/pipeline/refresh-main.sh`                          | Fetch origin and fast-forward the `main` worktree. Closes the pipeline cycle.                                           |
 
-Call them with `bash scripts/pipeline/<script>.sh` from the `develop/` worktree (the scripts resolve the bare repo root automatically).
+Call them with `bash scripts/pipeline/<script>.sh` from the `main/` worktree (the scripts resolve the bare repo root automatically).
 
 ## Tasks
 
@@ -85,7 +85,7 @@ Call them with `bash scripts/pipeline/<script>.sh` from the `develop/` worktree 
 bash scripts/pipeline/fetch-origin.sh
 ```
 
-Ensures `origin` is configured (adds it if missing, inferring the URL from `develop/`), sets the full fetch refspec, and fetches all remote refs.
+Ensures `origin` is configured (adds it if missing, inferring the URL from `main/`), sets the full fetch refspec, and fetches all remote refs.
 
 ### Task 2: Create new branch and worktree
 
@@ -97,7 +97,7 @@ The orchestrator passes `Type: <type>` and `Slug: <slug>` directly — use these
 bash scripts/pipeline/worktree-create.sh <type> <slug>
 ```
 
-Creates `<bare-repo>/<type>_<slug>` on branch `<type>/<slug>` from `origin/develop` and installs npm dependencies. Prints:
+Creates `<bare-repo>/<type>_<slug>` on branch `<type>/<slug>` from `origin/main` and installs npm dependencies. Prints:
 
 ```
 Worktree: <absolute-path>
@@ -149,14 +149,14 @@ If the last line is `status: passed`:
 
 - Stage the test files introduced or modified and `[task-folder]/test-results.md`.
 - Write a meaningful commit message that summarises the change based on `[task-folder]/business-specifications.md` within Git recommended message length. Put anything beyond the commit message limit into the commit description.
-- Commit on the current feature branch — never commit directly to develop or main.
+- Commit on the current feature branch — never commit directly to main.
 - Push the branch to origin: `rtk git push origin <branch-name>`. Worktree branches have no upstream set, so always specify the remote and branch name explicitly.
 
 ### Task 6: Create pull request
 
 - Derive the PR title from `[task-folder]/business-specifications.md` (short imperative summary, ≤70 chars).
 - Write the PR body to a temporary file (e.g. `/tmp/pr-body.md`). The body must include: a summary of what changed and why, a test plan checklist, and `Closes #<issue-id>`.
-- Target branch is always `develop` — never `main`.
+- Target branch is always `main`.
 
 ```bash
 # Write the body to a temp file first, then call the script:
@@ -177,14 +177,14 @@ bash scripts/pipeline/pr-complete.sh <pr-url>
 
 Merges the PR with rebase and deletes the remote branch. Skips gracefully if the PR was already merged or closed by the user on GitHub.
 
-### Task 8: Remove worktree and refresh develop
+### Task 8: Remove worktree and refresh main
 
 ```bash
 bash scripts/pipeline/worktree-cleanup.sh <worktree>
-bash scripts/pipeline/refresh-develop.sh
+bash scripts/pipeline/refresh-main.sh
 ```
 
-`worktree-cleanup.sh` removes the worktree directory, prunes stale git entries, and deletes the local branch. `refresh-develop.sh` fetches origin and fast-forwards `develop`. Both scripts are safe to re-run if a prior attempt was partial.
+`worktree-cleanup.sh` removes the worktree directory, prunes stale git entries, and deletes the local branch. `refresh-main.sh` fetches origin and fast-forwards `main`. Both scripts are safe to re-run if a prior attempt was partial.
 
 ## Shell Command Retry Limit
 

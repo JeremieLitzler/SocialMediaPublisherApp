@@ -2,7 +2,7 @@
 
 This document describes how the orchestrator-driven multi-agent pipeline was migrated into a
 **manually-chained set of `jli-` slash commands**. The new commands are the supported way to
-develop a feature; the old `tackle` / orchestrator flow is deprecated.
+main a feature; the old `tackle` / orchestrator flow is deprecated.
 
 ## Why
 
@@ -18,11 +18,11 @@ The repo uses one bare repo with sibling worktrees under a shared parent:
 
 ```
 <parent>/<repo-name>.git              <- bare repo
-<parent>/<repo-name>-develop          <- develop worktree
+<parent>/<repo-name>-main          <- main worktree
 <parent>/<repo-name>_<type>-<slug>    <- a feature worktree
 ```
 
-`/jli-sets-up` and `/jli-cleans` run from the **develop worktree**. Every other
+`/jli-sets-up` and `/jli-cleans` run from the **main worktree**. Every other
 command runs from inside the **feature worktree** — you open it in its own editor window
 (`code <worktree>`) after setup, and all later commands run in that window.
 
@@ -42,7 +42,7 @@ request created by `/jli-sets-up` rather than a prior pipeline artifact.
 
 | Command | Runs from | Replaces (agent) |
 |---|---|---|
-| `/jli-sets-up <issue-num + title>` | develop | `agent-4-git` Tasks 1–2 (fetch + worktree) |
+| `/jli-sets-up <issue-num + title>` | main | `agent-4-git` Tasks 1–2 (fetch + worktree) |
 | `/jli-writes-spec @<task-folder>` | feature worktree | `agent-1-specs` |
 | `/jli-verifies-security @<task-folder>` | feature worktree | `agent-5-security` |
 | `/jli-writes-tests-spec @<task-folder>` | feature worktree | `agent-3-test-writer` (pass 1: test cases) |
@@ -52,7 +52,7 @@ request created by `/jli-sets-up` rather than a prior pipeline artifact.
 | `/jli-runs-tests @<task-folder>` | feature worktree | `agent-3-test-runner` |
 | `/jli-commits @<task-folder>` | feature worktree | `agent-4-git` commit tasks (3 / 3.5 / 3.7 / 4 / 5-commit) |
 | `/jli-ships @<task-folder>` | feature worktree | `agent-4-git` Tasks 5-push / 6 / 7 (push, PR, merge) |
-| `/jli-cleans <worktree>` | develop | `agent-4-git` Task 8 (worktree cleanup + refresh develop) |
+| `/jli-cleans <worktree>` | main | `agent-4-git` Task 8 (worktree cleanup + refresh main) |
 
 `agent-0-orchestrator` is **dissolved** into the "Next" hint at the end of each command — no
 command replaces it. `agent-7-pipeline-maintainer` is unchanged; it is still reached via the
@@ -60,7 +60,7 @@ existing `/fix-pipeline` skill.
 
 `agent-4-git`'s responsibilities were split into four commands — `setup` (bootstrap),
 `commit` (its own step between phases), `ship` (push + PR + merge), and `cleanup` (worktree
-removal + refresh develop). `cleanup` is separate because it cannot run from inside the
+removal + refresh main). `cleanup` is separate because it cannot run from inside the
 worktree it removes.
 
 ## The chain
@@ -69,7 +69,7 @@ The full workflow, including the two-editor split and the loop-backs:
 
 ```mermaid
 flowchart TD
-    subgraph INST1["VSCode instance 1 — develop worktree"]
+    subgraph INST1["VSCode instance 1 — main worktree"]
         setup["/jli-sets-up"]
         cleanup["/jli-cleans &lt;worktree&gt;"]
     end
@@ -86,7 +86,7 @@ flowchart TD
     end
 
     setup -->|"code &lt;worktree&gt; (open a new editor window)"| spec
-    ship -->|"back to develop worktree"| cleanup
+    ship -->|"back to main worktree"| cleanup
 
     review -. "changes requested" .-> code
     trun -. "failed: code bug" .-> code
@@ -107,13 +107,13 @@ flowchart TD
     class clear reset;
 ```
 
-Setup (`/jli-sets-up`) and cleanup (`/jli-cleans`) run in the **develop-worktree
+Setup (`/jli-sets-up`) and cleanup (`/jli-cleans`) run in the **main-worktree
 editor**; every phase command runs in a **separate editor window** opened on the feature
 worktree. `/clear` is available at any stage — each command rebuilds what it needs from the
 task folder, so clearing context between steps is safe. The same chain in text:
 
 ```
-[develop worktree]
+[main worktree]
 /jli-sets-up
   > code <worktree>            (open the feature worktree; everything below runs there)
 
@@ -127,7 +127,7 @@ task folder, so clearing context between steps is safe. The same chain in text:
   > /jli-runs-tests         > /jli-commits
   > /jli-ships                  (push + PR + merge)
 
-[back in develop worktree]
+[back in main worktree]
   > /jli-cleans <worktree>
 ```
 

@@ -8,7 +8,7 @@ Follow this workflow to fix it.
 
 ## What NOT to do
 
-- Never directly edit files in `develop/` from the main conversation
+- Never directly edit files in `main/` from the main conversation
 - Never fix pipeline issues inline during a pipeline run for another issue — this must be a separate worktree
 - ALWAYS use `subagent_type="general-purpose"`
 
@@ -24,11 +24,11 @@ Record the issue number as `[id]` and derive a slug (≤ 30 chars, kebab-case).
 
 ## Step 2 — Create a dedicated worktree
 
-The session runs from `develop/`. The bare repo root is `..`.
+The session runs from `main/`. The bare repo root is `..`.
 
 ```bash
 git -C .. fetch origin
-git -C .. worktree add ci_<slug> -b ci/<slug> origin/develop
+git -C .. worktree add ci_<slug> -b ci/<slug> origin/main
 ```
 
 Record the resulting worktree absolute path as `[worktree]`.
@@ -62,7 +62,7 @@ Use `rtk git add <files>` and `rtk git commit -m "..."`.
 
 ```bash
 rtk git push origin ci/<slug>
-gh pr create --base develop --title "<title>" --body "<body with Closes #[id]>"
+gh pr create --base main --title "<title>" --body "<body with Closes #[id]>"
 ```
 
 Show the user the PR URL and ask for approval to merge.
@@ -78,8 +78,8 @@ cd .. && gh pr merge <pr-url> --rebase --delete-branch
 git -C .. fetch origin
 ```
 
-Then pull latest into `develop/`:
+Then pull latest into `main/`:
 
 ```bash
-git pull --rebase origin develop
+git pull --rebase origin main
 ```

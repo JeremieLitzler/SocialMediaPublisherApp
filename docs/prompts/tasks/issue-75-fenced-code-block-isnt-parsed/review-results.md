@@ -17,7 +17,7 @@ SyntaxError: Unexpected token ':'
     ...
 ```
 
-**Pre-existing failure** — identical error reproduced on the `develop` worktree before this branch was created. Not caused by the changes in this fix.
+**Pre-existing failure** — identical error reproduced on the `main` worktree before this branch was created. Not caused by the changes in this fix.
 
 ### `npm run type-check`
 

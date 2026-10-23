@@ -11,7 +11,7 @@
 # `git rev-parse --git-common-dir`, so folder names are never hardcoded.
 #
 #   <parent>/<repo-name>.git              <- bare repo
-#   <parent>/<repo-name>-develop          <- develop worktree (runs this script)
+#   <parent>/<repo-name>-main          <- main worktree (runs this script)
 #   <parent>/<repo-name>_<type>-<slug>    <- worktree this script creates
 #
 # Branch is `<type>/<slug>`; the worktree folder is `<repo-name>_<type>-<slug>`.
@@ -34,7 +34,7 @@ BRANCH="${TYPE}/${SLUG}"
 WT_PATH="${WORKTREES_ROOT}/${WT_NAME}"
 
 echo "==> Creating worktree '${WT_NAME}' on branch '${BRANCH}'..."
-git -C "$BARE_REPO" worktree add "$WT_PATH" -b "$BRANCH" origin/develop
+git -C "$BARE_REPO" worktree add "$WT_PATH" -b "$BRANCH" origin/main
 
 echo "==> Installing npm dependencies in ${WT_PATH}..."
 (cd "$WT_PATH" && npm install --silent)

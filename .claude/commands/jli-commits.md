@@ -7,7 +7,7 @@ opened (e.g. `@docs/prompts/tasks/issue-<id>-<slug>`). If it is empty, stop and 
 > first, then pass the task folder relative to it.
 
 Run all git commands from the worktree root (your current directory) — never from the bare
-repo root, and never commit directly to `develop` or `main` (you are on the feature branch
+repo root, and never commit directly to `main` (you are on the feature branch
 the worktree created). Parse the issue `[id]` from the task-folder name (`issue-<id>-<slug>`).
 
 ## What this command does

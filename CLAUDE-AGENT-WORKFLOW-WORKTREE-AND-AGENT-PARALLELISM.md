@@ -24,7 +24,7 @@ Worktrees live **inside** the bare repo directory, named `<type>_<slug>`:
 
 ```plaintext
 <repo>.git/
-  develop/                  ← long-lived worktree for develop
+  main/                  ← long-lived worktree for main
   feat_new-ui/              ← one Claude instance
   fix_auth-bug/             ← another Claude instance
   ci_add-support-worktree/  ← this file lives here
@@ -67,7 +67,7 @@ When spawning a parallel Claude agent, supply:
 Task:       <one-sentence description>
 Worktree:   <repo>.git/<type>_<slug>/
 Branch:     <type>/<slug>
-Base:       develop
+Base:       main
 Scope:      <list of files / modules the agent may touch>
 Definition of Done: <acceptance criteria>
 ```
@@ -108,10 +108,10 @@ Notes:    <anything the orchestrator needs to know before merging>
 
 ### Pattern A — Feature Fan-Out
 
-Break a large feature into independent sub-tasks, assign one worktree each, merge back to `develop` in order of completion.
+Break a large feature into independent sub-tasks, assign one worktree each, merge back to `main` in order of completion.
 
 ```plaintext
-develop
+main
   ├── feat/notifications-model       (Agent 1)
   ├── feat/notifications-api         (Agent 2)
   └── feat/notifications-ui          (Agent 3, unblocked after Agent 1 merges)
@@ -122,7 +122,7 @@ develop
 Multiple bugs reported at once. Each gets its own fix branch and Claude instance. Review + merge independently.
 
 ```plaintext
-develop
+main
   ├── fix/post-scheduling-timezone   (Agent 1)
   ├── fix/image-upload-memory-leak   (Agent 2)
   └── fix/oauth-token-refresh        (Agent 3)
@@ -176,15 +176,15 @@ The table below lists every `.claude/agents` file that needs changes to support 
 | --------------------- | --------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Step 0                | Delegates branch creation to agent-4          | Instruct agent-4 (Task 1 + Task 2) to create the worktree and **report back the worktree path**; orchestrator then stores it and passes it to every subsequent agent |
 | Every Task tool spawn | No worktree path in handoff                   | Add `Worktree:` field (value received from agent-4) to every subagent task handoff                                                                                   |
-| Step 5 — end          | "return local repository to `develop` branch" | Instruct agent-4 to remove the worktree (`git worktree remove`) — develop refresh is also handled by agent-4 Task 5                                                  |
+| Step 5 — end          | "return local repository to `main` branch" | Instruct agent-4 to remove the worktree (`git worktree remove`) — main refresh is also handled by agent-4 Task 5                                                  |
 
 ### agent-4-git.md — High impact
 
 | Task   | Current                         | Required change                                                                                                                                                                                     |
 | ------ | ------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Task 1 | `git pull` on develop           | `git fetch origin` — bare repo has no working tree to pull into                                                                                                                                     |
+| Task 1 | `git pull` on main           | `git fetch origin` — bare repo has no working tree to pull into                                                                                                                                     |
 | Task 2 | `git checkout -b <type>/<slug>` | Run `git worktree add <type>_<slug> -b <type>/<slug>` from inside `<repo>.git/`; report the resulting worktree path back to the orchestrator                                                        |
-| Task 5 | Push branch                     | Run from inside the worktree directory received from the orchestrator; after push, also pull latest into the `develop` worktree (`git -C <repo>.git/develop pull`) so it is ready for the next task |
+| Task 5 | Push branch                     | Run from inside the worktree directory received from the orchestrator; after push, also pull latest into the `main` worktree (`git -C <repo>.git/main pull`) so it is ready for the next task |
 
 ### agent-6-reviewer.md — Medium impact
 

@@ -17,7 +17,7 @@ SyntaxError: Unexpected token ':'
 ```
 
 Root cause is pre-existing and out of scope: `eslint.config.js` places `rules:` as a bare
-property inside the exported **array** literal, which is invalid JS. `git diff develop...HEAD
+property inside the exported **array** literal, which is invalid JS. `git diff main...HEAD
 -- eslint.config.js` is empty — this branch did not introduce the breakage. Linting cannot
 verify the changed files until it is fixed, but this is unrelated to issue #113.
 
