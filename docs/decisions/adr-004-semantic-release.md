@@ -1,7 +1,7 @@
 # ADR-004: Semantic Release for Versioning
 
 **Date:** 2026-02-11
-**Status:** Accepted (Pre-existing)
+**Status:** Superseded by ADR-009
 
 ## Context
 
