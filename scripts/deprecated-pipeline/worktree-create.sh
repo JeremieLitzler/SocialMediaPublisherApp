@@ -6,7 +6,7 @@
 # Creates a git worktree for a new feature/fix branch, installs npm deps,
 # and prints the absolute worktree path as "Worktree: <path>".
 #
-# Works when called from any worktree (develop/, feat_*/,  ci_*/) because
+# Works when called from any worktree (main/, feat_*/,  ci_*/) because
 # the bare repo is always the parent directory of whichever worktree holds
 # this script.
 #
@@ -27,7 +27,7 @@ BRANCH="${TYPE}/${SLUG}"
 WT_PATH="${BARE_REPO}/${WT_NAME}"
 
 echo "==> Creating worktree '${WT_NAME}' on branch '${BRANCH}'..."
-git -C "$BARE_REPO" worktree add "$WT_NAME" -b "$BRANCH" origin/develop
+git -C "$BARE_REPO" worktree add "$WT_NAME" -b "$BRANCH" origin/main
 
 echo "==> Installing npm dependencies in ${WT_PATH}..."
 (cd "$WT_PATH" && npm install --silent)

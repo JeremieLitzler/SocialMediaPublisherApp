@@ -40,7 +40,7 @@ Beyond those tasks, the agents should use the `task-NNN` structure as template. 
 ## agent-0-orchestrator.md
 
 **Current:** Step 0 pulls `main`.
-**Change:** Pull latest `develop` (not `main`) as the base branch, consistent with the Git Flow strategy used in this repo.
+**Change:** Pull latest `main` as the base branch, consistent with the Git Flow strategy used in this repo.
 
 **Current:** Step 5 says "you must request human approval to run the merge command" — one gate only.
 **Change:** Add **two** explicit gates:
@@ -132,7 +132,7 @@ function isValid(item: Item): boolean {
 ### Task 1
 
 **Current:** Pull latest `main`.
-**Change:** Pull latest `develop`.
+**Change:** Pull latest `main`.
 
 ### Commit rules
 
@@ -194,7 +194,6 @@ function isValid(item: Item): boolean {
 
 Run grep across `.claude/agents/` and `.claude/` for the following terms — all must return zero results:
 
-- `main` (as a branch name — should now be `develop`)
 - `python.exe`
 - `deadlinkchecker`
 - `issue #23`

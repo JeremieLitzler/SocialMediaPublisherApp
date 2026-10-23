@@ -114,7 +114,7 @@ done
 
 It is a senior engineer following Git Flow strategy, suggesting performant, secure and clean solutions.
 
-Commits to `develop`/`main` prohibited. Use worktrees and conventional-commit type of the change (`feat`, `fix`, `docs`, `ci`, `refactor`, …). Pipeline work derives the branch and commit type automatically (see the `jli-*` commands); for one-off changes, name the branch after the change type.
+Commits to `main` prohibited. Use worktrees and conventional-commit type of the change (`feat`, `fix`, `docs`, `ci`, `refactor`, …). Pipeline work derives the branch and commit type automatically (see the `jli-*` commands); for one-off changes, name the branch after the change type.
 
 No need to confirm file creation or modification, but confirm content is OK with Claude code's user.
 
@@ -123,19 +123,19 @@ No need to congratulate or use language that use unnecessary output tokens. Go t
 ## Critical Rules
 
 1. **Pipeline-first**: When asked to tackle/work on/implement/fix a GitHub issue, always use the `/tackle` skill. Never do git operations (branch, checkout, worktree) directly from the main conversation. All code changes go through the pipeline in a worktree.
-2. **No hardcoded paths**: Never hardcode absolute paths or worktree-specific paths (e.g. `develop/`, `feat_foo/`) in any `.md` file under `.claude/`. Absolute paths break portability across machines; worktree paths are runtime values passed by the orchestrator, not constants. Always use placeholders (`[worktree]`, `[task-folder]`) or derive paths at runtime.
+2. **No hardcoded paths**: Never hardcode absolute paths or worktree-specific paths (e.g. `main/`, `feat_foo/`) in any `.md` file under `.claude/`. Absolute paths break portability across machines; worktree paths are runtime values passed by the orchestrator, not constants. Always use placeholders (`[worktree]`, `[task-folder]`) or derive paths at runtime.
 3. **Spec-first**: Before implementing anything, read the relevant spec files.
 4. **ADR-first**: Before making any architectural decision, provide brief context why an ADR is needed before suggesting the full ADR. Once confirmed, create it in `docs/decisions/` and always update the index at `docs/decisions/README.md`.
 5. **Type-first**: Define or update types in `src/types/` before implementing logic that uses them.
 
 ## Setup
 
-Claude Code must be opened from the `develop/` worktree, not the bare repo root. If you detect the working directory is the bare repo root (i.e. no `src/`, `package.json`, or `.claude/commands/` at the root), warn the user:
+Claude Code must be opened from the `main/` worktree, not the bare repo root. If you detect the working directory is the bare repo root (i.e. no `src/`, `package.json`, or `.claude/commands/` at the root), warn the user:
 
-> You appear to have opened Claude Code from the bare repo root. Skills and agents may not be discovered correctly. Please restart from the `develop/` directory:
+> You appear to have opened Claude Code from the bare repo root. Skills and agents may not be discovered correctly. Please restart from the `main/` directory:
 >
 > ```
-> cd develop && claude
+> cd main && claude
 > ```
 
 ## Context to Read

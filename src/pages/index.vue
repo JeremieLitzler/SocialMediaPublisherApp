@@ -16,7 +16,7 @@
       >
       and
       <a
-        href="https://github.com/JeremieLitzler/SocialMediaPublisherApp/blob/develop/docs/specs/01-requirements.md"
+        href="https://github.com/JeremieLitzler/SocialMediaPublisherApp/blob/main/docs/specs/01-requirements.md"
         target="_blank"
         rel="noreferrer"
         class="text-blue-500 hover:underline"

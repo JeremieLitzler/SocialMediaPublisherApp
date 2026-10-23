@@ -2,9 +2,9 @@
 
 This file documents how to handle issues discovered in the multi-agent pipeline (e.g. broken agent instructions, incorrect git steps, missing edge cases).
 
-## Rule: Never Modify `develop` Directly
+## Rule: Never Modify `main` Directly
 
-The `develop` branch is protected and does not accept direct pushes.
+The `main` branch is protected and does not accept direct pushes.
 **All fixes to agent pipeline files must go through a dedicated worktree and a PR.**
 
 ## Workflow
@@ -59,7 +59,7 @@ The agent will identify all files that need updating, apply the minimal fix, and
 
 Claude Code may also suggest improvements beyond what the agent proposes — the user decides what to include.
 
-**Never edit files in `<repo>.git/develop/` directly.**
+**Never edit files in `<repo>.git/main/` directly.**
 
 ### 5. Commit via the Git Agent
 
@@ -89,10 +89,10 @@ Confirm the commit message with the user before pushing.
 
 **From the main conversation or a general-purpose subagent:** Read the git agent file and use `Agent(subagent_type="general-purpose")` for each of Task 6, Task 7, and Task 8 separately — same pattern as Step 5.
 
-Target branch: `develop`.
+Target branch: `main`.
 
 ### 7. Post-Merge Cleanup
 
-**From a native `.claude/agents/` agent:** Use the Task tool with `subagent_type="agent-4-git"`, instructing it to perform **Task 8** (remove worktree and update develop). Pass `Worktree: [worktree]`.
+**From a native `.claude/agents/` agent:** Use the Task tool with `subagent_type="agent-4-git"`, instructing it to perform **Task 8** (remove worktree and update main). Pass `Worktree: [worktree]`.
 
 **From the main conversation or a general-purpose subagent:** Read the git agent file and call `Agent(subagent_type="general-purpose")` with Task 8 as the prompt, same pattern as Step 5.

@@ -9,7 +9,7 @@ context). If it is empty, stop and reply:
 ## What this command does
 
 This is the first step of the manual feature chain. It creates the isolated worktree and
-the task folder that every later `jli-` command reads from. Run it from the `develop/`
+the task folder that every later `jli-` command reads from. Run it from the `main/`
 worktree (the session's working directory).
 
 ### Step 1 — Identify the issue
@@ -25,7 +25,7 @@ worktree (the session's working directory).
 
 ### Step 2 — Fetch origin and create the worktree
 
-Prefer the pipeline scripts over raw git. Run from `develop/`:
+Prefer the pipeline scripts over raw git. Run from `main/`:
 
 ```bash
 bash scripts/pipeline/fetch-origin.sh
@@ -33,7 +33,7 @@ bash scripts/pipeline/worktree-create.sh <type> <slug>
 ```
 
 `worktree-create.sh` creates the worktree folder `<repo-name>_<type>-<slug>` (a sibling of
-the bare repo) on branch `<type>/<slug>` from `origin/develop`, installs npm deps, and prints
+the bare repo) on branch `<type>/<slug>` from `origin/main`, installs npm deps, and prints
 `Worktree: <absolute-path>`. Capture that absolute path as `[worktree]`.
 
 ### Step 3 — Create the task folder and README
@@ -81,4 +81,4 @@ Report the absolute worktree path and the relative task-folder path, then show:
 > Then, from that window, run `/jli-writes-spec @docs/prompts/tasks/issue-<id>-<slug>`. Every later
 > command takes the task folder as a `@`-mention relative to the worktree root — you never
 > need the absolute path again. The final cleanup command is the exception: it runs back in
-> this `develop` window.
+> this `main` window.

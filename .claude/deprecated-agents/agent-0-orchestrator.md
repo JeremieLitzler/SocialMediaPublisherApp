@@ -179,7 +179,7 @@ Use AskUserQuestion a second time to show the user the PR URL and ask for approv
 
 Once approved, invoke agent-4-git using the Task tool, instructing it to perform **Task 7 only** (merge the PR). Pass `Worktree: [worktree]`.
 
-Invoke agent-4-git using the Task tool, instructing it to perform **Task 8 only** (remove the worktree and update develop). Pass `Worktree: [worktree]`.
+Invoke agent-4-git using the Task tool, instructing it to perform **Task 8 only** (remove the worktree and update main). Pass `Worktree: [worktree]`.
 
 ## Bug Feedback Loop
 

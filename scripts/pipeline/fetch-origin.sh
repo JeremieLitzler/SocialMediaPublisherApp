@@ -18,13 +18,13 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 DEFAULT_BARE="$(cd "$SCRIPT_DIR" && cd "$(git rev-parse --git-common-dir)" && pwd)"
 BARE_REPO="${1:-$DEFAULT_BARE}"
 
-# Ensure origin remote exists; if not, infer the URL from the develop worktree.
+# Ensure origin remote exists; if not, infer the URL from the main worktree.
 if ! git -C "$BARE_REPO" remote get-url origin &>/dev/null; then
-  DEVELOP="$(git -C "$BARE_REPO" worktree list --porcelain \
-    | awk '/^worktree /{wt=$2} /^branch refs\/heads\/develop$/{print wt; exit}')"
+  MAIN_WT="$(git -C "$BARE_REPO" worktree list --porcelain \
+    | awk '/^worktree /{wt=$2} /^branch refs\/heads\/main$/{print wt; exit}')"
   REMOTE_URL=""
-  if [[ -n "$DEVELOP" ]]; then
-    REMOTE_URL="$(git -C "$DEVELOP" remote get-url origin 2>/dev/null || true)"
+  if [[ -n "$MAIN_WT" ]]; then
+    REMOTE_URL="$(git -C "$MAIN_WT" remote get-url origin 2>/dev/null || true)"
   fi
   if [[ -z "$REMOTE_URL" ]]; then
     echo "ERROR: origin remote not found in bare repo and could not be inferred." >&2

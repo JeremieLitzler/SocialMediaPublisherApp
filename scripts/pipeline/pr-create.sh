@@ -3,7 +3,7 @@
 #
 # Usage: bash scripts/pipeline/pr-create.sh <worktree-path> <title> <body-file>
 #
-# Pushes the current branch and opens a PR against `develop`.
+# Pushes the current branch and opens a PR against `main`.
 # Prints the PR URL as "PR: <url>".
 #
 # Arguments:
@@ -24,7 +24,7 @@ git -C "$WORKTREE" push origin "$BRANCH"
 
 echo "==> Creating PR..."
 PR_URL="$(cd "$WORKTREE" && gh pr create \
-  --base develop \
+  --base main \
   --title "$TITLE" \
   --body-file "$BODY_FILE")"
 

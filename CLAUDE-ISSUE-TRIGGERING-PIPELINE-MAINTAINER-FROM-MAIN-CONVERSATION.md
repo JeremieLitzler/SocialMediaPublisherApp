@@ -12,7 +12,7 @@ This file documents how Claude Code (acting as the orchestrator in the main conv
 
 ### 1. Recognise the trigger
 
-When the user reports a problem with agent behaviour or pipeline instructions, follow this document — **do not directly edit any file in `develop/`**.
+When the user reports a problem with agent behaviour or pipeline instructions, follow this document — **do not directly edit any file in `main/`**.
 
 ### 2. Create a GitHub issue
 
@@ -62,12 +62,12 @@ Confirm the commit message with the user before proceeding.
 ### 6. Invoke the git agent for PR, merge, and cleanup
 
 Invoke agent-4-git three more times for:
-- **Task 6** — create PR (target: `develop`); show user the PR URL and ask for approval to merge
+- **Task 6** — create PR (target: `main`); show user the PR URL and ask for approval to merge
 - **Task 7** — merge PR (only after user approval)
-- **Task 8** — remove worktree and update develop
+- **Task 8** — remove worktree and update main
 
 ## What NOT to Do
 
-- **Never directly edit files in `develop/`** — even if the fix seems trivial.
+- **Never directly edit files in `main/`** — even if the fix seems trivial.
 - **Never use `subagent_type="agent-7-pipeline-maintainer"`** or any other custom agent name from the `Agent` tool — it will fail with "Agent type not found".
 - **Never fix pipeline issues inline** during a pipeline run for another issue — create a separate GitHub issue and worktree.

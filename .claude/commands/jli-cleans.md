@@ -1,4 +1,4 @@
-Remove a merged feature worktree and refresh develop. Worktree: $ARGUMENTS
+Remove a merged feature worktree and refresh main. Worktree: $ARGUMENTS
 
 `$ARGUMENTS` is the feature worktree to remove — either its folder name
 (e.g. `<repo-name>_<type>-<slug>`) or an absolute path. If it is empty, list the candidates
@@ -8,24 +8,24 @@ and ask which to remove:
 git worktree list
 ```
 
-> Usage: `/jli-cleans <worktree-folder-name>` — run this from the `develop` worktree,
+> Usage: `/jli-cleans <worktree-folder-name>` — run this from the `main` worktree,
 > after the PR has merged.
 
 ## Run location
 
-Run this from the **develop worktree**, never from inside the worktree being removed (you
+Run this from the **main worktree**, never from inside the worktree being removed (you
 cannot delete the directory you are standing in). If your current directory is the feature
-worktree, stop and tell the user to `code [develop-worktree]` and run the command there.
+worktree, stop and tell the user to `code [main-worktree]` and run the command there.
 
 ## What this command does
 
 The PR for this feature is already merged (by `/jli-ships` or manually on GitHub). This
 removes the local worktree, prunes stale git entries, deletes the local branch, and
-fast-forwards `develop`.
+fast-forwards `main`.
 
 ```bash
 bash scripts/pipeline/worktree-cleanup.sh "$ARGUMENTS"
-bash scripts/pipeline/refresh-develop.sh
+bash scripts/pipeline/refresh-main.sh
 ```
 
 `worktree-cleanup.sh` accepts either a bare folder name (resolved against the parent of the
@@ -43,5 +43,5 @@ the full error output to the user.
 
 ## Next
 
-> Feature shipped and cleaned up: worktree removed, local branch deleted, `develop` updated.
+> Feature shipped and cleaned up: worktree removed, local branch deleted, `main` updated.
 > The chain is complete.
