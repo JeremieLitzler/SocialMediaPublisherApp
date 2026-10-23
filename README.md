@@ -125,14 +125,14 @@ npm install -g netlify-cli
 
 ## Releases
 
-Releases follow [ADR-009](docs/decisions/ADR-009-release-sh-pinned-script-release-workflow.md). `main` is the only long-lived branch and changes land by pull request.
+Releases follow [ADR-009](docs/decisions/adr-009-release-sh-pinned-script-release-workflow.md). `main` is the only long-lived branch and changes land by pull request.
 
 - A push to `main` runs a dry-run preview of the next release (version and notes) in the `release` workflow run summary.
 - To cut a release, push a `release/<date>` branch off the tip of `main`: `git switch -c release/2026-10-23 && git push -u origin release/2026-10-23`. The workflow runs the tests and the build, tags the commit, creates the GitHub release and deletes the `release/*` branch. The version comes from the conventional commits.
 - Once a release is cut, the workflow calls the `NETLIFY_BUILD_HOOK` secret (in the `CI` environment) to deploy production. Netlify skips production builds that the hook did not start; deploy previews still build.
 - The **Actions > release** workflow can also be run manually: `preview`, `publish` (from `main` or `release/*`) or `deploy-site` (redeploys without a release).
 - `release.sh` is downloaded at the commit pinned in `RELEASE_SCRIPT_REF` in `.github/workflows/release.yml`; the comment above it explains how to move the pin.
-- The history lives on the [GitHub releases](https://github.com/JeremieLitzler/SocialMediaPublisherApp/releases) page; there is no `CHANGELOG.md`.
+- The history lives on the [GitHub releases](https://github.com/JeremieLitzler/SocialMediaPublisherApp/releases) page.
 
 ## About Supabase
 

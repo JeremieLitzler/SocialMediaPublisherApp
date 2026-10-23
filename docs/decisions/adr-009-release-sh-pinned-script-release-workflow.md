@@ -5,7 +5,7 @@
 
 ## Context
 
-ADR-004 chose `semantic-release` (npm-based, run on push to `main` with a GitHub App token) for versioning and changelog generation. It pulls five npm packages into the dependency tree, needs a GitHub App and its secrets to push to protected branches, commits a `CHANGELOG.md` back to the repository, and its last run failed (issue #122).
+ADR-004 chose `semantic-release` (npm-based, run on push to `main` with a GitHub App token) for versioning. It pulls five npm packages into the dependency tree, needs a GitHub App and its secrets to push to protected branches, commits generated files back to the repository, and its last run failed (issue #122).
 
 The release logic now lives in its own repository, [semantic-release-script](https://github.com/JeremieLitzler/semantic-release-script), as `release.sh`, tagged `v1.0.0`. It already runs in [deadlinkprobe](https://github.com/JeremieLitzler/deadlinkprobe/blob/main/.github/workflows/release.yml) from a pinned SHA without any local modification. This ADR adopts the same model here, with `main` as the trunk.
 
@@ -23,7 +23,7 @@ The release model is single-trunk and push-triggered:
 - A `deploy-site` job calls `NETLIFY_BUILD_HOOK` after a release is cut, kept separate so a Netlify outage never turns a published release red.
 - Production is deployed by that build hook only. `netlify.toml` skips any production build not started by the hook (`CONTEXT` is `production` and `INCOMING_HOOK_TITLE` is empty), while deploy previews and branch deploys still build.
 - The version is left to the commits; no level is forced.
-- `CHANGELOG.md`, `.releaserc`, `tag-release.sh` and the five `semantic-release` npm packages are removed. The GitHub releases hold the history.
+- The `semantic-release` configuration, its helper script, the generated history file and the five `semantic-release` npm packages are removed. The GitHub releases hold the history.
 
 This supersedes ADR-004.
 
@@ -43,7 +43,7 @@ This supersedes ADR-004.
 - Trust moves to the upstream repository: the pin must be moved by a deliberate, reviewed change, because the script runs unattended with `--yes`.
 - `release/**` is unprotected: anyone who can push to the repository can cut a release. The publish job's containment check (the ref must be contained in `main`) and the optional required reviewer on the `CI` environment are the only gates.
 - A release created with `GITHUB_TOKEN` triggers no further workflow; any future `on: release` or `on: push: tags` automation must restore an App or PAT token first.
-- No `CHANGELOG.md` in the repository any more; release notes live on the GitHub releases page.
+- No history file in the repository any more; release notes live on the GitHub releases page.
 
 ## Alternatives Considered
 
