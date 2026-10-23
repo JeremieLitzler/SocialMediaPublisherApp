@@ -183,3 +183,17 @@ Use `netlify dev` (not `npm run dev`) during development to enable the `/api/fet
 **Always** prefix git, `gh`, build/lint, test, and file/search commands with `rtk` — never the bare equivalent. These are the commands auto-approved in `.claude/settings.local.json`; running them without `rtk` triggers a permission prompt on every call. The full command reference lives in the global `~/.claude/CLAUDE.md`.
 
 Exception: `npm run type-check` (vue-tsc) has no rtk equivalent — keep as-is.
+
+## Agent skills
+
+### Issue tracker
+
+Issues live in GitHub Issues (`gh` CLI). See `docs/agents/issue-tracker.md`.
+
+### Triage labels
+
+Default five-label vocabulary (`needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human`, `wontfix`). See `docs/agents/triage-labels.md`.
+
+### Domain docs
+
+Single-context: `GLOSSARY.md` at the root, ADRs in `docs/decisions/`. See `docs/agents/domain.md`.
