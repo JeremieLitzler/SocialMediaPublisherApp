@@ -211,7 +211,7 @@ jobs:
         (github.event_name == 'workflow_dispatch' && inputs.action == 'deploy-site' && github.ref == 'refs/heads/main')
       )
     runs-on: ubuntu-latest
-    # NETLIFY_BUILD_HOOK is an environment secret, not a repository one.
+    # NETLIFY_BUILD_HOOK is a repository Actions secret, not an environment one.
     environment: CI
     permissions: {}
     steps:
